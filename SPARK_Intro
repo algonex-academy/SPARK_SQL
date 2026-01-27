@@ -125,3 +125,9 @@ ORDER BY total_sales DESC
 LIMIT 5;
 
 This single query tells a company what to sell more to maximize profit
+
+Have this Clarity amigo's:
+-> If you treat SQL like a subject — you will forget it
+-> If you treat SQL like a business weapon — you will master it
+-> This training will convert you from student → industry engineer
+
