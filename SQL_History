@@ -1,0 +1,76 @@
+1970 — Dr. Edgar F. Codd (IBM Scientist)
+
+He introduced the Relational Model in his research paper: A Relational Model of Data for Large Shared Data Banks
+
+Data should be stored in tables (relations)
+Rows → Tuples
+Columns → Attributes
+Relationships → Keys
+
+This paper revolutionized database theory and created the foundation for modern databases & SQL
+
+IBM Research Lab (San Jose, California)
+1973 – 1979
+IBM started a project named System R to implement Codd’s relational model.
+
+Two IBM Engineers:
+Donald D. Chamberlin
+Raymond F. Boyce
+
+SEQUEL was already trademarked → IBM shortened it to SQL
+
+They developed a language called:
+SEQUEL → Structured English Query Language
+
+Later renamed to:
+SQL – Structured Query Language
+
+Evolution Timeline of SQL Standards
+
+| Year | Version  | Highlights                        |
+| ---- | -------- | --------------------------------- |
+| 1986 | SQL-86   | First standard                    |
+| 1989 | SQL-89   | Minor fixes                       |
+| 1992 | SQL-92   | Major upgrade, joins, constraints |
+| 1999 | SQL:1999 | Triggers, stored procedures       |
+| 2003 | SQL:2003 | XML support                       |
+| 2008 | SQL:2008 | Enhancements                      |
+| 2011 | SQL:2011 | Temporal databases                |
+| 2016 | SQL:2016 | JSON support                      |
+| 2023 | SQL:2023 | Big data + modern improvements    |
+
+Rise of Major SQL Databases (Industry Adoption eppudindi)
+
+| Year | Database             |
+| ---- | -------------------- |
+| 1979 | Oracle               |
+| 1983 | IBM DB2              |
+| 1985 | Informix             |
+| 1989 | Sybase               |
+| 1995 | MySQL                |
+| 1996 | PostgreSQL           |
+| 2000 | Microsoft SQL Server |
+
+2010 – Present
+With Big Data + AI + Cloud + IoT, new database needs arose → NoSQL
+
+SQL powers enti:
+- Banking systems
+- UPI transactions
+- E-commerce orders
+- Swiggy/Zomato delivery tracking
+- Amazon orders
+- Netflix recommendation analytics
+- Instagram user data
+
+SQL is evolving into FUTURE:
+- Cloud-native SQL
+- Distributed SQL
+- AI + SQL integrations
+Real-time analytics engines
+
+Example:
+-Google BigQuery
+- Snowflake
+- Amazon Redshift
+- Azure Synapse
