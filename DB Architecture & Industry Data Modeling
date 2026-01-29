@@ -1,0 +1,69 @@
+Database Architecture & Industry Data Modeling
+
+Think Like a SQL Engineer, Not a Student
+
+SQL is NOT about writing queries, it is about designing business systems
+If your database design is wrong, even the best SQL query becomes useless
+
+Today SPARK is = Learning how real companies design their databases
+
+Company Data System Looks Like:
+Frontend (Website / App)
+        ↓
+Backend APIs
+        ↓
+Database (SQL Engine)
+
+Database Contains:
+- Millions of users
+- Billions of transactions
+- Real time operations
+- Zero tolerance for data loss
+
+Today you’ll understand how to architect/build this system
+
+What is a Database?
+A Database is a digital representation of a company’s entire business
+
+ Business              Database Represents                  
+ Amazon   | Customers, orders, sellers, payments 
+ Swiggy   | Users, restaurants, orders, riders   
+ Bank     | Accounts, transactions, loans        
+ College  | Students, attendance, marks          
+
+No database → No business kada
+
+What is a Table assalu (Try your answer) - Table is One real-world entity
+ Real World   SQL Table 
+ Student    | students  
+ Product    | products  
+ Order      | orders    
+ Employee   | employees 
+
+STUDENTS TABLE
+id | name | email | phone | city
+
+How we'll do in our company: First understand business → Then design tables → Then write SQL
+
+Example chudandi: Food Delivery App
+What entities exist?
+
+- Users
+- Restaurants
+- Orders
+- Delivery Agents
+- Payments  ivanni kalisthenee then become tables
+
+Business Problem
+        |
+Data Requirement
+        |
+Table Design
+        |
+Relationships
+        |
+Query Design
+        |
+Business Decision
+
+Idi meekosam: Schema Design -> Data Understanding -> Query Thinking -> Business Impact
