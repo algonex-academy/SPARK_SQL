@@ -1,0 +1,106 @@
+Predefined Databases in MySQL
+
+Predefined Databases are system-level databases automatically created by MySQL during installation
+to manage internal operations, security, performance, and metadata
+
+-> These databases are not for business data
+-> They are for MySQL engine operations
+
+Think of them as the operating system of MySQL
+
+Why MySQL Needs Predefined Databases?
+To manage:
+- Users & permissions
+- Server performance
+- Metadata
+- Recovery
+- Storage engines
+- Query optimization
+
+Without them -> MySQL cannot function
+
+List of Predefined Databases 
+ Database           | Purpose                             
+ mysql              | User & privilege management         
+ information_schema | Metadata of all databases           
+ performance_schema | Performance monitoring              
+ sys                | Performance analytics (friendly UI)  Don't worry inkaa detailga will see
+
+1. mysql Database —> Security Brain of MySQL
+Stores all user accounts, passwords, roles, and privileges
+
+What It Contains:
+- User login info
+-Access permissions
+- Role assignments
+- Password encryption
+
+Example Tables:
+user
+db
+tables_priv
+columns_priv
+This database controls who can access what
+
+Mem Companylo Usage:
+
+Create users
+Grant privileges
+Control security
+Role-based access
+Every production system heavily depends on this database
+
+2. information_schema —> Metadata Database
+Contains structural information about all databases, tables, columns, indexes, constraints, and views
+Simplega Database of Databases
+
+What You Can Query:
+- List all tables
+- View column details
+- Find indexes
+- Check constraints
+- Inspect schema design
+
+SELECT * 
+FROM information_schema.tables
+WHERE table_schema = 'mydb';
+-> Company teams use this to analyze schema dynamically
+
+3. performance_schema —> Performance Monitoring Engine
+Collects real-time performance metrics of MySQL server
+
+Tracks:
+- Query execution time
+- Resource usage
+- Thread activity
+- Locking
+- I/O operations
+
+Companylo Usage Chudunndi:
+Detect slow queries
+Optimize performance
+Debug bottlenecks
+System tuning
+Used by DBAs & senior backend engineers
+
+4. sys Database —> Performance Analytics Layer
+A user-friendly wrapper built on top of performance_schema
+
+Simplifies complex performance data into easy-to-read views
+
+Example Use:
+- Top slow queries
+- Heavy CPU usage queries
+- Table access frequency
+Think of sys as performance dashboard for MySQL
+
+ Role              | Database Used                    
+ Backend Developer | information_schema              
+ Data Engineer     | information_schema + sys         
+ DBA               | mysql + performance_schema + sys 
+ Security Engineer | mysql                            
+
+mysql -> Security Brain
+information_schema -> Metadata Brain
+performance_schema -> Performance Brain
+sys -> Performance Dashboard
