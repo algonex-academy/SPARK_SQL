@@ -3,9 +3,9 @@
 He introduced the Relational Model in his research paper: A Relational Model of Data for Large Shared Data Banks
 
 Data should be stored in tables (relations)
-Rows → Tuples
-Columns → Attributes
-Relationships → Keys
+Rows -> Tuples
+Columns -> Attributes
+Relationships -> Keys
 
 This paper revolutionized database theory and created the foundation for modern databases & SQL
 
