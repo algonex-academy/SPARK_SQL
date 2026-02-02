@@ -1,0 +1,130 @@
+Databases without data are useless, Data without queries is powerless -> SQL gives power
+
+ Component                Role                         
+ MySQL Server    | Stores & processes data      
+ MySQL Workbench | Tool to interact with server 
+-> If noo Workbench -> You can’t talk to MySQL amigo's
+
+Realtime Example: Online Shopping App
+Business/Industty Concepts:
+Customers
+Products
+Orders
+Payments
+
+SQL Concepts:
+Tables
+Columns
+Rows
+Relationships
+-> Remember this mapping is the soul of SQL
+
+As a Professional will follow this SPARK:
+SELECT database
+-> Check table structure
+-> Insert clean data
+-> Query with purpose
+Don;t do random querying have the purpose when writing the query
+
+Create a new Connection/Server-> DB/Schema ->table:
+Algonex -> Connection/Server
+SPARK -> DB
+products - > Table
+Columns:
+product_id
+product_name
+category
+price
+stock
+
+Tasks:
+- insert 5 products
+- Write 5 SELECT queries using WHERE
+
+Business Question
+        |
+Identify Table
+        |
+Select Rquired Columns
+        |
+Apply WHERE Conditions
+        |
+Validate Result
+
+SQL Commands? Observe : SQL commands are instructions you give to the database engine to manage, store, control, and analyze data
+Not all commands do the same job (Show fig. there about commands & dtypes)
+
+Just like in Algonex company:
+- Some people build infrastructure
+- Some work with data
+- Some control access
+- Some manage transactions
+SQL commands are also divided this way
+
+SQL commands are divided into 5 categories:
+DDL  -> Structure
+DML  -> Data
+DQL  -> Questions
+DCL  -> Security
+TCL  -> Transactions
+If a fresher understands this flow clearly -> they are already above average
+
+DDL — Data Definition Language ->(Database Architecture Layer)
+DDL commands define the structure of the database like Building the Algonex office, not working yet inside it
+
+DDL Commands:
+CREATE
+ALTER
+DROP
+TRUNCATE
+RENAME
+
+1. CREATE - Creating Business Reality
+SPARK Examples:
+- Create a database for a company
+- Create a table for employees
+Create a table for orders
+
+CREATE DATABASE company_db;
+USE company_db;
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    department VARCHAR(50)
+);
+
+DDL commands change metadata (means it will do changes on permanent/main data), not just data
+
+2. ALTER - Business Change Management
+modifying an existing business structure
+
+Real-world examples:
+- Company adds a new column -> email
+- Company changes salary format
+- Company renames a column
+
+ALTER TABLE employees
+ADD email VARCHAR(100);
+
+3. DROP - Permanent Destruction
+This command Completely removes the structure + data
+DROP TABLE employees;
+
+Senior-level warning(It not flowed you'll get fired):
+- DROP has NO undo
+- Rarely used in production
+- Mostly used in development/testing
+
+4. TRUNCATE - Resetting Data (Fast & Dangerous)
+It deletes all rows, keeps structure
+TRUNCATE TABLE employees;
+
+Difference from DELETE: (SPARK Ask yourself) 
+- Faster
+- Cannot rollback
+- No WHERE condition
+
+Used when:
+- Resetting test data
+- Cleaning staging environments
