@@ -58,15 +58,15 @@ Have this idea: Companies never build databases without ER diagrams
 
 Schema Design Flow Using Workbench
 Identify Entities
-        ↓
+        |
 Create Tables
-        ↓
+        |
 Assign Primary Keys
-        ↓
+        |
 Define Relationships
-        ↓
+        |
 Generate SQL Script
-        ↓
+        |
 Deploy Database
 
 Backend Developer:
