@@ -27,29 +27,27 @@ SQL – Structured Query Language
 
 Evolution Timeline of SQL Standards
 
-| Year | Version  | Highlights                        |
-| ---- | -------- | --------------------------------- |
-| 1986 | SQL-86   | First standard                    |
-| 1989 | SQL-89   | Minor fixes                       |
-| 1992 | SQL-92   | Major upgrade, joins, constraints |
-| 1999 | SQL:1999 | Triggers, stored procedures       |
-| 2003 | SQL:2003 | XML support                       |
-| 2008 | SQL:2008 | Enhancements                      |
-| 2011 | SQL:2011 | Temporal databases                |
-| 2016 | SQL:2016 | JSON support                      |
-| 2023 | SQL:2023 | Big data + modern improvements    |
+ Year | Version  | Highlights                       
+1986 | SQL-86   | First standard                    
+ 1989 | SQL-89   | Minor fixes                       
+ 1992 | SQL-92   | Major upgrade, joins, constraints 
+ 1999 | SQL:1999 | Triggers, stored procedures       
+ 2003 | SQL:2003 | XML support                       
+ 2008 | SQL:2008 | Enhancements                      
+ 2011 | SQL:2011 | Temporal databases                
+ 2016 | SQL:2016 | JSON support                      
+ 2023 | SQL:2023 | Big data + modern improvements    
 
 Rise of Major SQL Databases (Industry Adoption eppudindi)
 
-| Year | Database             |
-| ---- | -------------------- |
-| 1979 | Oracle               |
-| 1983 | IBM DB2              |
-| 1985 | Informix             |
-| 1989 | Sybase               |
-| 1995 | MySQL                |
-| 1996 | PostgreSQL           |
-| 2000 | Microsoft SQL Server |
+Year | Database             
+ 1979 | Oracle               
+ 1983 | IBM DB2              
+ 1985 | Informix             
+ 1989 | Sybase               
+ 1995 | MySQL                
+ 1996 | PostgreSQL           
+ 2000 | Microsoft SQL Server 
 
 2010 – Present
 With Big Data + AI + Cloud + IoT, new database needs arose → NoSQL
