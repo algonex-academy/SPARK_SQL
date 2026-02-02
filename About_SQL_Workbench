@@ -156,15 +156,16 @@ DECIMAL -> money precision
 DATE -> business timelines
 This is not just syntax — this is business modeling in IT aas SQL Developer
 
+SHOW DATABASES;
 SHOW TABLES;
 DESCRIBE employees;
 If this works -> your setup is perfectly working amigos
 
 Open Workbench
     |
-Connect Server
+Create/ Connect Server
     |
-Select Business DB
+Select/Use Current DB
     |
 Create Tables
     |
