@@ -85,14 +85,21 @@ SPARK Examples:
 - Create a table for employees
 Create a table for orders
 
-CREATE DATABASE company_db;
+CREATE DATABASE database_name;
+ [Ex: CREATE DATABASE company_db; ]
 USE company_db;
 
-CREATE TABLE employees (
+CREATE TABLE table_name (
+    column1 datatype [constraints],
+    column2 datatype,
+    ...
+);
+
+Ex: CREATE TABLE employees (
     employee_id INT PRIMARY KEY,
     name VARCHAR(100),
     department VARCHAR(50)
-);
+);    
 
 DDL commands change metadata (means it will do changes on permanent/main data), not just data
 
@@ -106,6 +113,10 @@ Real-world examples:
 
 ALTER TABLE employees
 ADD email VARCHAR(100);
+ALTER TABLE table_name ADD column_name datatype;
+ALTER TABLE table_name MODIFY column_name datatype;
+ALTER TABLE table_name DROP column_name;
+ALTER TABLE table_name RENAME TO new_table_name;
 
 3. DROP - Permanent Destruction
 This command Completely removes the structure + data
@@ -128,3 +139,81 @@ Difference from DELETE: (SPARK Ask yourself)
 Used when:
 - Resetting test data
 - Cleaning staging environments
+
+2. DML - Data Manipulation Language (Business Activity Layer)-> Ikkadee manupulations anni hapen avuthaay
+DML commands work with actual business data to make modifications
+Examples: Employees joining, orders happening, payments processing
+
+DML Commands:
+INSERT
+UPDATE
+DELETE
+
+1.INSERT -> business Events(Modification/new records) coming into DB
+Examples:
+- New user signup
+- New order placed
+- New employee joined
+/
+type1: INSERT INTO table_name VALUES (value1, value2, ...);
+Type2: INSERT INTO table_name (column1, column2)
+VALUES (value1, value2);
+
+
+INSERT INTO employees (employee_id, name, department)
+VALUES (1039871, 'Harshitha', 'IT');
+-> This INSERT represents real-time events- not just data entry
+
+2. UPDATE- Business Corrections
+Fixing or changing business data
+Examples chudandi:
+- Salary hike
+- Department change
+- Profile update
+
+UPDATE table_name
+SET column1 = value1
+WHERE condition;
+
+
+Ex: UPDATE employees
+SET department = 'Finance'
+WHERE employee_id = 101;
+
+3. DELETE - Business Removal
+-> Removing business records logically
+
+DELETE FROM table_name
+WHERE condition;
+
+Ex: DELETE FROM employees
+WHERE employee_id = 101;
+
+How difference from TRUNCATE:
+- DELETE is row-level
+- DELETE can use WHERE
+- DELETE can be rolled back (with transactions)
+
+4. DQL - Data Query Language (IDi decision-Making Layer)
+DQL is where SQL becomes valuable like asking questions to data
+Only one command SELECT-> ut don’t underestimate it
+
+Examples:
+- Who are our top employees?
+- What are today’s sales?
+- Which product is failing?
+
+SELECT * FROM table_name;
+SELECT column1, column2 FROM table_name;
+
+ex: SELECT name, department
+FROM employees;
+-> We’ll go extremely deep into SELECT later on(filters, joins, analytics)
+
+DROP DATABASE database_name;
+DROP TABLE table_name;
+TRUNCATE TABLE table_name;
+ALTER TABLE table_name ADD column_name datatype;
+ALTER TABLE table_name MODIFY column_name datatype;
+ALTER TABLE table_name DROP column_name;
+ALTER TABLE table_name RENAME TO new_table_name;
