@@ -108,31 +108,36 @@ Ex: CREATE TABLE employees (
 DDL commands change metadata/Main data (means it will do changes on permanent/main data), not just data
 
 2. ALTER - Business Change Management
-modifying an existing business structure
+modifying an existing main business(Tables,Colums)  structure
 
 Real-world examples:
-- Company adds a new column -> email
+- Company adds a new column -> email, Contact
 - Company changes salary format
-- Company renames a column
+- Company renames a column (Employee_ID -> emp_id)
 
 ALTER TABLE employees
 ADD email VARCHAR(100);
+
 ALTER TABLE table_name ADD column_name datatype;
 ALTER TABLE table_name MODIFY column_name datatype;
 ALTER TABLE table_name DROP column_name;
 ALTER TABLE table_name RENAME TO new_table_name;
 
 3. DROP - Permanent Destruction
-This command Completely removes the structure + data
-DROP TABLE employees;
+This command Completely removes the structure + data from thre Database
+But it can be ROLLBACK, if it is stored in SAVEPOINT
 
-Senior-level warning(It not flowed you'll get fired):
-- DROP has NO undo
-- Rarely used in production
+DROP TABLE employees;
+DROP DATABASE Database_name;
+
+Senior-level warning(It not followed you'll get fired):
+- DROP has NO undo(But Only in-case of stored data in Savepoint) 
+- Rarely used in production/final modifications
 - Mostly used in development/testing
 
 4. TRUNCATE - Resetting Data (Fast & Dangerous)
-It deletes all rows, keeps structure
+It deletes all rows, keeps structure(Tables with Colums inside Database)
+
 TRUNCATE TABLE employees;
 
 Difference from DELETE: (SPARK Ask yourself) 
@@ -141,25 +146,26 @@ Difference from DELETE: (SPARK Ask yourself)
 - No WHERE condition
 
 Used when:
-- Resetting test data
+- Resetting test/Sample data
 - Cleaning staging environments
+- Reset mobile loosing all contacts but keeping the s/w apps
 
-2. DML - Data Manipulation Language (Business Activity Layer)-> Ikkadee manupulations anni hapen avuthaay
-DML commands work with actual business data to make modifications
-Examples: Employees joining, orders happening, payments processing
+2. DML - Data Manipulation Language (Business Modifications Activity Layer)-> Ikkadee manupulations anni hapen avuthaay
+DML commands work with actual business data to make modifications to the tables
+Examples: Employees joining, orders happening, payments processing or any sort of modications/Processes 
 
 DML Commands:
 INSERT
 UPDATE
 DELETE
 
-1.INSERT -> business Events(Modification/new records) coming into DB
+1.INSERT -> New business Events(Modification/new records) coming into DB
 Examples:
-- New user signup
-- New order placed
+- New user signup into Algonex
+- New order placed from Flipkart
 - New employee joined
-/
-type1: INSERT INTO table_name VALUES (value1, value2, ...);
+
+type1(Without mention Columns): INSERT INTO table_name VALUES (value1, value2, ...);
 Type2: INSERT INTO table_name (column1, column2)
 VALUES (value1, value2);
 
@@ -168,46 +174,48 @@ INSERT INTO employees (employee_id, name, department)
 VALUES (1039871, 'Harshitha', 'IT');
 -> This INSERT represents real-time events- not just data entry
 
-2. UPDATE- Business Corrections
-Fixing or changing business data
+2. UPDATE- Business Data Corrections
+It is for fixing or changing business data
 Examples chudandi:
-- Salary hike
-- Department change
-- Profile update
+- Salary hike (10k -> 90% hikes gives 19k)
+- Department change (Developer -> Testing)
+- Profile update (Changes in Photo, details,..)
 
 UPDATE table_name
 SET column1 = value1
-WHERE condition;
+WHERE condition; -- Which updates Column value/values on following condition 
 
+UPDATE table_name
+SET column1 = value1; -- This updates the entire column with value1
 
 Ex: UPDATE employees
 SET department = 'Finance'
 WHERE employee_id = 101;
 
-3. DELETE - Business Removal
--> Removing business records logically
+3. DELETE - Business data Removal 
+-> Removing business records logically based on the condition
 
 DELETE FROM table_name
 WHERE condition;
 
-Ex: DELETE FROM employees
-WHERE employee_id = 101;
+Ex: DELETE FROM Spark
+WHERE spark_id = 101;
 
 How difference from TRUNCATE:
 - DELETE is row-level
 - DELETE can use WHERE
 - DELETE can be rolled back (with transactions)
 
-4. DQL - Data Query Language (IDi decision-Making Layer)
+4. DQL - Data Query Language (IDi decision-Making/output Layer)
 DQL is where SQL becomes valuable like asking questions to data
-Only one command SELECT-> ut don’t underestimate it
+Only one command SELECT-> but don’t underestimate it will get the output data using SELECT only
 
 Examples:
 - Who are our top employees?
 - What are today’s sales?
 - Which product is failing?
 
-SELECT * FROM table_name;
+SELECT * FROM table_name; -- * represents all columns
 SELECT column1, column2 FROM table_name;
 
 ex: SELECT name, department
