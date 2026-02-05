@@ -66,9 +66,9 @@ SQL commands are also divided this way
 
 SQL commands are divided into 5 categories:
 DDL  -> Structure
-DML  -> Data
-DQL  -> Questions
-DCL  -> Security
+DML  -> Data Change
+DQL  -> Questions/Data Fetch
+DCL  -> Security/Permissions
 TCL  -> Transactions
 If a fresher understands this flow clearly -> they are already above average
 
@@ -87,6 +87,9 @@ RENAME
 SPARK Examples:
 - Create a database for a company
 - Create a table for employees and orders
+- Creating new modules (Users, Orders, Payments)
+- Spinning up new services (microservices DB)
+- Setting up staging / prod schemas
 
 CREATE DATABASE database_name;
  [Ex: CREATE DATABASE company_db; ]
@@ -104,19 +107,36 @@ Ex: CREATE TABLE employees (
     name VARCHAR(100),
     Salary Decimal(60,30)
 );    
+Ex:2 
+CREATE TABLE users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+Note: Always design with:
+- Primary keys
+- Indexes
+- Constraints
+Otherwise performance + data quality breaks in main production kadaa
 
 DDL commands change metadata/Main data (means it will do changes on permanent/main data), not just data
 
-2. ALTER - Business Change Management
+2. ALTER - Business Change Management/Schema Evolution Without Breaking Production
 modifying an existing main business(Tables,Colums)  structure
 
 Real-world examples:
 - Company adds a new column -> email, Contact
 - Company changes salary format
 - Company renames a column (Employee_ID -> emp_id)
+- New feature requires a new column
+- Renaming columns
+- Changing datatype after feedback
 
 ALTER TABLE employees
 ADD email VARCHAR(100);
+
+ALTER TABLE users ADD phone VARCHAR(15);
 
 ALTER TABLE table_name ADD column_name datatype;
 ALTER TABLE table_name MODIFY column_name datatype;
@@ -166,12 +186,18 @@ Examples:
 - New employee joined
 
 type1(Without mention Columns): INSERT INTO table_name VALUES (value1, value2, ...);
+Note: Don't use Type1 because column order changes will break your app
+
 Type2: INSERT INTO table_name (column1, column2)
 VALUES (value1, value2);
 
 
 INSERT INTO employees (employee_id, name, department)
 VALUES (1039871, 'Harshitha', 'IT');
+
+INSERT INTO users (full_name, email)
+VALUES ('Sainath Namala', 'sainath@gmail.com');
+
 -> This INSERT represents real-time events- not just data entry
 
 2. UPDATE- Business Data Corrections
@@ -220,6 +246,21 @@ SELECT column1, column2 FROM table_name;
 
 ex: SELECT name, department
 FROM employees;
+
+SELECT columns
+FROM table
+WHERE condition
+ORDER BY column
+LIMIT n OFFSET m;
+
+SELECT user_id, full_name, email
+FROM users
+ORDER BY created_at DESC
+LIMIT 10;
+
+Note: Algonex never use SELECT * in production APIs
+-> It breaks performance + contracts (Soo mention column names instead)
+
 -> We’ll go extremely deep into SELECT later on(filters, joins, analytics)
 
 DROP DATABASE database_name;
@@ -229,3 +270,85 @@ ALTER TABLE table_name ADD column_name datatype;
 ALTER TABLE table_name MODIFY column_name datatype;
 ALTER TABLE table_name DROP column_name;
 ALTER TABLE table_name RENAME TO new_table_name;
+
+4. DCL (Data Control Language)
+- Who can access what? Who can do what?
+-> This is database security + access control in Algonex Company Server/DB 
+
+Manam Companies lo ela vaduthaam:
+- Giving read-only access to analysts
+- giving write access to backend services
+- Blocking dangerous permissions in prod
+- Creating separate roles for Dev, QA, Prod
+- Compliance (SOC2, ISO, audits)
+
+1. GRANT — Giving Controlled Access
+Really where you'll have:
+- Backend service (needs read/write)
+- Analyst (read-only)
+- Intern (very limited) all access based on privilege in company
+
+GRANT privileges
+ON database.table
+TO 'user'@'host';
+
+Oka example chuudu: 1.give read only access to analyst
+GRANT SELECT
+ON ecommerce_db.*
+TO 'analyst'@'%';
+
+2.Give full CRUD to backend service
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON ecommerce_db.*
+TO 'backend_service'@'%';
+
+3. Give permission to run procedures
+GRANT EXECUTE
+ON PROCEDURE ecommerce_db.process_order
+TO 'api_user'@'%';
+
+Note: - never give ALL PRIVILEGES in production
+-> Grant only what is required (Principle of Least Privilege)
+-> Use separate users for:
+- app
+- admin
+- analytics
+
+2. REVOKE — Removing Access Safely
+Real scenarioslo ekkada: 
+- Intern leaves
+- Contractor access expired
+- User misused permissions
+- Security breach response
+
+REVOKE privileges
+ON database.table
+FROM 'user'@'host';
+
+Example:
+REVOKE INSERT, UPDATE, DELETE
+ON ecommerce_db.*
+FROM 'intern'@'%';
+
+SPARK Tip: Always revoke first, then delete users,this avoids accidental downtime
+
+SAPRK: CREATE USER
+Evaristharu access:
+- DB Admins
+- DevOps pipelines
+- Cloud provisioning scripts
+
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+
+CREATE USER 'report_user'@'%' IDENTIFIED BY 'Strong@123';
+-> Never hardcode passwords in SQL scripts in production
+-> Use secrets manager / environment variables
+
+Algonexloo memelaa access istham:
+ Role              Privileges                   
+ Backend App | SELECT, INSERT, UPDATE       
+ Analyst     | SELECT                       
+ Admin       | ALL PRIVILEGES (rarely used) 
+ Intern      | SELECT on few tables         
+ ETL Jobs    | SELECT, INSERT               
+-> This separation/access avoids accidental data loss
