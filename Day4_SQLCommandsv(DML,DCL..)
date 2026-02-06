@@ -271,17 +271,17 @@ ALTER TABLE table_name MODIFY column_name datatype;
 ALTER TABLE table_name DROP column_name;
 ALTER TABLE table_name RENAME TO new_table_name;
 
-4. DCL (Data Control Language)
+4. DCL (Data Control Language) (GRANT, REVOKE)
 - Who can access what? Who can do what?
 -> This is database security + access control in Algonex Company Server/DB 
 
 Manam Companies lo ela vaduthaam:
 - Giving read-only access to analysts
-- giving write access to backend services
+- giving write access to backend services for implementation 
 - Blocking dangerous permissions in prod
 - Creating separate roles for Dev, QA, Prod
 
-1. GRANT — Giving Controlled Access
+1. GRANT — Giving Controlled Access/privileges for authorized users
 Really where you'll have:
 - Backend service (needs read/write)
 - Analyst (read-only)
@@ -297,7 +297,7 @@ GRANT SELECT
 ON ecommerce_db.*
 TO 'analyst'@'%';
 
-2.Give full CRUD to backend service
+2.Give full CRUD(CRAETE, READ, UPDATE, DELETE) to backend service
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON ecommerce_db.*
 TO 'backend_service'@'%';
@@ -309,13 +309,15 @@ TO 'api_user'@'%';
 
 Note: - never give ALL PRIVILEGES in production
 -> Grant only what is required (principle of least Privilege -> entha takkuvithe antha)
--> Use separate users for:
+-> Use separate 'users' for:
 - app
 - admin
 - analytics
 
 -> Pyna meeku ardham kaaledhani naakardhamaindi, so idi chuudu:
+STEP-1: Create User
 CREATE USER 'dev_user'@'localhost' IDENTIFIED BY 'Dev@123';
+Step-2: Grant the privileges to created user
 GRANT SELECT, INSERT, UPDATE
 ON mydb.*
 TO 'dev_user'@'localhost';
@@ -335,7 +337,7 @@ ON ecommerce_db.*
 TO 'api_user'@'%';
 
 
-2. REVOKE — Removing Access Safely
+2. REVOKE - Removing Access Safely when you understand data misuse
 Real scenarioslo ekkada: 
 - Intern leaves
 - Contractor access expired
@@ -353,7 +355,7 @@ FROM 'intern'@'%';
 
 SPARK Tip: Always revoke first, then delete users,this avoids accidental downtime
 
-SAPRK: CREATE USER
+SPARK: CREATE USER
 Evaristharu access:
 - DB Admins
 - DevOps pipelines
@@ -362,10 +364,10 @@ Evaristharu access:
 CREATE USER 'username'@'host' IDENTIFIED BY 'password';
 
 Ex: CREATE USER 'report_user'@'%' IDENTIFIED BY 'Strong@123';
--> Never hardcode passwords in SQL scripts in production
+-> Never hardcode passwords in SQL scripts in production/Project flow
 -> Use secrets manager /environment variables
 
-4. DROP USER - Access Cleanup
+4. DROP USER - Access Cleanup(Once the project is done)
 DROP USER 'report_user'@'%';
 
 5. SHOW GRANTS - Audit(log files) & Debugging kosam
@@ -377,7 +379,7 @@ SHOW GRANTS FOR 'backend_service'@'%';
 
 Algonexloo memelaa access istham ee Privileges:
  Role                Privileges                   
- Backend App | SELECT, INSERT, UPDATE       
+ Backend AppDev | SELECT, INSERT, UPDATE       
  Analyst     | SELECT                       
  Admin       | ALL PRIVILEGES (rarely use chestham cz no many admins ) 
  Intern      | SELECT on few tables         
