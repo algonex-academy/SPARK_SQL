@@ -1,0 +1,154 @@
+Install chedhuvule just MySQL antee Telsukoo mundhu
+SQL (Structured Query Language) is the language used to:
+- Store data
+- Read data
+- Update data
+- Delete data from databases
+Example: Give me all customers who purchased today
+
+Ee MySQL Workbench enti?
+Workbench ante Visual Tool (GUI)
+Instead of typing everything in black screen, idi cheyochu:
+- See tables
+- Write SQL
+- Run queries
+- Manage users
+
+Complete Uninstall MySQL 
+SPARK Use this when:
+- MySQL is already installed
+- You forgot password
+- MySQL is corrupted
+- Setup failed earlier ilaanti casesloo...
+
+Step 1loo: Uninstall from Control Panel (Slowga try to understand)
+Go to:
+Control Panel → Programs → Programs and Features
+
+Uninstall all: (Ivanni MySQL Components kadaa)
+MySQL Server
+MySQL Workbench
+MySQL Installer
+MySQL Shell or any MySQL related tools
+
+Step 2loo: Delete Leftover Folders (Important)
+Open File Explorer-> Turn ON Hidden files
+Delete these folders if present:
+C:\Program Files\MySQL\
+C:\Program Files (x86)\MySQL\
+C:\ProgramData\MySQL\
+C:\Users\<YourName>\AppData\Roaming\MySQL\
+C:\Users\<YourName>\AppData\Local\MySQL\   (Hidden on chesi chuudu kanipisthaay lekapothee next stepki vellu)
+
+This above step removes:
+- Old passwords
+- Old databases
+- Broken configs
+
+Step 3loo: Remove MySQL Service (If Still Running)
+Open Command Prompt (Run as Admin)-> akkada run as Administrator undi kadaa click it:
+sc query mysql
+
+If service exists:(Untee kinda command raasi delete chey)
+sc delete mysql
+
+Restart your system after this -> Now MySQL is 100% removed coool..
+
+Sarlee SQL poyindhi kaani malli manaku kavvali right work cheyadaaniki 
+soo freshga Installation of MySQL chudham:
+Step 1: Download MySQL Installer (Official site nundi)
+https://dev.mysql.com/downloads/installer/ (Copy chesi URL loo pettu)
+                       or
+Goto website and type MySQL downloads and at bottom click on MySQL community(GPL) downloads
+
+We are installing two main things:
+1️. MySQL Server
+-> This is the actual database engine (stores data)
+2. MySQL Workbench
+-> This is a visual tool to interact with the database
+
+Without Server -> no database kadaa
+Without Workbench -> hard to use for SPARK freshers
+So we install both together using the official installer
+
+-> Download any one version SPARK ((x86, 32-bit), MSI Installer)
+If asked to login -> Click 'No thanks, just start my download'
+
+Step 3 - Start Installer
+1->Double-click the downloaded .msi file
+2-> Click Yes (Allow permission)
+
+You will see "Choosing a Setup Type":
+Choose: Custom/default
+
+If custom, tap on + there until you find (*86....) green forward arrow for following :
+- MySQL Server (Database Engine)
+- MySQL Workbench (GUI Tool)
+- MySQL Shell
+- Connectors & drivers  , we even do as Algonex developer setup
+
+Click Next
+Step 4 – Check Requirements & Install Dependencies
+You may see:
+"Some requirements are missing'
+Click: Execute
+After installation: Click Next
+
+Step 5 – MySQL Server Configuration (Most Important Step amigo's)
+Now you are configuring how your database will work
+Config Type: Development Computer (Idi Optimized for learning + development)
+
+Connectivity (Port Number)
+You will see: Port: 3306 (Defaultly selected kadaa)
+Click Next
+
+Authentication Method
+Choose: Use Strong Password Encryption (this is used in Algonex/cubix company for security)
+Click Next
+
+Set Root Password
+Enter root password: Algonex&yourDOByear (ledantee malli marchipothaav migatha studentslaa)
+Write it down: Don’t forget it amigo
+Root = Admin of Database kadaa
+If you forget -> you must reset or reinstall
+
+Click Next -> Execute and Finish-> Next and Finish
+
+Step 7 - VerifY installation (Idi Login Test cheskoni okasaari install ayndha ledaa chudu)
+Method 1: Using Command Prompt
+Open Command Prompt: mysql -u root -p
+Enter password -> If you see: Algonex@2020 (Give yours & enter into Server Connection)
+
+Method 2: using MySQL Workbench (GUI) elaago chudu
+1️. Open MySQL Workbench
+2️. Click Local Instance
+3️. Enter password
+4️. Dashboard opens ,then GUI connection working
+
+Step 8 – SPARK Batchloo idi try cheyandi (Confidence just Checko)
+CREATE DATABASE training_db;
+USE training_db;
+
+CREATE TABLE students (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50),
+  course VARCHAR(50)
+);
+
+INSERT INTO students (name, course)
+VALUES ('Amit', 'SQL');
+
+SELECT * FROM students; -- Output table vachindanukoo it is working inka cool..
+
+Step 9 - Ee common rrors Freshers face chesthuntaary (And Fix)-> Meeku kudaa errors untee go and fix SPARK
+- MySQL won't start
+Ilaa fix chesko: Check service ->  Restart PC
+
+Forgot password
+Idee fix: Reset root or reinstall clean
+
+Port 3306 already used
+Idee Fix: Kill old MySQL service
+
+Workbench not connecting
+fix chesko: Start MySQL service (Setver shutdown/start option untadi chudu - Time padthundi avvadaaniki)
