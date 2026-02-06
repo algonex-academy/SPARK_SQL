@@ -280,19 +280,19 @@ Manam Companies lo ela vaduthaam:
 - giving write access to backend services
 - Blocking dangerous permissions in prod
 - Creating separate roles for Dev, QA, Prod
-- Compliance (SOC2, ISO, audits)
 
 1. GRANT — Giving Controlled Access
 Really where you'll have:
 - Backend service (needs read/write)
 - Analyst (read-only)
-- Intern (very limited) all access based on privilege in company
+- Intern (very limited) all access based on privilege in company kadaa
 
 GRANT privileges
 ON database.table
 TO 'user'@'host';
 
-Oka example chuudu: 1.give read only access to analyst
+Konni example chuudu mem ela Algonexlo isthamo: 
+1.give read only access to analyst
 GRANT SELECT
 ON ecommerce_db.*
 TO 'analyst'@'%';
@@ -308,7 +308,7 @@ ON PROCEDURE ecommerce_db.process_order
 TO 'api_user'@'%';
 
 Note: - never give ALL PRIVILEGES in production
--> Grant only what is required (Principle of Least Privilege)
+-> Grant only what is required (principle of least Privilege -> entha takkuvithe antha)
 -> Use separate users for:
 - app
 - admin
@@ -340,15 +340,38 @@ Evaristharu access:
 
 CREATE USER 'username'@'host' IDENTIFIED BY 'password';
 
-CREATE USER 'report_user'@'%' IDENTIFIED BY 'Strong@123';
+Ex: CREATE USER 'report_user'@'%' IDENTIFIED BY 'Strong@123';
 -> Never hardcode passwords in SQL scripts in production
--> Use secrets manager / environment variables
+-> Use secrets manager /environment variables
 
-Algonexloo memelaa access istham:
- Role              Privileges                   
+4. DROP USER - Access Cleanup
+DROP USER 'report_user'@'%';
+
+5. SHOW GRANTS - Audit(log files) & Debugging kosam
+- Security audits
+- Debug permission errors
+- Compliance checks
+
+SHOW GRANTS FOR 'backend_service'@'%';
+
+Algonexloo memelaa access istham ee Privileges:
+ Role                Privileges                   
  Backend App | SELECT, INSERT, UPDATE       
  Analyst     | SELECT                       
- Admin       | ALL PRIVILEGES (rarely used) 
+ Admin       | ALL PRIVILEGES (rarely use chestham cz no many admins ) 
  Intern      | SELECT on few tables         
  ETL Jobs    | SELECT, INSERT               
--> This separation/access avoids accidental data loss
+-> This separation/access avoids accidental data loss right
+
+5. TCL (Transaction Control Language)
+How companies ensure money, inventory, bookings never go wrong
+
+TCL ensures ACID properties:
+- Atomicity
+- consistency
+- Isolation
+- durability
+
+1. START TRANSACTION -  Begin Safe Operations
+
+start TRANSATION '
