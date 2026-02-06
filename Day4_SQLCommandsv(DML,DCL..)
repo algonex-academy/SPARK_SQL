@@ -314,6 +314,27 @@ Note: - never give ALL PRIVILEGES in production
 - admin
 - analytics
 
+-> Pyna meeku ardham kaaledhani naakardhamaindi, so idi chuudu:
+CREATE USER 'dev_user'@'localhost' IDENTIFIED BY 'Dev@123';
+GRANT SELECT, INSERT, UPDATE
+ON mydb.*
+TO 'dev_user'@'localhost';
+-> Can connect only from their own laptop
+
+2.  Backend application server access
+CREATE USER 'backend_app'@'192.168.1.50' IDENTIFIED BY 'App@123';
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON ecommerce_db.*
+TO 'backend_app'@'192.168.1.50';
+-> Only your app server can use this DB user
+
+3. Cloud / API service (cloud allowed access from anywhere)
+CREATE USER 'api_user'@'%' IDENTIFIED BY 'Api@123';
+GRANT SELECT, INSERT, UPDATE
+ON ecommerce_db.*
+TO 'api_user'@'%';
+
+
 2. REVOKE — Removing Access Safely
 Real scenarioslo ekkada: 
 - Intern leaves
@@ -363,6 +384,25 @@ Algonexloo memelaa access istham ee Privileges:
  ETL Jobs    | SELECT, INSERT               
 -> This separation/access avoids accidental data loss right
 
+Mistake 1: Granting but user doesn't exist
+GRANT SELECT ON mydb.* TO 'user1'@'%'; -- Error happens if user is not created first
+
+Ilaa fix chey: 
+CREATE USER 'user1'@'%' IDENTIFIED BY 'Pass@123';
+GRANT SELECT ON mydb.* TO 'user1'@'%';
+
+Mistake 2: Created user with localhost, trying from outside
+CREATE USER 'app_user'@'localhost' ...
+Then connecting from server IP -> Access denied
+
+CREATE USER 'app_user'@'%' ...
+
+Practise kosam: 
+CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'Test@123';
+GRANT SELECT ON test.* TO 'test_user'@'localhost';
+SHOW GRANTS FOR 'test_user'@'localhost';
+
+
 5. TCL (Transaction Control Language)
 How companies ensure money, inventory, bookings never go wrong
 
@@ -374,4 +414,76 @@ TCL ensures ACID properties:
 
 1. START TRANSACTION -  Begin Safe Operations
 
-start TRANSATION '
+start TRANSATION;
+
+Used when: 
+-> Multiple queries must succeed together
+-> Payment + order + inventory update
+
+2. COMMIT -> Make Changes Permanent
+
+COMMIT;
+
+Where it is used:
+- Payment succeeded
+- Order placed
+- Booking confirmed
+
+3. OLLBACK — Undo Everything (Safety Purpose -> Example chudham)
+ROLLBACK;
+
+When:
+- payment failed
+- Inventory insufficient
+- any step errors
+
+4. SAVEPOINT — Partial Rollback (Advanced use antaam)
+SAVEPOINT sp_name;
+ROLLBACK TO sp_name;
+
+Booking Flow CHudhaama:
+START TRANSACTION;
+
+INSERT INTO bookings (...) VALUES (...);
+
+SAVEPOINT after_booking;
+
+UPDATE inventory SET seats = seats - 1 WHERE flight_id = 10;
+
+-- If inventory update fails
+ROLLBACK TO after_booking;
+
+COMMIT;
+
+Savepoints are used in:
+- Complex workflows
+- Multi-step business processes
+- Partial failure handling
+
+5. AUTOCOMMIT - Dinni hidden transaction Behavior antaam
+AUTOCOMMIT = ON (Idi defaultga untundhi)
+
+So every query commits automatically
+To control it manually: SET autocommit = 0;
+Now:
+You control COMMIT /ROLLBACK manually
+Used in batch processing, ETL jobs
+
+Saree GPay psyment System Working chudhama:
+START TRANSACTION;
+
+UPDATE wallets SET balance = balance - 1000 WHERE user_id = 1;
+
+UPDATE wallets SET balance = balance + 1000 WHERE user_id = 2;
+
+INSERT INTO transactions(user_id, amount, status)
+VALUES (1, 1000, 'SUCCESS');
+
+COMMIT;
+
+Ippudu edina system fail ayindi antee:
+then: ROLLBACK;
+-> Ilaane banks, UPI, wallets, e-commerce stay correct anamaata
+
+-> DCL controls who can access and modify data. In production, we follow least privilege access to avoid security risks
+Inka -> TCL ensures multiple database operations either fully succeed or fully fail, which is critical for payments and transactional systems
