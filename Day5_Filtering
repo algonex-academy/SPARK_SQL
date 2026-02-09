@@ -1,0 +1,119 @@
+MySQL Filtering
+E-C RIM LPN SJH
+
+- Equality
+- Comparison
+- Range
+ -IN
+- Multi logical (AND/OR/NOT)
+- LIKE/REGEXP
+- Partial NULL
+- Nested (subquery)
+- Subquery EXISTS
+- JOIN filter
+- HAVING
+
+1. Basic WHERE Filter
+SELECT * FROM table_name
+WHERE condition;
+
+Example: 
+SELECT * 
+FROM Spark 
+WHERE status = 'PAID';
+-- Fetches only paid Spark from the users table
+
+SELECT * -> get all columns
+FROM users -> from users table
+WHERE status = 'ACTIVE' -> filter rows where status is ACTIVE
+
+=   !=   <>   >   <   >=   <=
+SELECT * FROM orders WHERE amount > 1000;
+SELECT * FROM users WHERE status != 'DELETED';
+
+2. Logical Operators (AND OR   NOT)
+SELECT * 
+FROM orders 
+WHERE status = 'PAID' AND amount > 1000; -- Fetches only paid orders above ₹1000
+/* Both conditions must be true, if either fails -> row is excluded */
+
+SELECT * FROM users
+WHERE status = 'ACTIVE' AND country = 'India';
+
+SELECT * FROM users
+WHERE role = 'ADMIN' OR role = 'MANAGER';
+
+SELECT * FROM users
+WHERE NOT status = 'BLOCKED';
+
+Multi-Value Filters (IN/NOT IN)
+SELECT * 
+FROM users 
+WHERE role IN ('ADMIN', 'MANAGER');
+/* IN (...) means "any of these values', Cleaner than role='ADMIN' OR role='MANAGER'
+
+SELECT * FROM users
+WHERE role NOT IN ('INTERN', 'TEMP');
+
+BETWEEN / NOT BETWEEN (Range Filters)
+SELECT * FROM orders
+WHERE amount BETWEEN 500 AND 5000;
+-- Index-friendly date range (preferred):
+SELECT *
+FROM orders
+WHERE created_at >= '2025-01-01'
+  AND created_at <  '2025-02-01';
+
+LIKE / NOT LIKE (Pattern Matching)
+SELECT * FROM users WHERE name LIKE 'Sai%';     -- starts with
+SELECT * FROM users WHERE email LIKE '%@gmail.com'; -- ends with
+SELECT * FROM users WHERE name LIKE '%nath%';   -- contains
+
+Range Filter (Date / Amount)
+SELECT * 
+FROM orders 
+WHERE created_at >= '2025-02-01'
+  AND created_at <  '2025-02-02'; -- Fetches all orders created on 1st Feb 2025
+
+/*    >= '2025-02-01' -> from start of day
+< '2025-02-02' -> before next day starts
+This avoids time bugs and uses indexes efficiently */
+
+Pattern Search (LIKE)
+SELECT * 
+FROM users 
+WHERE name LIKE 'Sai%'; -- Fetches users whose name starts with “Sai”
+(e.g., Sai, Sainath, Saikiran)
+-- 'Sai%' -> % means "anything after" Starts with Sai
+
+NULL Check
+SELECT * 
+FROM users 
+WHERE phone IS NULL; -- Fetches users who did not provide phone number
+-- IS NULL checks missing values
+-- phone = NULL is wrong in SQL
+
+Relational Filter (EXISTS)
+SELECT *
+FROM users u
+WHERE EXISTS (
+  SELECT 1 
+  FROM orders o 
+  WHERE o.user_id = u.user_id
+); -- Fetches users who have placed at least one order
+
+/* Inner query checks if any order exists for that user
+If yes -> include user
+SELECT 1 is just a placeholder (we only care if row exists) */
+
+Anti-Filter (NOT EXISTS)
+SELECT *
+FROM users u
+WHERE NOT EXISTS (
+  SELECT 1 
+  FROM orders o 
+  WHERE o.user_id = u.user_id
+); -- Fetches users who never placed any order
+
+
+
