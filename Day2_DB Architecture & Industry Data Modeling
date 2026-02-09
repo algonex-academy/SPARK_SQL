@@ -3,7 +3,7 @@ Database Architecture & Industry Data Modelling Like a SQL Engineer, Not a Stude
 SQL is NOT about writing queries, it is about designing business systems
 If your database design is wrong, even the best SQL query becomes useless kadaa
 
-Today SPARK is = Learning how real companies design their databases
+Today SPARK is learning how real companies design their databases
 
 Company Data System Looks Like:
 Frontend (Website / App)
