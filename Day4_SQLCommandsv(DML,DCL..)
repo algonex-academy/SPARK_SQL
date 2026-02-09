@@ -579,5 +579,113 @@ Ippudu edina system fail ayindi antee:
 then: ROLLBACK;
 -> Ilaane banks, UPI, wallets, e-commerce stay correct anamaata
 
+Using TCL Commands in MySQL Workbench (Hands-on, Comapnylo follow ayye  Way)
+Open MySQL Workbench -> connect as root, then run:
+CREATE DATABASE finance_db;
+USE finance_db;
+
+CREATE TABLE wallets (
+    user_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    balance INT
+);
+
+INSERT INTO wallets VALUES
+(1, 'JayaKrishna', 5000),
+(2, 'DIthya', 3000)
+(3, 'Niharika', 30000); -- wallet/paymnt system used in fintech & e-commerceloo
+
+1st Step: START TRANSACTION — Begin a Safe Business Operation (Endukoo chudandi)
+Used when:
+- Transferring money
+- Placing orders
+- Booking tickets
+- Updating inventory + order status together
+
+START TRANSACTION; 
+
+2nd Step:
+UPDATE wallets
+SET balance = balance - 1000
+WHERE user_id = 1;
+
+UPDATE wallets
+SET balance = balance + 1000
+WHERE user_id = 2;
+
+Money is moved from JayaKrishna to DIthya
+At this point:
+- Data is not permanent yet
+- It’s still inside the transaction
+
+3rd step: COMMIT — Make It Permanent (Success Case idi)
+COMMIT; -- Payment succeeded -> save changes permanently
+SELECT * FROM wallets; -- You're zeeing updated balances right
+
+4th Step: ROLLBACK — Undo Everything (Failure Case)
+Start a new transaction:
+START TRANSACTION;
+-- Okasaari ivi kuda try cheyandi
+UPDATE wallets SET balance = balance - 10000 WHERE user_id = 1;  -- Not enough money
+UPDATE wallets SET balance = balance + 10000 WHERE user_id = 2;
+
+-- Now instead of COMMIT:
+ROLLBACK;
+
+SELECT * FROM wallets; -- Chusthee balances will be unchanged
+This is how banks & UPI apps prevent wrong transfers
+
+5sth Step: SAVEPOINT — Partial Rollback
+In a booking system:
+- Create booking
+= Deduct wallet
+- Reserve inventory
+If step 3 fails -> undo step 2 only
+
+-- IDi overallga
+START TRANSACTION;
+
+UPDATE wallets SET balance = balance - 500 WHERE user_id = 1;
+
+SAVEPOINT after_wallet_deduct;
+
+-- Simulate failure or wrong update
+UPDATE wallets SET balance = balance + 500 WHERE user_id = 999;  -- invalid user
+
+ROLLBACK TO after_wallet_deduct;
+
+COMMIT;
+-- Wallet deduction is undone, but transaction is still valid
+
+6th Step: (ANdaru students aduguthuntaaru )
+AUTOCOMMIT — Hidden Behavior (Important for Fresher amigos)
+Every query commits automatically default in MySQL
+SELECT @@autocommit;
+
+Disable Auto Commit (Batch Jobs / ETL)
+set automcommit =0
+
+START TRANSACTION;
+UPDATE wallets SET balance = balance - 100 WHERE user_id = 1;
+-- No COMMIT yet
+Close Workbench without COMMIT -> changes are lost
+
+Without TCL (Dangerous)
+UPDATE wallets SET balance = balance - 500 WHERE user_id = 1;
+-- App crashes here
+UPDATE wallets SET balance = balance + 500 WHERE user_id = 2;
+
+With TCL (Safe kadaa)
+START TRANSACTION;
+
+UPDATE wallets SET balance = balance - 500 WHERE user_id = 1;
+UPDATE wallets SET balance = balance + 500 WHERE user_id = 2;
+
+COMMIT;
+
+ROLLBACK;
+
 -> DCL controls who can access and modify data. In production, we follow least privilege access to avoid security risks
 Inka -> TCL ensures multiple database operations either fully succeed or fully fail, which is critical for payments and transactional systems
+TCL ensures multiple dependent SQL operations execute as a single unit using START TRANSACTION, COMMIT, and ROLLBACK
+-> this is critical in payment, booking, and inventory systems to maintain data consistency
