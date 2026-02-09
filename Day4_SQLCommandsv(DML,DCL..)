@@ -122,8 +122,13 @@ Otherwise performance + data quality breaks in main production kadaa
 
 DDL commands change metadata/Main data (means it will do changes on permanent/main data), not just data
 
+SQL COMMENTS
+-> 1.Single line comments (-- write desc)
+-> Multiline Comments (/* comments in two/more lines */)
+SQL Datatypes
+
 2. ALTER - Business Change Management/Schema Evolution Without Breaking Production
-modifying an existing main business(Tables,Colums)  structure
+modifying an existing main business(Tables,Colums) structure
 
 Real-world examples:
 - Company adds a new column -> email, Contact
@@ -133,25 +138,27 @@ Real-world examples:
 - Renaming columns
 - Changing datatype after feedback
 
+Examples:
 ALTER TABLE employees
 ADD email VARCHAR(100);
 
 ALTER TABLE users ADD phone VARCHAR(15);
 
+Alter Various forms: 
 ALTER TABLE table_name ADD column_name datatype;
 ALTER TABLE table_name MODIFY column_name datatype;
 ALTER TABLE table_name DROP column_name;
 ALTER TABLE table_name RENAME TO new_table_name;
 
 3. DROP - Permanent Destruction
-This command Completely removes the structure + data from thre Database
+This command Completely removes the structure + data from the Database
 But it can be ROLLBACK, if it is stored in SAVEPOINT
 
 DROP TABLE employees;
 DROP DATABASE Database_name;
 
 Senior-level warning(It not followed you'll get fired):
-- DROP has NO undo(But Only in-case of stored data in Savepoint) 
+- DROP has NO undo(But Rollback Only in-case of stored data in Savepoint) 
 - Rarely used in production/final modifications
 - Mostly used in development/testing
 
