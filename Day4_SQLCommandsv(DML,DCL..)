@@ -404,10 +404,10 @@ CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'Test@123';
 GRANT SELECT ON test.* TO 'test_user'@'localhost';
 SHOW GRANTS FOR 'test_user'@'localhost';
 
- Host Value                    Meaning           Real Use          
- `'localhost'`       | Only from same machine | Local dev         
- `'%'`               | From anywhere          | Cloud apps        
- `'192.168.1.10'`    | From specific IP       | App server        
+ Host Value                    Why            Real Use          
+ `'localhost'        | Only from same machine | Local dev         
+   '%'               | From anywhere          | Cloud apps        
+ `'192.168.1.10'`    | From specific IP adress | App server        
  `'app.company.com'` | From specific domain   | Production server 
 
 DCL Commands in MySQL Workbench (Hands-on, Industry pointlo chudham)
