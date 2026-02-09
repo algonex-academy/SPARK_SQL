@@ -17,11 +17,10 @@ Two IBM Engineers:
 Donald D. Chamberlin
 Raymond F. Boyce
 
-SEQUEL was already trademarked → IBM shortened it to SQL
+SEQUEL was already trademarked -> IBM shortened it to SQL
 
 They developed a language called:
 SEQUEL → Structured English Query Language
-
 Later renamed to:
 SQL – Structured Query Language
 
@@ -48,9 +47,8 @@ Year | Database
  1995 | MySQL                
  1996 | PostgreSQL           
  2000 | Microsoft SQL Server 
-
 2010 – Present
-With Big Data + AI + Cloud + IoT, new database needs arose → NoSQL
+With Big Data + AI + Cloud + IoT, new database needs arose -> NoSQL
 
 SQL powers enti:
 - Banking systems
