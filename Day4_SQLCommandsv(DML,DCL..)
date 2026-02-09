@@ -404,7 +404,99 @@ CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'Test@123';
 GRANT SELECT ON test.* TO 'test_user'@'localhost';
 SHOW GRANTS FOR 'test_user'@'localhost';
 
+ Host Value                    Meaning           Real Use          
+ `'localhost'`       | Only from same machine | Local dev         
+ `'%'`               | From anywhere          | Cloud apps        
+ `'192.168.1.10'`    | From specific IP       | App server        
+ `'app.company.com'` | From specific domain   | Production server 
 
+DCL Commands in MySQL Workbench (Hands-on, Industry pointlo chudham)
+These are steps:
+- create users
+- give permissions
+-test access
+-revoke permissions
+- manage real-world roles (Admin / app/ analyst)
+
+-> Open MySQL Workbench
+-> Connect to Local instance MySQL80 using root password
+        -> Root/admin access is required to create users and grant permissions right
+
+CREATE DATABASE company_db;
+USE company_db;
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    role VARCHAR(50),
+    salary INT
+);
+
+INSERT INTO employees (name, role, salary) VALUES
+('Sumanth', 'Developer', 60000),
+('Prathibha', 'Analyst', 50000),
+('Pasala Ganesh', 'HR', 45000);
+
+2nd Step: Create Users (antee industry Roles) -> Ivee imp steps DCL ki
+1. Create an Analyst (Read-only)
+CREATE USER 'analyst_user'@'localhost' IDENTIFIED BY 'Analyst@123';
+
+2. Create a Backend App User (Read & Write)
+CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'App@123';
+3. Create an Intern (Limited)
+CREATE USER 'intern_user'@'localhost' IDENTIFIED BY 'Intern@123';
+
+3rd Step: Grant Permissions (Real Algonex Company-Based Pattern)
+1. Analyst -> Only SELECT
+GRANT SELECT
+ON company_db.*
+TO 'analyst_user'@'localhost';
+2. App User -> SELECT, INSERT, UPDATE
+GRANT SELECT, INSERT, UPDATE
+ON company_db.*
+TO 'app_user'@'localhost';
+3. Intern -> SELECT only on employees table
+GRANT SELECT
+ON company_db.employees
+TO 'intern_user'@'localhost';
+
+Apply Privileges (Important Step)
+FLUSH PRIVILEGES; --  This forces MySQL to apply permission changes immediately late avvkundaa
+
+4th Step: Verify Permissions (Audit / Debug cehskovali)
+SHOW GRANTS FOR 'analyst_user'@'localhost';
+SHOW GRANTS FOR 'app_user'@'localhost';
+SHOW GRANTS FOR 'intern_user'@'localhost';
+-- Akkada chuduchu which user can do what anii
+
+5th Step: Test Access in MySQL Workbench (Mem generally chesthuntam)
+tep A: Create New Connection in Workbench
+In MySQL Workbench home screen
+Click + next to MySQL Connections
+Connection Name: Analyst Connection
+Username: analyst_user
+Password: Analyst@123
+Test Connection -> OK
+
+Step B: Try Queries as Analyst
+USE company_db;
+SELECT * FROM employees;   -- Work avuthundi kadaa
+
+INSERT INTO employees (name, role, salary)
+VALUES ('Test', 'Tester', 30000); -- This will fail endukante Permission denied
+
+6th St4ep: Revoke Permissions (When User Role Changes)
+Real Scenario entante: Intern should not access employees table anymore
+REVOKE SELECT
+ON company_db.employees
+FROM 'intern_user'@'localhost';
+
+SHOW GRANTS FOR 'intern_user'@'localhost'; -- Now intern_user cannot read employees data
+
+Drop User (When Employee Leaves Company)
+DROP USER 'intern_user'@'localhost'; --Intern leaves, Contract ends, Security incident
+
+-- In MySQL Workbench, DCL is used to create users and control access using GRANT and REVOKE. In production/Projects anochu, we follow least-privilege access where app users get only required permissions and analysts get read-only access
 5. TCL (Transaction Control Language)
 How companies ensure money, inventory, bookings never go wrong
 
@@ -471,7 +563,7 @@ Now:
 You control COMMIT /ROLLBACK manually
 Used in batch processing, ETL jobs
 
-Saree GPay psyment System Working chudhama:
+Saree GPay payment System Working chudhama:
 START TRANSACTION;
 
 UPDATE wallets SET balance = balance - 1000 WHERE user_id = 1;
