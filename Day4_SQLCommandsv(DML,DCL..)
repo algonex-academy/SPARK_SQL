@@ -507,8 +507,18 @@ DROP USER 'intern_user'@'localhost'; --Intern leaves, Contract ends, Security in
 -- In MySQL Workbench, DCL is used to create users and control access using GRANT and REVOKE. 
 In production/Projects anochu, we follow least-privilege access where app users get only required permissions and analysts get read-only access
 
-5. TCL (Transaction Control Language)
+5. TCL (Transaction Control Language)- Safety system for data
 How companies/ATM's ensure money, inventory, bookings never go wrong
+-> It ensures that multiple related changes happen together or don’t happen at all
+-> Either the full business operation succeeds, or everything is undone
+
+TCL is used whenever:
+- Money is transferred
+- Orders are placed
+- Seats are booked
+- Inventory is updated
+- Wallet balances change
+-> If one step fails and others succeed -> data becomes wrong, TCL prevents this
 
 TCL ensures ACID properties:
 - Atomicity
@@ -516,8 +526,23 @@ TCL ensures ACID properties:
 - Isolation
 - durability
 
+CREATE DATABASE bank_db;
+USE bank_db;
+
+CREATE TABLE accounts (
+    acc_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    balance INT
+);
+
+INSERT INTO accounts VALUES
+(1, 'Dithya', 5000),
+(2, 'Subhash', 3000); -- Now imagine this as a bank/wallet system
+
 COMMIT, ROLLBACK, SAVEPOINT
+
 1. START TRANSACTION -  Begin Safe Operations
+-> Now I’m starting a business process that has multiple steps, treat them as one unit
 
 start TRANSACTION;
 
@@ -527,7 +552,7 @@ Used when:
 (Ex: When you start payment Transaction it should complete the order commit 
 completely/come to initial step and update payment details)
 
-2. COMMIT -> Make Changes Permanent
+2. COMMIT -> Make Changes Permanent if everything is ok
 
 COMMIT;
 
@@ -535,16 +560,50 @@ Where it is used:
 - Payment succeeded
 - Order placed
 - Booking confirmed
+START TRANSACTION;
 
-3. ROLLBACK — Undo Everything (Safety Purpose -> Example chudham)
+UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;  -- Arjun pays
+UPDATE accounts SET balance = balance + 1000 WHERE acc_id = 2;  -- Neha receives
+
+COMMIT;
+->Both updates succeed
+-> Money moves correctly
+-> Changes become permanent
+
+3. ROLLBACK — Something went wrong, Undo Everything (Safety Purpose -> Example chudham)
 ROLLBACK;
 
 When:
 - payment failed
 - Inventory insufficient
-- any step errors
+- any step errors/failed
 
-4. SAVEPOINT — Partial Rollback (Advanced use antaam)
+Example Without TCL (Wrong Way chudandii)
+UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;
+-- Server crashes here kadaa
+UPDATE accounts SET balance = balance + 1000 WHERE acc_id = 2;
+-- Money is deducted but not added, data is corrupted
+
+Example With TCL (Correct Way ippudu chudu)
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;
+-- Something goes wrong
+ROLLBACK;
+-- Since second step didn’t complete
+-- ROLLBACK undoes the first step
+-- Data stays safe
+
+4. SAVEPOINT — Partial Rollback-> Undo only part of the work (Advanced use antaam)
+Used in:
+- Booking systems
+- Multi-step workflows
+- Complex order flows
+Example flow chudandi:
+1. Create order
+2. Deduct wallet
+3-Reserve inventory
+If step 3 fails -> undo step 2 only
+
 SAVEPOINT sp_name;
 ROLLBACK TO sp_name;
 
@@ -562,25 +621,44 @@ ROLLBACK TO after_booking;
 
 COMMIT;
 
-Savepoints are used in:
-- Complex workflows
-- Multi-step business processes
-- Partial failure handling
+Savepoints inkoo example flow chudu:
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 500 WHERE acc_id = 1;  -- deduct wallet
+SAVEPOINT after_wallet;
+
+-- Try another step (simulate failure)
+UPDATE accounts SET balance = balance + 500 WHERE acc_id = 999;  -- invalid account
+ROLLBACK TO after_wallet;
+COMMIT;
+
+-> Deduction happened
+-> Second update failed
+-> Roll back only to savepoint
+-> Commit remaining safe steps
 
 5. AUTOCOMMIT - Dinni hidden transaction Behavior antaam
+By default: Every query is auto-committed (saved immediately)
+Check: SELECT @@autocommit;
+In batch jobs / ETL: SET autocommit = 0; -- Now you control manually when data is saved using COMMIT/ROLLBACK
+
 AUTOCOMMIT = ON (Idi defaultga untundhi)
 
-So every query commits automatically
-To control it manually: SET autocommit = 0;
-Now:
-You control COMMIT /ROLLBACK manually
-Used in batch processing, ETL jobs
+ Real Systemloo                    TCL Usage                            
+ UPI / Banking     | Money transfer must be atomic        
+ E-commerce        | Order + inventory + payment together 
+Ticket Booking | Seat lock + payment + confirmation   
+ ERP           | Multi-table updates                  
+ Wallet Apps   | Debit + credit                       
+
+ILAA CHESKOO EPPUDINAA TCL Commands vadthunnappudu:
+START TRANSACTION;
+-- operations
+COMMIT;  -- or ROLLBACK
 
 Saree GPay payment System Working chudhama:
 START TRANSACTION;
 
 UPDATE wallets SET balance = balance - 1000 WHERE user_id = 1;
-
 UPDATE wallets SET balance = balance + 1000 WHERE user_id = 2;
 
 INSERT INTO transactions(user_id, amount, status)
@@ -690,15 +768,115 @@ UPDATE wallets SET balance = balance + 500 WHERE user_id = 2;
 
 With TCL (Safe kadaa)
 START TRANSACTION;
-
 UPDATE wallets SET balance = balance - 500 WHERE user_id = 1;
 UPDATE wallets SET balance = balance + 500 WHERE user_id = 2;
 
 COMMIT;
-
 ROLLBACK;
 
 -> DCL controls who can access and modify data. In production, we follow least privilege access to avoid security risks
 Inka -> TCL ensures multiple database operations either fully succeed or fully fail, which is critical for payments and transactional systems
 TCL ensures multiple dependent SQL operations execute as a single unit using START TRANSACTION, COMMIT, and ROLLBACK
 -> this is critical in payment, booking, and inventory systems to maintain data consistency
+
+Saree oka Mini Wallet System build chedhaama
+Build a simple wallet system that supports:
+- Wallet creation
+- Balance check
+- Safe money transfer
+- Transaction history
+- Failure handling using TCL
+
+Step 1: Database & Tables (Schema Design)
+CREATE DATABASE wallet_db;
+USE wallet_db;
+
+CREATE TABLE wallets (
+    wallet_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_name VARCHAR(50) NOT NULL,
+    balance INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE wallet_transactions (
+    txn_id INT PRIMARY KEY AUTO_INCREMENT,
+    from_wallet INT,
+    to_wallet INT,
+    amount INT NOT NULL,
+    status VARCHAR(20),   -- SUCCESS / FAILED
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- wallets -> stores current balances
+-- wallet_transactions -> audit log (never delete in real life)
+
+Step 2: Insert Sample Users (Test Data idi anthee)
+INSERT INTO wallets (user_name, balance) VALUES
+('Sumanth', 5000),
+('Mahesh', 3000),
+('Rahul', 1000);
+SELECT * FROM wallets;
+
+Step 3: Check Balance (Read Operation)
+SELECT wallet_id, user_name, balance
+FROM wallets
+WHERE user_name = 'Arjun';
+
+Step 4: Safe Money Transfer (Core TCL Logic)
+Business rule:
+-> Transfer ₹X from Wallet A to Wallet B only if Wallet A has enough balance
+-> If any step fails -> rollback everything
+
+START TRANSACTION;
+
+-- Step 1: Check sufficient balance (simulate in logic)
+SELECT balance FROM wallets WHERE wallet_id = 1;  -- Arjun
+
+-- Step 2: Deduct from sender
+UPDATE wallets
+SET balance = balance - 1000
+WHERE wallet_id = 1 AND balance >= 1000;
+
+-- Step 3: Add to receiver
+UPDATE wallets
+SET balance = balance + 1000
+WHERE wallet_id = 2;
+
+-- Step 4: Log transaction
+INSERT INTO wallet_transactions (from_wallet, to_wallet, amount, status)
+VALUES (1, 2, 1000, 'SUCCESS');
+
+-- Step 5: Commit
+COMMIT;
+
+Step 5: SPARK you can Handle failure with ROLLBACK 
+Scenario chudu: Sender doesn’t have enough balance/any error happenn aynappudu
+START TRANSACTION;
+
+-- Try to transfer 10000 (Arjun has only 5000)
+UPDATE wallets
+SET balance = balance - 10000
+WHERE wallet_id = 1 AND balance >= 10000;
+
+-- This update will affect 0 rows
+
+-- Detect failure manually (logic in app)
+ROLLBACK;
+
+INSERT INTO wallet_transactions (from_wallet, to_wallet, amount, status)
+VALUES (1, 2, 10000, 'FAILED');
+-> No balance is changed
+-> Failure is logged
+This is exactly how real payment failures are handled
+
+-- Total money transferred successfully elaano chudu
+SELECT SUM(amount) AS total_transferred
+FROM wallet_transactions
+WHERE status = 'SUCCESS';
+
+-- Top senderki query
+SELECT from_wallet, SUM(amount) AS total_sent
+FROM wallet_transactions
+WHERE status = 'SUCCESS'
+GROUP BY from_wallet
+ORDER BY total_sent DESC
+LIMIT 1;
