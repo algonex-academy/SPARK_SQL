@@ -1,0 +1,168 @@
+MySQL AGGREGATION - Saree meeku em telsoo okasaari alochinchandi
+what to learn -> why -> how -> practice
+It is just turning multiple rows into one meaningful answer/Insights/numbers
+
+Example questions aggregation answers:
+How many students?
+Total fees collected?
+Average marks?
+Highest salary?
+Sales per day?
+
+Example chuudu inka clarity vasthundi:
+Many orders - total revenue
+Many users -> total users
+Many marks -> average marks
+This is how Algonex build dashboards and reports on student details
+
+Intialga: 1. Create a Simple Practice Table
+CREATE DATABASE school_db;
+USE school_db;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    marks INT,
+    class INT
+);
+
+INSERT INTO students (name, marks, class) VALUES
+('Sumasree', 85, 10),
+('Neha', 92, 10),
+('Sumanth', 70, 10),
+('Keerthi', 88, 9),
+('Saiganesh', 60, 9),
+('Jayakrishna', 95, 10);
+
+Aggregations- COUNT, SUM, AVG, MIN, MAX with GROUP BY and HAVING to build meanigfull reports/insights
+Idi Shortfcut: C S A M M G H (Lastlo malli matladukundham)
+1. COUNT() - How many means it counts the number of rows
+SELECT COUNT(*) FROM table_name; -- COUNT(*) will count all rows
+
+Example: 
+SELECT COUNT(*) AS total_students FROM students;
+SELECT COUNT(Column_ame) AS total_users FROM users;
+Dinnibatti will use in:
+"How many users signed up?"
+"How many orders today?"
+"How many employees?"
+
+2. SUM() - What is the total menas it will add numbers/row values of a column
+SELECT SUM(column_name) FROM table_name;
+
+SELECT SUM(amount) AS total_revenue
+FROM orders; -- Total revenue vasthundi by adding all amount column row values kadaa
+
+/* Total sales
+Total salary payout
+Total amount collected today */
+
+3. AVG() - What is the average value of all row values for column
+SELECT AVG(column_name) FROM table_name;
+
+SELECT AVG(marks) AS average_marks
+FROM students; -- Average marks
+SELECT AVG(amount) AS avg_order_value
+FROM orders; -- Average order value
+
+4. MIN() and MAX() - Smallest & Biggest Values of a column from all row valies
+SELECT MIN(column_name), MAX(column_name)
+FROM table_name;
+
+Example chudu: SELECT 
+    MIN(marks) AS lowest_marks,
+    MAX(marks) AS highest_marks
+FROM students; -- Lowest, Highest Markks
+
+SELECT MIN(salary) AS lowest_salary,
+       MAX(salary) AS highest_salary
+FROM employees; -- Lowest, Highest Salary
+
+/* Highest order
+Lowest salary
+First & last date */
+
+SELECT 
+  COUNT(*) AS total_orders,
+  SUM(amount) AS total
+  AVG(amount) AS avg_order_value
+FROM orders; --  IDi cheyandi andaru
+
+5. GROUP BY - Make groups and get one number for all common row values and then calculate along with aggregate functions
+SELECT column_name, COUNT(*)
+FROM table_name
+GROUP BY column_name;
+
+-- How many students in each class?
+SELECT class, COUNT(*) AS total_students
+FROM students
+GROUP BY class;
+ -- Group students by class
+-- Count students in each class
+
+-- Orders per user (ANtee oka common user ennisarlu vasthee motham orders anni groupby chesthundi with aggregate functions)
+
+SELECT user_id, COUNT(*) AS total_orders
+FROM orders
+GROUP BY user_id;
+/* Orders per customer
+Students per class
+Employees per department */
+
+Ivi chudu clarity vasthundi:
+GROUP BY + SUM — Total marks per class'
+SELECT class, SUM(marks) AS total_marks
+FROM students
+GROUP BY class; -- Ilanee with other agg. functions also
+
+6. HAVING - Filter the groups after grouping
+-> WHERE anedi filters rows
+-> HAVING filters groups
+
+Structure chudu:   (Users with more than 5 orders)
+SELECT user_id, COUNT(*) AS total_orders
+FROM orders
+GROUP BY user_id
+HAVING COUNT(*) > 5; -- Top customers, Active users, high performers
+
+-- Show only classes with more than 3 students
+SELECT class, COUNT(*) AS total_students
+FROM students
+GROUP BY class
+HAVING COUNt(*) > 3;
+
+WHERE + GROUP BY + HAVING (Together radhama)
+SPARK: Count only students with marks > 70, per class
+SELECT class, COUNT(*) AS total_students
+FROM students
+WHERE marks > 70
+GROUP BY class;
+
+Remember ee flow follow avuthundi:
+WHERE -> filters rows first
+GROUP BY- makes groups
+HAVING -> filters groups
+
+ SPARK Tricks to rember SQL Function 
+ How many?             | COUNT()  - counts rows
+ What is total?        | SUM()     - adds values   
+ What is average?      | AVG()    - average    
+ Smallest?             | MIN()     - smallest
+ Biggest?              | MAX()     - largest
+ Per group?            | GROUP BY     --creates groups for same row values
+ Filter groups?        | HAVING       - filters groups
+
+Freshers chesee mistakes:
+- Use WHERE before GROUP BY
+- Don’t use WHERE with aggregate conditions
+- Use HAVING for COUNT/SUM filters
+
+SELECT user_id, COUNT(*)
+FROM orders
+WHERE COUNT(*) > 5   -- idi wrong
+GROUP BY user_id;
+
+SELECT user_id, COUNT(*)
+FROM orders
+GROUP BY user_id
+HAVING COUNT(*) > 5;
