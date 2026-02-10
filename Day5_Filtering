@@ -1,17 +1,84 @@
-MySQL Filtering
-E-C RIM LPN SJH
+MySQL Filtering (E-C RIM LPN SJH idi shortcut SPARK)
 
-- Equality
-- Comparison
-- Range
- -IN
+1. Equality - Login, profile fetch, order by ID
+(WHERE column = value) - WHERE user_id = 101
+
+2. Comparison   - High value orders, salary filters inkaa many
+(WHERE column > value
+WHERE column <= value)
+
+3 Range (BETWEEN / Date Range) - Monthly/Weekly Reports, analytics, dashboards chuskochu
+(WHERE column BETWEEN x AND y)
+WHERE date_col >= '2025-02-01' AND date_col < '2025-02-02'
+
+4. Multi Value filter (IN/NOT IN - You can select ultiple values at a time)
+(WHERE status IN ('PAID', 'PENDING')
 - Multi logical (AND/OR/NOT)
-- LIKE/REGEXP
-- Partial NULL
-- Nested (subquery)
-- Subquery EXISTS
-- JOIN filter
-- HAVING
+WHERE status = 'PAID' AND amount > 1000
+
+5. LIKE/REGEXP 
+LIKE is mainly used for simple pattern matching using wildcard which are faster
+Wildcards:
+% -> any number of characters
+_ -> exactly one character
+
+-- Starts with
+SELECT * FROM users WHERE name LIKE 'Sai%';
+-- Ends with
+SELECT * FROM users WHERE email LIKE '%@gmail.com';
+-- Contains
+SELECT * FROM users WHERE name LIKE '%nath%';
+-- One character match
+SELECT * FROM users WHERE code LIKE 'A_3';
+
+REGEXP is advanced pattern matching using Regular Expressions (regex - (start, end, length, character sets))
+
+-- Must start with letters and end with @gmail.com
+SELECT * FROM users
+WHERE email REGEXP '^[a-z]+@gmail\\.com$';
+
+ Pattern     meaning  
+^          |  start of string
+$          | for end ok
+ [abc]    | a or b or c 
+ [0-9]    | any digit   
+ [A-Za-z] | any letter  
++         |     one or more
+*         | zero or more
+?         |  zero or one
+{m,n}     |  between m and n times
+
+-- 10-digit phone number
+SELECT * FROM users
+WHERE phone REGEXP '^[0-9]{10}$';
+
+-- Names with 3 to 5 letters
+SELECT * FROM users
+WHERE name REGEXP '^[A-Za-z]{3,5}$';
+
+-- Phone numbers starting with 9 or 8
+SELECT * FROM users
+WHERE phone REGEXP '^[89][0-9]{9}$';
+-- Password strength Check
+SELECT *
+FROM users
+WHERE password REGEXP '(?=.*[A-Z])(?=.*[0-9]).{8,}';
+
+6- Partial NULL -- Incomplete profiles, data quality checks kosam
+WHERE phone IS NULL
+WHERE phone IS NOT NULL
+- Nested (subquery) -- Filter based on another table
+WHERE user_id IN (SELECT user_id FROM orders)
+
+- Subquery EXISTS - Active users, users with/without orders
+WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.user_id)
+
+- JOIN filter - Filter early for performance chudadam kosam
+JOIN orders o ON u.user_id = o.user_id AND o.amount > 1000
+
+Aggregation Filter (HAVING - Post WHERE ayyaka)
+- HAVING -- KPIs, reports, top customers
+HAVING COUNT(*) > 5
 
 1. Basic WHERE Filter
 SELECT * FROM table_name
