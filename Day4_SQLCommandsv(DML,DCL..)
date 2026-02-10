@@ -504,8 +504,9 @@ Drop User (When Employee Leaves Company)
 DROP USER 'intern_user'@'localhost'; --Intern leaves, Contract ends, Security incident
 
 -- In MySQL Workbench, DCL is used to create users and control access using GRANT and REVOKE. In production/Projects anochu, we follow least-privilege access where app users get only required permissions and analysts get read-only access
+
 5. TCL (Transaction Control Language)
-How companies ensure money, inventory, bookings never go wrong
+How companies/ATM's ensure money, inventory, bookings never go wrong
 
 TCL ensures ACID properties:
 - Atomicity
@@ -513,13 +514,16 @@ TCL ensures ACID properties:
 - Isolation
 - durability
 
+COMMIT, ROLLBACK, SAVEPOINT
 1. START TRANSACTION -  Begin Safe Operations
 
-start TRANSATION;
+start TRANSACTION;
 
 Used when: 
 -> Multiple queries must succeed together
 -> Payment + order + inventory update
+(Ex: When you start payment Transaction it should complete the order commit 
+completely/come to initial step and update payment details)
 
 2. COMMIT -> Make Changes Permanent
 
@@ -530,7 +534,7 @@ Where it is used:
 - Order placed
 - Booking confirmed
 
-3. OLLBACK — Undo Everything (Safety Purpose -> Example chudham)
+3. ROLLBACK — Undo Everything (Safety Purpose -> Example chudham)
 ROLLBACK;
 
 When:
