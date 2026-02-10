@@ -177,11 +177,11 @@ Used when:
 - Cleaning staging environments
 - Reset mobile loosing all contacts but keeping the s/w apps
 
-2. DML - Data Manipulation Language (Business Modifications Activity Layer)-> Ikkadee manupulations anni hapen avuthaay
+2. DML - Data Manipulation Language (Business/data Modifications Activity Layer)-> Ikkadee manupulations anni hapen avuthaay
 DML commands work with actual business data to make modifications to the tables
 Examples: Employees joining, orders happening, payments processing or any sort of modications/Processes 
 
-DML Commands:
+DML Commands: You're only having access to insert, update, delete your data while ordering from Amazon with address, contact, pincode, etc.,
 INSERT
 UPDATE
 DELETE
@@ -198,17 +198,16 @@ Note: Don't use Type1 because column order changes will break your app
 Type2: INSERT INTO table_name (column1, column2)
 VALUES (value1, value2);
 
-
 INSERT INTO employees (employee_id, name, department)
 VALUES (1039871, 'Harshitha', 'IT');
 
 INSERT INTO users (full_name, email)
 VALUES ('Sainath Namala', 'sainath@gmail.com');
 
--> This INSERT represents real-time events- not just data entry
+-> This INSERT represents real-time events(Amazon data insert when ordering)- not just data entry
 
 2. UPDATE- Business Data Corrections
-It is for fixing or changing business data
+It is for fixing or changing business/company data
 Examples chudandi:
 - Salary hike (10k -> 90% hikes gives 19k)
 - Department change (Developer -> Testing)
@@ -225,7 +224,7 @@ Ex: UPDATE employees
 SET department = 'Finance'
 WHERE employee_id = 101;
 
-3. DELETE - Business data Removal 
+3. DELETE - Business/company data Removal with certain condition 
 -> Removing business records logically based on the condition
 
 DELETE FROM table_name
@@ -239,8 +238,8 @@ How difference from TRUNCATE:
 - DELETE can use WHERE
 - DELETE can be rolled back (with transactions)
 
-4. DQL - Data Query Language (IDi decision-Making/output Layer)
-DQL is where SQL becomes valuable like asking questions to data
+3. DQL - Data Query Language (IDi decision-Making/output retrieval Layer)
+DQL is where SQL becomes valuable like asking questions to data and getting meaningful insights
 Only one command SELECT-> but don’t underestimate it will get the output data using SELECT only
 
 Examples:
@@ -262,7 +261,7 @@ LIMIT n OFFSET m;
 
 SELECT user_id, full_name, email
 FROM users
-ORDER BY created_at DESC
+ORDER BY user_id DESC
 LIMIT 10;
 
 Note: Algonex never use SELECT * in production APIs
@@ -280,7 +279,7 @@ ALTER TABLE table_name RENAME TO new_table_name;
 
 4. DCL (Data Control Language) (GRANT, REVOKE)
 - Who can access what? Who can do what?
--> This is database security + access control in Algonex Company Server/DB 
+-> This is database security + access control privileges in Algonex Company Server/DB for controlled access
 
 Manam Companies lo ela vaduthaam:
 - Giving read-only access to analysts
@@ -293,13 +292,14 @@ Really where you'll have:
 - Backend service (needs read/write)
 - Analyst (read-only)
 - Intern (very limited) all access based on privilege in company kadaa
+privileges (SELECT(read), UPDATE(read-write), DELETE(read-write) - CRUD Operations 
 
 GRANT privileges
 ON database.table
 TO 'user'@'host';
 
 Konni example chuudu mem ela Algonexlo isthamo: 
-1.give read only access to analyst
+1.give read only(SELECT) access to analyst/Intern
 GRANT SELECT
 ON ecommerce_db.*
 TO 'analyst'@'%';
@@ -320,11 +320,12 @@ Note: - never give ALL PRIVILEGES in production
 - app
 - admin
 - analytics
+- Intern
 
 -> Pyna meeku ardham kaaledhani naakardhamaindi, so idi chuudu:
 STEP-1: Create User
 CREATE USER 'dev_user'@'localhost' IDENTIFIED BY 'Dev@123';
-Step-2: Grant the privileges to created user
+Step-2: Grant the privileges for created user
 GRANT SELECT, INSERT, UPDATE
 ON mydb.*
 TO 'dev_user'@'localhost';
@@ -344,7 +345,7 @@ ON ecommerce_db.*
 TO 'api_user'@'%';
 
 
-2. REVOKE - Removing Access Safely when you understand data misuse
+2. REVOKE - Removing Access Safely when you understand data misuse/Project work is finished
 Real scenarioslo ekkada: 
 - Intern leaves
 - Contractor access expired
@@ -374,10 +375,10 @@ Ex: CREATE USER 'report_user'@'%' IDENTIFIED BY 'Strong@123';
 -> Never hardcode passwords in SQL scripts in production/Project flow
 -> Use secrets manager /environment variables
 
-4. DROP USER - Access Cleanup(Once the project is done)
+3. DROP USER - Access Cleanup(Once the project is done)
 DROP USER 'report_user'@'%';
 
-5. SHOW GRANTS - Audit(log files) & Debugging kosam
+4. SHOW GRANTS - Audit(log files) & Debugging kosam
 - Security audits
 - Debug permission errors
 - Compliance checks
@@ -387,7 +388,7 @@ SHOW GRANTS FOR 'backend_service'@'%';
 Algonexloo memelaa access istham ee Privileges:
  Role                Privileges                   
  Backend AppDev | SELECT, INSERT, UPDATE       
- Analyst     | SELECT                       
+ Analyst        | SELECT                       
  Admin       | ALL PRIVILEGES (rarely use chestham cz no many admins ) 
  Intern      | SELECT on few tables         
  ETL Jobs    | SELECT, INSERT               
@@ -411,11 +412,11 @@ CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'Test@123';
 GRANT SELECT ON test.* TO 'test_user'@'localhost';
 SHOW GRANTS FOR 'test_user'@'localhost';
 
- Host Value                    Why            Real Use          
- `'localhost'        | Only from same machine | Local dev         
+ Host Value                    Why               Real Use          
+ 'localhost'         | Only from same machine | Local dev         
    '%'               | From anywhere          | Cloud apps        
- `'192.168.1.10'`    | From specific IP adress | App server        
- `'app.company.com'` | From specific domain   | Production server 
+ '192.168.1.10'      | From specific IP adress | App server        
+ 'app.company.com'   | From specific domain   | Production server 
 
 DCL Commands in MySQL Workbench (Hands-on, Industry pointlo chudham)
 These are steps:
@@ -467,10 +468,10 @@ GRANT SELECT
 ON company_db.employees
 TO 'intern_user'@'localhost';
 
-Apply Privileges (Important Step)
+Apply Privileges immediately (Important Step)
 FLUSH PRIVILEGES; --  This forces MySQL to apply permission changes immediately late avvkundaa
 
-4th Step: Verify Permissions (Audit / Debug cehskovali)
+4th Step: Verify Permissions/acces (Audit / Debug cehskovali)
 SHOW GRANTS FOR 'analyst_user'@'localhost';
 SHOW GRANTS FOR 'app_user'@'localhost';
 SHOW GRANTS FOR 'intern_user'@'localhost';
@@ -492,7 +493,7 @@ SELECT * FROM employees;   -- Work avuthundi kadaa
 INSERT INTO employees (name, role, salary)
 VALUES ('Test', 'Tester', 30000); -- This will fail endukante Permission denied
 
-6th St4ep: Revoke Permissions (When User Role Changes)
+6th Step: Revoke Permissions (When User Role Changes)
 Real Scenario entante: Intern should not access employees table anymore
 REVOKE SELECT
 ON company_db.employees
@@ -503,7 +504,8 @@ SHOW GRANTS FOR 'intern_user'@'localhost'; -- Now intern_user cannot read employ
 Drop User (When Employee Leaves Company)
 DROP USER 'intern_user'@'localhost'; --Intern leaves, Contract ends, Security incident
 
--- In MySQL Workbench, DCL is used to create users and control access using GRANT and REVOKE. In production/Projects anochu, we follow least-privilege access where app users get only required permissions and analysts get read-only access
+-- In MySQL Workbench, DCL is used to create users and control access using GRANT and REVOKE. 
+In production/Projects anochu, we follow least-privilege access where app users get only required permissions and analysts get read-only access
 
 5. TCL (Transaction Control Language)
 How companies/ATM's ensure money, inventory, bookings never go wrong
