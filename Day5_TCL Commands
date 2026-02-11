@@ -1,6 +1,6 @@
 5. TCL (Transaction Control Language)- Safety system for data
 How companies/ATM's ensure money, inventory, bookings never go wrong
--> It ensures that multiple related changes happen together or don’t happen at all
+-> It ensures that multiple related changes happen together or don't happen at all
 -> Either the full business operation succeeds, or everything is undone
 
 TCL is used whenever:
@@ -11,7 +11,7 @@ TCL is used whenever:
 - Wallet balances change
 -> If one step fails and others succeed -> data becomes wrong, TCL prevents this
 
-TCL ensures ACID properties:
+TCL ensures ACID properties: (ATOMICITY, CONSISTENCY, ISOLATION, DURABILITY)
 - Atomicity -> All or Nothing
 Either all steps of a transaction happen, or none happen (No half-success allowed)
 
@@ -36,14 +36,13 @@ ROLLBACK; -- if any step fails
 Rule: Wallet balance should never go below 0
 UPDATE wallets SET balance = -500 WHERE wallet_id = 1; -- Without Consistency, business rule broken
 
-With Constraints + TCL (Consistency)
+With Constraints + TCL (Consistency) elaa cheyaloo chudandi
 START TRANSACTION;
-
 UPDATE wallets
 SET balance = balance - 1000
 WHERE wallet_id = 1 AND balance >= 1000;
 
--- If 0 rows affected → not enough balance → rollback
+-- If 0 rows affected -> not enough balance -> rollback
 ROLLBACK;
 
 Company Examples wihch explains Consistency Rules:
@@ -81,18 +80,18 @@ Once COMMIT is done, data will not be lost even if:
 - Power goes off
 - App restarts
 
-User sees "Payment Successful' -> even if DB server crashes after that -> money transfer must remain saved
+User sees 'Payment Successful' -> even if DB server crashes after that -> money transfer must remain saved
 Algonex/edina company Support for Durability how?:
 - Write-ahead logs
 - Disk persistence
 - Backups
 - Replication
 
- ACID Property      ANtee enti                   TCL Role                              |
+ ACID Property      ANtee enti                   TCL Role                         
  Atomicity   | All or nothing           | START TRANSACTION + COMMIT/ROLLBACK 
-Consistency | Rules not broken         | Constraints + validation + ROLLBACK   |
- Isolation   | Transactions don’t clash | Locks, isolation levels               |
- Durability  | Saved means saved        | COMMIT + disk logs                    |
+Consistency  | Rules not broken          | Constraints + validation + ROLLBACK   
+ Isolation   | Transactions don’t clash | Locks, isolation levels               
+ Durability  | Saved means saved        | COMMIT + disk logs                    
 Spark Tips to remember:
 -> All or nothing
 -> Correct state
