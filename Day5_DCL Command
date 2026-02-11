@@ -149,7 +149,7 @@ These are steps:
 
 -> Open MySQL Workbench
 -> Connect to Local instance MySQL80 using root password
-        -> Root/admin access is required to create users and grant permissions right
+        -> Root/admin antee access is required to create users and grant permissions right
 
 CREATE DATABASE company_db;
 USE company_db;
