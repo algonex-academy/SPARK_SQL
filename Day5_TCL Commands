@@ -12,7 +12,7 @@ TCL is used whenever:
 -> If one step fails and others succeed -> data becomes wrong, TCL prevents this
 
 TCL ensures ACID properties: (ATOMICITY, CONSISTENCY, ISOLATION, DURABILITY)
-- Atomicity -> All or Nothing
+1. Atomicity (All or Nothing)
 Either all steps of a transaction happen, or none happen (No half-success allowed)
 
 Atomicity lekpothee(Wrong)
@@ -30,7 +30,7 @@ COMMIT;   -- both succeed
 ROLLBACK; -- if any step fails
 -- Either both updates happen or both are undone
 
-- consistency-> Rules must Always be true
+2. consistency-> Rules must Always be true
 -> After a transaction, database rules and business rules are not broken
 -> data should move from one valid state to another valid state
 Rule: Wallet balance should never go below 0
@@ -51,8 +51,8 @@ Company Examples wihch explains Consistency Rules:
 - Status must be valid
 - Inventory can't go negative
 
-- Isolation -> My Transaction is Private ani antee Corona ward annu kadaa antee bayata pranpanchamtho sambandhamledhu
--> Multiple users using DB at same time don't disturb each others transactions
+3. Isolation -> Where Transaction is Private ani antee Corona ward annanu kadaa antee bayata pranpanchamtho sambandhamledhu
+-> When multiple users using DB at same time one shoudn't disturb each others transactions
 ->One user should not see half-done work of another user
 Example: Two people try to spend Harshath's wallet at the same time soo avuthundaa ala?
 Without Isolation emavuthundi: Both see same balance and spend -> money goes negative cz iddaru karchupedthaaru kadaa
@@ -68,17 +68,17 @@ FOR UPDATE;   -- locks the row
 UPDATE wallets SET balance = balance - 500 WHERE wallet_id = 1;
 
 COMMIT;
-Other transactions must wait until this one finishes.
+Isolations is Other transactions must wait until this one finishes
 Used in:
 - Banking
 - Booking seats
 - Inventory deduction
 
-- DURABILITY:  Once Saved, It stays Saved
+4. DURABILITY:  Once Saved, It stays Saved
 Once COMMIT is done, data will not be lost even if:
 - Server crashes
 - Power goes off
-- App restarts
+- App restarts/Technical errors
 
 User sees 'Payment Successful' -> even if DB server crashes after that -> money transfer must remain saved
 Algonex/edina company Support for Durability how?:
@@ -98,7 +98,7 @@ Spark Tips to remember:
 -> Isolated from others
 -> Data never lost
 
-ACID properties ensure transactions are reliable in real systems
+ACID properties ensure transactions are reliable in real systems:
 Atomicity ensures all-or-nothing execution, 
 Consistency ensures business rules are maintained,
 Isolation prevents concurrent transactions from interfering,
@@ -138,10 +138,11 @@ Where it is used:
 - Payment succeeded
 - Order placed
 - Booking confirmed
-START TRANSACTION;
 
-UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;  -- Arjun pays
-UPDATE accounts SET balance = balance + 1000 WHERE acc_id = 2;  -- Neha receives
+Example:
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;  -- Sameera pays
+UPDATE accounts SET balance = balance + 1000 WHERE acc_id = 2;  -- Nihanth receives
 
 COMMIT;
 ->Both updates succeed
@@ -157,8 +158,7 @@ When:
 - any step errors/failed
 
 Example Without TCL (Wrong Way chudandii)
-UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1;
--- Server crashes here kadaa
+UPDATE accounts SET balance = balance - 1000 WHERE acc_id = 1; -- Server crashes here kadaa
 UPDATE accounts SET balance = balance + 1000 WHERE acc_id = 2;
 -- Money is deducted but not added, data is corrupted
 
@@ -171,7 +171,7 @@ ROLLBACK;
 -- ROLLBACK undoes the first step
 -- Data stays safe
 
-4. SAVEPOINT — Partial Rollback-> Undo only part of the work (Advanced use antaam)
+4. SAVEPOINT — Partial Rollback-> Undo only part of the work/previous change happened (Advanced use antaam)
 Used in:
 - Booking systems
 - Multi-step workflows
@@ -182,12 +182,11 @@ Example flow chudandi:
 3-Reserve inventory
 If step 3 fails -> undo step 2 only
 
-SAVEPOINT sp_name;
+CREATE SAVEPOINT sp_name;
 ROLLBACK TO sp_name;
 
-Booking Flow CHudhaama:
+Booking Flow Example Chudhaama:
 START TRANSACTION;
-
 INSERT INTO bookings (...) VALUES (...);
 
 SAVEPOINT after_booking;
@@ -224,9 +223,9 @@ AUTOCOMMIT = ON (Idi defaultga untundhi)
  Real Systemloo                    TCL Usage                            
  UPI / Banking     | Money transfer must be atomic        
  E-commerce        | Order + inventory + payment together 
-Ticket Booking | Seat lock + payment + confirmation   
- ERP           | Multi-table updates                  
- Wallet Apps   | Debit + credit                       
+Ticket Booking     | Seat lock + payment + confirmation   
+ ERP               | Multi-table updates                  
+ Wallet Apps       | Debit + credit                       
 
 ILAA CHESKOO EPPUDINAA TCL Commands vadthunnappudu:
 START TRANSACTION;
@@ -236,7 +235,7 @@ COMMIT;  -- or ROLLBACK
 Saree GPay payment System Working chudhama:
 START TRANSACTION;
 
-UPDATE wallets SET balance = balance - 1000 WHERE user_id = 1;
+UPDATE wallets SET balance = balance - 100 WHERE user_id = 1;
 UPDATE wallets SET balance = balance + 1000 WHERE user_id = 2;
 
 INSERT INTO transactions(user_id, amount, status)
@@ -260,6 +259,8 @@ CREATE TABLE wallets (
 );
 
 INSERT INTO wallets VALUES
+/*(emp_id,name.....
+1202093, "Ganesh", */
 (1, 'JayaKrishna', 5000),
 (2, 'DIthya', 3000)
 (3, 'Niharika', 30000); -- wallet/paymnt system used in fintech & e-commerceloo
@@ -289,7 +290,7 @@ At this point:
 
 3rd step: COMMIT — Make It Permanent (Success Case idi)
 COMMIT; -- Payment succeeded -> save changes permanently
-SELECT * FROM wallets; -- You're zeeing updated balances right
+SELECT * FROM wallets; -- You're seeing updated balances right
 
 4th Step: ROLLBACK — Undo Everything (Failure Case)
 Start a new transaction:
