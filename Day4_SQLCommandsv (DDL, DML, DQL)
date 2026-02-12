@@ -150,6 +150,28 @@ ALTER TABLE table_name MODIFY column_name datatype;
 ALTER TABLE table_name DROP column_name;
 ALTER TABLE table_name RENAME TO new_table_name;
 
+ALTER TABLE table_name ADD column column_name datatype after column_name;
+ALTER TABLE SPARK
+ADD column Fellow_id varchar(20) after Name,
+ADD column state varchar(20) after city,
+ADD column Country varchar(20) after State;
+
+ALTER TABLE SPARK
+ADD column Fellow_id varchar(20); -- Add new column to table to last
+ALTER TABLE SPARK
+ADD column Fellow_id varchar(20) first; -- Add new column to table to first
+ALTER TABLE SPARK
+modify column Name varchar(20) not null; -- Changing size of columns
+describe Spark;
+
+ALTER TABLE SPARK
+modify column pincode int; -- Change datatype of column
+
+ALTER TABLE SPARK
+modify column designation varchar(25) null, -- Adding new constraints to the column
+modify column city varchar(25) null,
+modify designation varchar(25) null;
+
 3. DROP - Permanent Destruction
 This command Completely removes the structure + data from the Database
 But it can be ROLLBACK, if it is stored in SAVEPOINT
