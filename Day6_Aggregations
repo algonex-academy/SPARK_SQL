@@ -15,7 +15,7 @@ Many users -> total users
 Many marks -> average marks
 This is how Algonex build dashboards and reports on student details
 
-Intialga: 1. Create a Simple Practice Table
+Initialga: 1. Create a Simple Practice Table
 CREATE DATABASE school_db;
 USE school_db;
 
@@ -35,19 +35,19 @@ INSERT INTO students (name, marks, class) VALUES
 ('Jayakrishna', 95, 10);
 
 Aggregations- COUNT, SUM, AVG, MIN, MAX with GROUP BY and HAVING to build meanigfull reports/insights
-Idi Shortfcut: C S A M M G H (Lastlo malli matladukundham)
-1. COUNT() - How many means it counts the number of rows
-SELECT COUNT(*) FROM table_name; -- COUNT(*) will count all rows
+SPARK Shortfcut: C S A M M G H (Lastlo malli matladukundham)
+1. COUNT() - It counts the number of rows/records for a particular column
+SELECT COUNT(*) FROM table_name; -- COUNT(*) will count all number of rows
 
 Example: 
 SELECT COUNT(*) AS total_students FROM students;
-SELECT COUNT(Column_ame) AS total_users FROM users;
+SELECT COUNT(Column_ame) AS total_users FROM users; -- Use when there is NULL values in column
 Dinnibatti will use in:
 "How many users signed up?"
 "How many orders today?"
 "How many employees?"
 
-2. SUM() - What is the total menas it will add numbers/row values of a column
+2. SUM() - What is the total means it will add numbers/row values of a particular column
 SELECT SUM(column_name) FROM table_name;
 
 SELECT SUM(amount) AS total_revenue
@@ -55,17 +55,17 @@ FROM orders; -- Total revenue vasthundi by adding all amount column row values k
 
 /* Total sales
 Total salary payout
-Total amount collected today */
+Total amount collected today/This week/monthly/annual */
 
 3. AVG() - What is the average value of all row values for column
-SELECT AVG(column_name) FROM table_name;
+Syntax: SELECT AVG(column_name) FROM table_name;
 
 SELECT AVG(marks) AS average_marks
 FROM students; -- Average marks
 SELECT AVG(amount) AS avg_order_value
 FROM orders; -- Average order value
 
-4. MIN() and MAX() - Smallest & Biggest Values of a column from all row valies
+4. MIN() and MAX() - Smallest & Biggest Values of a column from all row/record values
 SELECT MIN(column_name), MAX(column_name)
 FROM table_name;
 
@@ -80,12 +80,13 @@ FROM employees; -- Lowest, Highest Salary
 
 /* Highest order
 Lowest salary
+lowest/highest purchases
 First & last date */
 
 SELECT 
   COUNT(*) AS total_orders,
   SUM(amount) AS total
-  AVG(amount) AS avg_order_value
+  AVG(salary) AS avg_order_value
 FROM orders; --  IDi cheyandi andaru
 
 5. GROUP BY - Make groups and get one number for all common row values and then calculate along with aggregate functions
@@ -93,15 +94,14 @@ SELECT column_name, COUNT(*)
 FROM table_name
 GROUP BY column_name;
 
--- How many students in each class?
+Ex: -- How many students in each class(CSE/ECE/AIDS/Mech)?
 SELECT class, COUNT(*) AS total_students
 FROM students
 GROUP BY class;
- -- Group students by class
+ -- Group students by class(CSE/ECE/AIDS/Mech)
 -- Count students in each class
 
 -- Orders per user (ANtee oka common user ennisarlu vasthee motham orders anni groupby chesthundi with aggregate functions)
-
 SELECT user_id, COUNT(*) AS total_orders
 FROM orders
 GROUP BY user_id;
@@ -110,10 +110,21 @@ Students per class
 Employees per department */
 
 Ivi chudu clarity vasthundi:
-GROUP BY + SUM — Total marks per class'
-SELECT class, SUM(marks) AS total_marks
+GROUP BY + SUM() — 'Total marks per class'
+SELECT class, SUM/MAX/MIN/AVG(marks) AS total_marks
 FROM students
 GROUP BY class; -- Ilanee with other agg. functions also
+
+select count(*) from table_name -- counts how many column rows
+select count(*) from table_name
+where salary =10,000; -- Gives count of rows where salary is 10k (no need of group by)
+
+select Customer_name, count(*) from table_name
+group by Customer_name; -- Groups all the common Customer names and gives how many times they repeated 
+
+select Name, count(*) from table_name
+where salary = 10,000
+group by Name; -- Groups all the common Names and gives how many Names are getting 10k as salary 
 
 6. HAVING - Filter the groups after grouping
 -> WHERE anedi filters rows
