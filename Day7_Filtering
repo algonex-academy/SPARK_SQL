@@ -182,5 +182,21 @@ WHERE NOT EXISTS (
   WHERE o.user_id = u.user_id
 ); -- Fetches users who never placed any order
 
+DELETE vs TRUNCATE vs DROP chudham:
+
+ Feature / Aspect telsuko               DELETE                                 TRUNCATE                         | DROP                                        |
+ What it removes                    Removes "specific rows (data only)  'Removes all rows (data only)"      | "Removes entire table (data + structure)" |
+ Command Type enti                 DML                                   | DDL                              | DDL                                         |
+ Can use WHERE?                      Yes                                 |  No                             |  No                                        |
+ Rollback possible?                  Yes (inside transaction)            |  No                             |  No                                        |
+ Speed                              Slower (row-by-row)                   | Very fast (bulk operation)       | Fast                                        |
+ Resets AUTO_INCREMENT               No                                  |  Yes                            | N/A                                         |
+ Triggers fired                      Yes                                 |  No                             |  No                                        |
+ Table structure remains             Yes                                 |  Yes                            |  No                                        |
+ Indexes remain                      Yes                                 |  Yes                            |  No                                        |
+ Locks table?                       Row-level (InnoDBloo)                    | Table-level                      | Table-level                                 |
+ Storage freed immediately?          No (space reused later)             |  Yes                            |  Yes                                       |
+ Can be used in Production safely?   Yes (with WHERE)                    |  Only for clearing full data   |  Dangerous                                 |
+ Typical Industry Use               Delete specific records               | Reset logs / test data           | Remove unused tables                        |
 
 
