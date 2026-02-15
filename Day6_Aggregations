@@ -154,14 +154,14 @@ WHERE -> filters rows first
 GROUP BY- makes groups
 HAVING -> filters groups
 
- SPARK Tricks to rember SQL Function 
- How many?             | COUNT()  - counts rows
- What is total?        | SUM()     - adds values   
- What is average?      | AVG()    - average    
- Smallest?             | MIN()     - smallest
- Biggest?              | MAX()     - largest
- Per group?            | GROUP BY     --creates groups for same row values
- Filter groups?        | HAVING       - filters groups
+𝚂𝙿𝙰𝚁𝙺 𝚃𝚛𝚒𝚌𝚔𝚜 𝚝𝚘 𝚛𝚎𝚖𝚋𝚎𝚛 𝚂𝚀𝙻 𝙵𝚞𝚗𝚌𝚝𝚒𝚘𝚗
+𝗛𝗼𝘄 𝗺𝗮𝗻𝘆? | 𝗖𝗢𝗨𝗡𝗧() - 𝗰𝗼𝘂𝗻𝘁𝘀 𝗿𝗼𝘄𝘀
+𝗪𝗵𝗮𝘁 𝗶𝘀 𝘁𝗼𝘁𝗮𝗹? | 𝗦𝗨𝗠() - 𝗮𝗱𝗱𝘀 𝘃𝗮𝗹𝘂𝗲𝘀
+𝗪𝗵𝗮𝘁 𝗶𝘀 𝗮𝘃𝗲𝗿𝗮𝗴𝗲? | 𝗔𝗩𝗚() - 𝗮𝘃𝗲𝗿𝗮𝗴𝗲
+𝗦𝗺𝗮𝗹𝗹𝗲𝘀𝘁? | 𝗠𝗜𝗡() - 𝘀𝗺𝗮𝗹𝗹𝗲𝘀𝘁
+𝗕𝗶𝗴𝗴𝗲𝘀𝘁? | 𝗠𝗔𝗫() - 𝗹𝗮𝗿𝗴𝗲𝘀𝘁
+𝗣𝗲𝗿 𝗴𝗿𝗼𝘂𝗽? | 𝗚𝗥𝗢𝗨𝗣 𝗕𝗬 --𝗰𝗿𝗲𝗮𝘁𝗲𝘀 𝗴𝗿𝗼𝘂𝗽𝘀 𝗳𝗼𝗿 𝘀𝗮𝗺𝗲 𝗿𝗼𝘄 𝘃𝗮𝗹𝘂𝗲𝘀
+𝗙𝗶𝗹𝘁𝗲𝗿 𝗴𝗿𝗼𝘂𝗽𝘀? | 𝗛𝗔𝗩𝗜𝗡𝗚 - 𝗳𝗶𝗹𝘁𝗲𝗿𝘀 𝗴𝗿𝗼𝘂𝗽𝘀
 
 Freshers chesee mistakes:
 - Use WHERE before GROUP BY
