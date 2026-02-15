@@ -160,7 +160,7 @@ WHERE phone IS NULL; -- Fetches users who did not provide phone number
 -- IS NULL checks missing values
 -- phone = NULL is wrong in SQL
 
-Relational Filter (EXISTS)
+Relational Filter (EXISTS)- Simplega untundhi
 SELECT *
 FROM users u
 WHERE EXISTS (
@@ -173,7 +173,7 @@ WHERE EXISTS (
 If yes -> include user
 SELECT 1 is just a placeholder (we only care if row exists) */
 
-Anti-Filter (NOT EXISTS)
+Anti-Filter (NOT EXISTS kudaa chudu)
 SELECT *
 FROM users u
 WHERE NOT EXISTS (
@@ -181,22 +181,3 @@ WHERE NOT EXISTS (
   FROM orders o 
   WHERE o.user_id = u.user_id
 ); -- Fetches users who never placed any order
-
-DELETE vs TRUNCATE vs DROP chudham:
-
- Feature / Aspect telsuko               DELETE                                 TRUNCATE                         | DROP                                        |
- What it removes                    Removes "specific rows (data only)  'Removes all rows (data only)"      | "Removes entire table (data + structure)" |
- Command Type enti                 DML                                   | DDL                              | DDL                                         |
- Can use WHERE?                      Yes                                 |  No                             |  No                                        |
- Rollback possible?                  Yes (inside transaction)            |  No                             |  No                                        |
- Speed                              Slower (row-by-row)                   | Very fast (bulk operation)       | Fast                                        |
- Resets AUTO_INCREMENT               No                                  |  Yes                            | N/A                                         |
- Triggers fired                      Yes                                 |  No                             |  No                                        |
- Table structure remains             Yes                                 |  Yes                            |  No                                        |
- Indexes remain                      Yes                                 |  Yes                            |  No                                        |
- Locks table?                       Row-level (InnoDBloo)                    | Table-level                      | Table-level                                 |
- Storage freed immediately?          No (space reused later)             |  Yes                            |  Yes                                       |
- Can be used in Production safely?   Yes (with WHERE)                    |  Only for clearing full data   |  Dangerous                                 |
- Typical Industry Use               Delete specific records               | Reset logs / test data           | Remove unused tables                        |
-
-
