@@ -1,0 +1,114 @@
+MySQL Functions - Realtimeloo ekkadoo kudaa nerchukondi)
+
+1. 𝗦𝗧𝗥𝗜𝗡𝗚 𝗙𝗨𝗡𝗖𝗧𝗜𝗢𝗡𝗦 (Used in login, search, cleaning user Dataloonu)
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻                𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 (Chudu)      𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+ CONCAT()             | Join text anthe          | Show full name in UI | SELECT CONCAT(first_name,' ',last_name) FROM users;         
+ LOWER()/ UPPER()    | Change case            | Case-insensitive login  | SELECT LOWER(email) FROM users;        
+ TRIM()              | Remove spaces          | Clean user input        | SELECT TRIM(name) FROM users;                                 
+ SUBSTRING()         | Get part of text       | Mask phone numbers      | SELECT SUBSTRING(phone,1,4) FROM users;                       
+ REPLACE()           | Replace text           | Bulk email/domain fix   | SELECT REPLACE(email,'@gmail.com','@company.com') FROM users; 
+ INSTR()             | Find position          | Validate email format   | SELECT INSTR(email,'@') FROM users;                           
+
+CONCAT() -> Joins multiple text fields into one
+SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM users;
+-> Show full names in dashboards, invoices, admin panels(Normalga nuvveppudina job applicationlo fill chesthuntaav kadaa)
+
+LOWER() / UPPER() - Converts text case (Case-insensitive login, email normalization, search)
+SELECT LOWER(email) FROM users;
+
+TRIM() - Removes extra spaces(Clean form inputs before storing/searching)
+UPDATE users SET name = TRIM(name);
+
+Imp: SUBSTRING()- Extracts part of text (Masking phone/email in UI)
+SELECT CONCAT(SUBSTRING(phone,1,2), '******', SUBSTRING(phone,-2)) AS masked FROM users;
+
+REPLACE() - Replaces text patterns(Bulk data cleanup, migrations)
+UPDATE users SET email = REPLACE(email, '@gmail.com', '@company.com');
+
+INSTR() - Finds position of substring (Validate email format in quick audits)
+SELECT email FROM users WHERE INSTR(email,'@') = 0;
+
+2. 𝗡𝘂𝗺𝗲𝗿𝗶𝗰 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 (𝗕𝗶𝗹𝗹𝗶𝗻𝗴, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀, 𝗙𝗶𝗻𝗮𝗻𝗰𝗲) 
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀)       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+ ROUND()            | Round decimals | Currency display         | SELECT ROUND(amount,2) FROM transactions;
+CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(discount) FROM offers;`        
+ ABS()              | Make positive  | Balance handling         | SELECT ABS(balance) FROM wallet;`          
+ MOD()              | Remainder      | Sharding/partition logic | SELECT MOD(user_id,4) FROM users;`         
+
+ROUND()
+3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 koam)
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+NOW()           | Current date-time       | Store event time  | INSERT INTO logs(ts) VALUES (NOW());                  
+CURDATE()       | Today’s date       | Daily reports     | SELECT CURDATE();                                       
+DATEDIFF()      | Days between dates     | Inactive users    | SELECT DATEDIFF(NOW(), last_login) FROM users;         
+TIMESTAMPDIFF() | Diff in units          | Trial expiry      | SELECT TIMESTAMPDIFF(DAY, start_at, NOW()) FROM trials; 
+DATE_FORMAT()   | Format date            | UI-friendly dates | SELECT DATE_FORMAT(created_at,'%d-%m-%Y') FROM users;   
+
+4. 𝗔𝗴𝗴𝗿𝗲𝗴𝗮𝘁𝗲𝘀 (𝗗𝗮𝘀𝗵𝗯𝗼𝗮𝗿𝗱𝘀, 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀ki ani cheppukunnam kadaa) -KPIs, revenue, performance metrics kanukkoniki
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+COUNT()         | Count rows   | Total users  | SELECT COUNT(*) FROM users;           
+SUM()           | Total amount | Revenue      | SELECT SUM(amount) FROM transactions;
+AVG()           | Average      | Ratings      | SELECT AVG(rating) FROM reviews;      
+MIN()/ MAX()   | Extremes     | Highest sale | SELECT MAX(amount) FROM transactions;
+
+SELECT COUNT(*) AS users, SUM(amount) AS revenue FROM transactions WHERE created_at >= CURDATE();
+Idi Freshers Mistakje: Using COUNT(column) when column can be NULL ->  wrong counts
+
+5. 𝗖𝗼𝗻𝗱𝗶𝘁𝗶𝗼𝗻𝗮𝗹 (𝗕𝘂𝘀𝗶𝗻𝗲𝘀𝘀 𝗥𝘂𝗹𝗲𝘀 𝗶𝗻 𝗦𝗤𝗟)
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+ IF()     | Simple condition    | Status label       | SELECT IF(balance>0,'Active','Blocked') FROM wallet;                                        
+CASE     | Multiple conditions | Risk/grade buckets | SELECT CASE WHEN score>=80 THEN 'High' WHEN score>=50 THEN 'Medium' ELSE 'Low' END FROM users;
+IFNULL() | Replace NULL        | Prevent UI crashes | SELECT IFNULL(middle_name,'N/A') FROM users;                                                   
+
+IF() - Simple flags in admin dashboards (Kinda example chudu words ardam kakapothe)
+SELECT IF(balance > 0, 'Active', 'Blocked') AS status FROM wallet;
+
+CASE - Segmentation antee ekkuva valuesni seperate cheyandanniki 
+SELECT 
+CASE 
+  WHEN spend >= 100000 THEN 'VIP'
+  WHEN spend >= 20000 THEN 'Gold'
+  ELSE 'Regular'
+END AS segment
+FROM customers;
+
+IFNULL() - Prevent UI crashes on NULLs(Letting NULL bubble into frontend)
+SELECT IFNULL(profile_pic_url, 'default.png') FROM users;
+
+6. Type Conversion (ETL, APIs, Reports) - Freshers generalga inni functions focus cheyaru but you do 
+
+ 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻  𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo    𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
+CAST()    | Change type         | API compatibility | SELECT CAST(price AS DECIMAL(10,2)) FROM products;
+CONVERT() | Change type         | Reporting tools   | SELECT CONVERT(created_at, DATE) FROM users;
+
+CAST() / CONVERT() - Fix API mismatches, reporting toolslo vadatham
+SELECT CAST(price AS DECIMAL(10,2)) FROM products;
+-> Mixing strings/numbers causing report errors
+
+𝗨𝘀𝗲 𝗜𝗙𝗡𝗨𝗟𝗟() 𝘁𝗼 𝗮𝘃𝗼𝗶𝗱 𝗻𝘂𝗹𝗹𝘀 𝗯𝗿𝗲𝗮𝗸𝗶𝗻𝗴 𝗨𝗜
+𝗨𝘀𝗲 𝗥𝗢𝗨𝗡𝗗() 𝗳𝗼𝗿 𝗺𝗼𝗻𝗲𝘆 𝗲𝘃𝗲𝗿𝘆𝘄𝗵𝗲𝗿𝗲
+𝗣𝗿𝗲𝗳𝗲𝗿 𝗗𝗔𝗧𝗘_𝗙𝗢𝗥𝗠𝗔𝗧() 𝗳𝗼𝗿 𝗿𝗲𝗽𝗼𝗿𝘁 𝗲𝘅𝗽𝗼𝗿𝘁𝘀
+𝗔𝘃𝗼𝗶𝗱 𝗵𝗲𝗮𝘃𝘆 𝗯𝘂𝘀𝗶𝗻𝗲𝘀𝘀 𝗹𝗼𝗴𝗶𝗰 𝗶𝗻 𝗦𝗤𝗟; 𝗸𝗲𝗲𝗽 𝗶𝘁 𝗶𝗻 𝗯𝗮𝗰𝗸𝗲𝗻𝗱 𝘀𝗲𝗿𝘃𝗶𝗰𝗲𝘀
+𝗡𝗲𝘃𝗲𝗿 𝘀𝘁𝗼𝗿𝗲 𝗿𝗮𝘄 𝗽𝗮𝘀𝘀𝘄𝗼𝗿𝗱𝘀 𝗶𝗻 𝗗𝗕\
+
+Show full names of users -> CONCAT()
+Revenue this month -> SUM() + date filter
+Find inactive users (>30 days) -> DATEDIFF()
+Label risk tiers -> CASE
+Clean names -> TRIM()
+
+𝗦𝗵𝗼𝘄 𝗿𝗲𝘃𝗲𝗻𝘂𝗲: 𝗦𝗨𝗠(𝗮𝗺𝗼𝘂𝗻𝘁)
+𝗜𝗻𝗮𝗰𝘁𝗶𝘃𝗲 𝘂𝘀𝗲𝗿𝘀: 𝗗𝗔𝗧𝗘𝗗𝗜𝗙𝗙()
+𝗦𝘁𝗮𝘁𝘂𝘀 𝗹𝗮𝗯𝗲𝗹𝘀: 𝗖𝗔𝗦𝗘
+𝗖𝗹𝗲𝗮𝗻 𝗻𝗮𝗺𝗲𝘀: 𝗧𝗥𝗜𝗠()
+𝗦𝗮𝗳𝗲 𝗨𝗜: 𝗜𝗙𝗡𝗨𝗟𝗟()
+𝗧𝗶𝗺𝗲𝘀𝘁𝗮𝗺𝗽𝘀: 𝗡𝗢𝗪()
+Use aggregates for KPIs
+Use CASE for segmentation
+Use DATEDIFF/TIMESTAMPDIFF for churn & trials
+Use IFNULL to avoid null-related UI bugs
