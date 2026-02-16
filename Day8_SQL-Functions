@@ -28,6 +28,17 @@ UPDATE users SET email = REPLACE(email, '@gmail.com', '@company.com');
 
 INSTR() - Finds position of substring (Validate email format in quick audits)
 SELECT email FROM users WHERE INSTR(email,'@') = 0;
+INSTR(string, substring)
+t returns the position (index) of a substring inside a string
+If found -> returns position (starts from 1)
+If not found -> returns 0
+Ex: INSTR('hello@gmail.com', '@');   -- Output: 6
+INSTR('hellogmail.com', '@');    -- Output: 0
+
+Ex: Some locality names might contain extra commas or wrong symbols
+SELECT property_id, locality
+FROM properties
+WHERE INSTR(locality, ',') > 0;
 
 2. 𝗡𝘂𝗺𝗲𝗿𝗶𝗰 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 (𝗕𝗶𝗹𝗹𝗶𝗻𝗴, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀, 𝗙𝗶𝗻𝗮𝗻𝗰𝗲) 
 
@@ -37,7 +48,8 @@ CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(di
  ABS()              | Make positive  | Balance handling         | SELECT ABS(balance) FROM wallet;`          
  MOD()              | Remainder      | Sharding/partition logic | SELECT MOD(user_id,4) FROM users;`         
 
-ROUND()
+ROUND() -- I got an idea why we need to see again like thgis let's apply this on a Dataset (Scroll to page end)
+
 3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 koam)
 
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
@@ -112,3 +124,94 @@ Use aggregates for KPIs
 Use CASE for segmentation
 Use DATEDIFF/TIMESTAMPDIFF for churn & trials
 Use IFNULL to avoid null-related UI bugs
+
+Dataset columns (from Dataset):
+property_id, type, activation_date, bathroom, floor, total_floor,
+furnishing, gym, latitude, longitude, lease_type, lift, locality, parking, property_age, property_size,
+swimming_pool, pin_code, rent, deposit, building_type
+
+Filtering (WHERE)
+- Find all 2 BHK properties
+SELECT * FROM properties WHERE type = 'BHK2';
+- Properties with rent under 20k
+SELECT property_id, locality, rent 
+FROM properties 
+WHERE rent < 20000;
+- Furnished flats with gym
+SELECT property_id, furnishing, gym 
+FROM properties 
+WHERE furnishing = 'FULLY_FURNISHED' AND gym = 1;
+- Search by locality (LIKE)
+SELECT * FROM properties WHERE locality LIKE '%Brookefield%';
+
+String Functions
+- Show display title for cards
+SELECT CONCAT(type, ' in ', locality) AS display_title FROM properties;
+- Normalize furnishing text
+SELECT UPPER(furnishing) FROM properties;
+
+Numeric Functions
+- Round rent for reports
+SELECT property_id, ROUND(rent, 0) FROM properties;
+- Monthly EMI estimate
+SELECT property_id, CEIL(deposit / 12) AS approx_monthly_deposit FROM properties;
+
+Date Functions
+- Recently activated (last 30 days)
+SELECT property_id, activation_date
+FROM properties
+WHERE activation_date >= DATE_SUB(NOW(), INTERVAL 30 DAY);
+- Days since activation
+SELECT property_id, DATEDIFF(NOW(), activation_date) AS days_live
+FROM properties;
+
+Aggregate Functions
+- Average rent by locality
+SELECT locality, AVG(rent) AS avg_rent
+FROM properties
+GROUP BY locality;
+- Count of properties per BHK type
+SELECT type, COUNT(*) AS total_listings
+FROM properties
+GROUP BY type;
+- Highest rent property
+SELECT MAX(rent) AS max_rent FROM properties;
+
+Conditional Logic
+- Label property as Budget / Premium
+SELECT property_id,
+CASE 
+  WHEN rent < 15000 THEN 'Budget'
+  WHEN rent BETWEEN 15000 AND 30000 THEN 'Mid-Range'
+  ELSE 'Premium'
+END AS price_segment
+FROM properties;
+- Handle NULL safely
+SELECT property_id, IFNULL(parking, 'NOT_SPECIFIED') FROM properties;
+
+Updates & Deletes
+UPDATE properties 
+SET rent = rent - 1000 
+WHERE property_id = 'ff80808147ed5e68014810c42dba0ff0';
+- Remove wrong listing
+DELETE FROM properties 
+WHERE property_id = 'some_wrong_id';
+
+Transactions (TCL)
+START TRANSACTION;
+
+UPDATE properties SET rent = rent * 1.05 WHERE locality = 'Brookefield';
+-- If mistake:
+ROLLBACK;
+-- If correct:
+COMMIT;
+
+SPARK Try this:
+Top 5 expensive properties
+Properties with gym + pool
+Average rent by BHK type in each locality
+List all BHK2 under ₹20,000 with lift
+Find top 3 localities with highest average rent
+Mark properties older than 5 years as “Old Stock” using CASE
+
+
