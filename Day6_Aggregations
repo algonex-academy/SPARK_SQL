@@ -126,11 +126,12 @@ select Name, count(*) from table_name
 where salary = 10,000
 group by Name; -- Groups all the common Names and gives how many Names are getting 10k as salary 
 
-6. HAVING - Filter the groups after grouping
+6. HAVING Clause - Filter the groups after grouping of all common records for a column
 -> WHERE anedi filters rows
 -> HAVING filters groups
 
-Structure chudu:   (Users with more than 5 orders)
+Structure chudu:   
+(Ex: Users with more than 5 orders)
 SELECT user_id, COUNT(*) AS total_orders
 FROM orders
 GROUP BY user_id
@@ -142,7 +143,7 @@ FROM students
 GROUP BY class
 HAVING COUNt(*) > 3;
 
-WHERE + GROUP BY + HAVING (Together radhama)
+Clause: WHERE + GROUP BY + HAVING (Together radhama)
 SPARK: Count only students with marks > 70, per class
 SELECT class, COUNT(*) AS total_students
 FROM students
@@ -150,17 +151,17 @@ WHERE marks > 70
 GROUP BY class;
 
 Remember ee flow follow avuthundi:
-WHERE -> filters rows first
-GROUP BY- makes groups
-HAVING -> filters groups
+WHERE -> filters rows first based on condition/conditions before group by
+GROUP BY- makes groups of similar rows in a column/columns
+HAVING -> filters groups after group by on the aggregate function result
 
 𝚂𝙿𝙰𝚁𝙺 𝚃𝚛𝚒𝚌𝚔𝚜 𝚝𝚘 𝚛𝚎𝚖𝚋𝚎𝚛 𝚂𝚀𝙻 𝙵𝚞𝚗𝚌𝚝𝚒𝚘𝚗
 𝗛𝗼𝘄 𝗺𝗮𝗻𝘆? | 𝗖𝗢𝗨𝗡𝗧() - 𝗰𝗼𝘂𝗻𝘁𝘀 𝗿𝗼𝘄𝘀
 𝗪𝗵𝗮𝘁 𝗶𝘀 𝘁𝗼𝘁𝗮𝗹? | 𝗦𝗨𝗠() - 𝗮𝗱𝗱𝘀 𝘃𝗮𝗹𝘂𝗲𝘀
-𝗪𝗵𝗮𝘁 𝗶𝘀 𝗮𝘃𝗲𝗿𝗮𝗴𝗲? | 𝗔𝗩𝗚() - 𝗮𝘃𝗲𝗿𝗮𝗴𝗲
+𝗪𝗵𝗮𝘁 𝗶𝘀 𝗮𝘃𝗲𝗿𝗮𝗴𝗲? | 𝗔𝗩𝗚() - 𝗮𝘃𝗲𝗿𝗮𝗴𝗲 (SUM(clmn)/COUNT(clmn) )
 𝗦𝗺𝗮𝗹𝗹𝗲𝘀𝘁? | 𝗠𝗜𝗡() - 𝘀𝗺𝗮𝗹𝗹𝗲𝘀𝘁
 𝗕𝗶𝗴𝗴𝗲𝘀𝘁? | 𝗠𝗔𝗫() - 𝗹𝗮𝗿𝗴𝗲𝘀𝘁
-𝗣𝗲𝗿 𝗴𝗿𝗼𝘂𝗽? | 𝗚𝗥𝗢𝗨𝗣 𝗕𝗬 --𝗰𝗿𝗲𝗮𝘁𝗲𝘀 𝗴𝗿𝗼𝘂𝗽𝘀 𝗳𝗼𝗿 𝘀𝗮𝗺𝗲 𝗿𝗼𝘄 𝘃𝗮𝗹𝘂𝗲𝘀
+𝗣𝗲𝗿/each 𝗴𝗿𝗼𝘂𝗽? | 𝗚𝗥𝗢𝗨𝗣 𝗕𝗬 --𝗰𝗿𝗲𝗮𝘁𝗲𝘀 𝗴𝗿𝗼𝘂𝗽𝘀 𝗳𝗼𝗿 𝘀𝗮𝗺𝗲 𝗿𝗼𝘄 𝘃𝗮𝗹𝘂𝗲𝘀
 𝗙𝗶𝗹𝘁𝗲𝗿 𝗴𝗿𝗼𝘂𝗽𝘀? | 𝗛𝗔𝗩𝗜𝗡𝗚 - 𝗳𝗶𝗹𝘁𝗲𝗿𝘀 𝗴𝗿𝗼𝘂𝗽𝘀
 
 Freshers chesee mistakes:
@@ -175,5 +176,6 @@ GROUP BY user_id;
 
 SELECT user_id, COUNT(*)
 FROM orders
+WHERE user_id IS NOT NULL
 GROUP BY user_id
 HAVING COUNT(*) > 5;
