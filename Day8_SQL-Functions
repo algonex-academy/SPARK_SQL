@@ -3,7 +3,7 @@ MySQL Functions - Realtimeloo ekkadoo kudaa nerchukondi)
 1. 𝗦𝗧𝗥𝗜𝗡𝗚 𝗙𝗨𝗡𝗖𝗧𝗜𝗢𝗡𝗦 (Used in login, search, cleaning user Dataloonu)
 
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻                𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 (Chudu)      𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
- CONCAT()             | Join text anthe          | Show full name in UI | SELECT CONCAT(first_name,' ',last_name) FROM users;         
+ CONCAT()             | Join text            | Show full name in UI/DB | SELECT CONCAT(first_name,' ',last_name) FROM users;         
  LOWER()/ UPPER()    | Change case            | Case-insensitive login  | SELECT LOWER(email) FROM users;        
  TRIM()              | Remove spaces          | Clean user input        | SELECT TRIM(name) FROM users;                                 
  SUBSTRING()         | Get part of text       | Mask phone numbers      | SELECT SUBSTRING(phone,1,4) FROM users;                       
@@ -28,8 +28,9 @@ UPDATE users SET email = REPLACE(email, '@gmail.com', '@company.com');
 
 INSTR() - Finds position of substring (Validate email format in quick audits)
 SELECT email FROM users WHERE INSTR(email,'@') = 0;
+
 INSTR(string, substring)
-t returns the position (index) of a substring inside a string
+It returns the position (index) of a substring inside a string
 If found -> returns position (starts from 1)
 If not found -> returns 0
 Ex: INSTR('hello@gmail.com', '@');   -- Output: 6
