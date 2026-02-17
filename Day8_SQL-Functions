@@ -50,6 +50,16 @@ CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(di
  MOD()              | Remainder      | Sharding/partition logic | SELECT MOD(user_id,4) FROM users;`         
 
 ROUND() -- I got an idea why we need to see again like thgis let's apply this on a Dataset (Scroll to page end)
+SELECT ROUND(amount, 2) FROM transactions;
+
+CEIL() / FLOOR() -- Round up/down
+SELECT CEIL(total_amount) FROM orders;
+
+MOD() - Remainder
+SELECT MOD(user_id, 4) AS shard FROM users;
+
+ABS() - Converts to positive, Showing absolute balances, deltas (Ivi Datathoo deal chesevalki telsuu ask your working people)
+SELECT ABS(balance_change) FROM wallet_logs;
 
 3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 koam)
 
@@ -60,6 +70,19 @@ DATEDIFF()      | Days between dates     | Inactive users    | SELECT DATEDIFF(N
 TIMESTAMPDIFF() | Diff in units          | Trial expiry      | SELECT TIMESTAMPDIFF(DAY, start_at, NOW()) FROM trials; 
 DATE_FORMAT()   | Format date            | UI-friendly dates | SELECT DATE_FORMAT(created_at,'%d-%m-%Y') FROM users;   
 
+3) Date & Time (Activity, Trials, SLAs, Reports)
+NOW() / CURDATE() -- Current timestamp/date, Event logs, transactions, audit trails
+INSERT INTO logs(event_time) VALUES (NOW());
+
+DATEDIFF() -- Days between dates, Inactivity checks, churn analysis kosam
+SELECT user_id FROM users WHERE DATEDIFF(NOW(), last_login) > 30;
+
+TIMESTAMPDIFF() -- Diff in units (DAY, HOUR, MONTH), Trial expiry ilaantivatikosam
+SELECT TIMESTAMPDIFF(DAY, trial_start, NOW()) AS days_used FROM trials;
+
+DATE_FORMAT() -- Format date for reports/exports, CSV exports, admin UI
+SELECT DATE_FORMAT(created_at,'%d-%m-%Y') FROM users;
+
 4. 𝗔𝗴𝗴𝗿𝗲𝗴𝗮𝘁𝗲𝘀 (𝗗𝗮𝘀𝗵𝗯𝗼𝗮𝗿𝗱𝘀, 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀ki ani cheppukunnam kadaa) -KPIs, revenue, performance metrics kanukkoniki
 
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
@@ -68,7 +91,7 @@ SUM()           | Total amount | Revenue      | SELECT SUM(amount) FROM transact
 AVG()           | Average      | Ratings      | SELECT AVG(rating) FROM reviews;      
 MIN()/ MAX()   | Extremes     | Highest sale | SELECT MAX(amount) FROM transactions;
 
-SELECT COUNT(*) AS users, SUM(amount) AS revenue FROM transactions WHERE created_at >= CURDATE();
+SELECT COUNT(*) AS Spark_users, SUM(amount) AS revenue FROM transactions WHERE created_at >= CURDATE();
 Idi Freshers Mistakje: Using COUNT(column) when column can be NULL ->  wrong counts
 
 5. 𝗖𝗼𝗻𝗱𝗶𝘁𝗶𝗼𝗻𝗮𝗹 (𝗕𝘂𝘀𝗶𝗻𝗲𝘀𝘀 𝗥𝘂𝗹𝗲𝘀 𝗶𝗻 𝗦𝗤𝗟)
