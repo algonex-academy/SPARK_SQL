@@ -13,21 +13,28 @@ MySQL Functions - Realtimeloo ekkadoo kudaa nerchukondi)
 CONCAT() -> Joins multiple text fields into one
 SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM users;
 -> Show full names in dashboards, invoices, admin panels(Normalga nuvveppudina job applicationlo fill chesthuntaav kadaa)
+SELECT CONCAT('BHK2', ' in ', 'Brookefield'); -- BHK2inBrookefield
+SELECT CONCAT(type, ' in ', locality) AS title FROM properties; -- Columsni in thookaluputhindi
 
 LOWER() / UPPER() - Converts text case (Case-insensitive login, email normalization, search)
 SELECT LOWER(email) FROM users;
+SELECT LOWER('John.Doe@GMAIL.COM');
+SELECT property_id, LOWER(locality) FROM properties;
 
 TRIM() - Removes extra spaces(Clean form inputs before storing/searching)
+SELECT TRIM('   Brookefield   ');
 UPDATE users SET name = TRIM(name);
+UPDATE properties SET locality = TRIM(locality);
 
 Imp: SUBSTRING()- Extracts part of text (Masking phone/email in UI)
+SELECT SUBSTRING('9876543210', 1, 4); -- Extracts part of a string (first 4 characters here)
 SELECT CONCAT(SUBSTRING(phone,1,2), '******', SUBSTRING(phone,-2)) AS masked FROM users;
 
 REPLACE() - Replaces text patterns(Bulk data cleanup, migrations)
 UPDATE users SET email = REPLACE(email, '@gmail.com', '@company.com');
 
 INSTR() - Finds position of substring (Validate email format in quick audits)
-SELECT email FROM users WHERE INSTR(email,'@') = 0;
+SELECT email FROM users WHERE INSTR(email,'@') = 0; -- Finds the position of @ to quickly check if the email format looks valid 
 
 INSTR(string, substring)
 It returns the position (index) of a substring inside a string
@@ -36,10 +43,11 @@ If not found -> returns 0
 Ex: INSTR('hello@gmail.com', '@');   -- Output: 6
 INSTR('hellogmail.com', '@');    -- Output: 0
 
-Ex: Some locality names might contain extra commas or wrong symbols
-SELECT property_id, locality
+Ex: SELECT property_id, locality
 FROM properties
-WHERE INSTR(locality, ',') > 0;
+WHERE INSTR(LOWER(locality), 'brook') > 0;
+-- Filters properties whose locality contains the word 'brook' (simple search feature)
+
 
 2. 𝗡𝘂𝗺𝗲𝗿𝗶𝗰 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 (𝗕𝗶𝗹𝗹𝗶𝗻𝗴, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀, 𝗙𝗶𝗻𝗮𝗻𝗰𝗲) - To deal with Numbered rows
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀)       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
@@ -50,15 +58,21 @@ CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(di
 
 ROUND() -- I got an idea why we need to see again like thgis let's apply this on a Dataset (Scroll to page end)
 SELECT ROUND(Salaries, 3) FROM transactions;
+SELECT ROUND(1234.5678, 2); -- Rounds a number to 2 decimal places for display
+SELECT property_id, ROUND(rent, 2) AS rent_display FROM properties;
 
 CEIL() / FLOOR() -- Round up/down
 SELECT CEIL(total_amount) FROM orders;
+SELECT CEIL(12.3), FLOOR(12.9);
+SELECT property_id, CEIL(deposit / 12) AS monthly_deposit FROM properties;
 
 MOD() - Remainder
 SELECT MOD(user_id, 4) AS shard FROM users;
 
 ABS() - Converts to positive, Showing absolute balances, deltas (Ivi Datathoo deal chesevalki telsuu ask your working people)
-SELECT ABS(balance_change) FROM wallet_logs;
+SELECT ABS(balance_change) FROM wallet_log_file;
+SELECT ABS(-2500);
+
 
 3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 Functions (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 kosam)
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
@@ -70,16 +84,22 @@ DATE_FORMAT()   | Format date            | UI-friendly dates | SELECT DATE_FORMA
 
 3) Date & Time (Activity, Trials, SLAs, Reports)
 NOW() / CURDATE() -- Current timestamp/date, Event logs, transactions, audit trails
-INSERT INTO logs(event_time) VALUES (NOW());
+SELECT NOW();
+INSERT INTO logs(event_time) VALUES (NOW()); -- Stores the exact time an event happened for auditing
 
 DATEDIFF() -- Days between dates, Inactivity checks, churn analysis kosam
-SELECT user_id FROM users WHERE DATEDIFF(NOW(), last_login) > 30;
+SELECT DATEDIFF('2026-03-06', '2026-02-16'); -- Calculates the number of days between two dates
+SELECT property_id
+FROM properties
+WHERE DATEDIFF(NOW(), activation_date) > 30; -- Finds listings that have been live for more than 30 days
 
 TIMESTAMPDIFF() -- Diff in units (DAY, HOUR, MONTH), Trial expiry ilaantivatikosam
 SELECT TIMESTAMPDIFF(DAY, trial_start, NOW()) AS days_used FROM trials;
 
 DATE_FORMAT() -- Format date for reports/exports, CSV exports, admin UI
+SELECT DATE_FORMAT('2026-02-16', '%d-%m-%Y'); --Formats a date into a human-readable formlooki
 SELECT DATE_FORMAT(created_at,'%d-%m-%Y') FROM users;
+SELECT DATE_FORMAT(activation_date, '%d-%m-%Y') AS activated_on FROM properties; --Formats activation dates for reports or export kosam
 
 4. 𝗔𝗴𝗴𝗿𝗲𝗴𝗮𝘁𝗲𝘀 (𝗗𝗮𝘀𝗵𝗯𝗼𝗮𝗿𝗱𝘀, 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀ki ani cheppukunnam kadaa) -KPIs, revenue, performance metrics kanukkoniki
 
@@ -91,6 +111,7 @@ MIN()/ MAX()   | Extremes     | Highest sale | SELECT MAX(amount) FROM transacti
 
 SELECT COUNT(*) AS Spark_users, SUM(amount) AS revenue FROM transactions WHERE created_at >= CURDATE();
 Idi Freshers Mistakje: Using COUNT(column) when column can be NULL ->  wrong counts
+SELECT COUNT(1), SUM(100 + 200), AVG(10 + 20);
 
 5. 𝗖𝗼𝗻𝗱𝗶𝘁𝗶𝗼𝗻𝗮𝗹 (𝗕𝘂𝘀𝗶𝗻𝗲𝘀𝘀 𝗥𝘂𝗹𝗲𝘀 𝗶𝗻 𝗦𝗤𝗟)
 
@@ -101,7 +122,11 @@ CASE     | Multiple conditions | Risk/grade buckets | SELECT CASE WHEN score>=80
 IFNULL() | Replace NULL        | Prevent UI crashes | SELECT IFNULL(middle_name,'N/A') FROM users;                                                   
 
 IF() - Simple flags in admin dashboards (Kinda example chudu words ardam kakapothe)
+SELECT IF(5000 > 3000, 'High', 'Low');
 SELECT IF(balance > 0, 'Active', 'Blocked') AS status FROM wallet;
+SELECT property_id, 
+       IF(rent > 30000, 'Premium', 'Normal') AS price_tag
+FROM properties; -- Labels properties as Premium or Normal based on rent
 
 CASE - Segmentation antee ekkuva valuesni seperate cheyandanniki 
 SELECT 
@@ -112,8 +137,17 @@ CASE
 END AS segment
 FROM customers;
 
+Ex:2 SELECT 
+CASE 
+  WHEN 90 >= 80 THEN 'Excellent'
+  WHEN 90 >= 50 THEN 'Good'
+  ELSE 'Poor'
+END; -- applies multiple conditions to categorize a value kosam
+
 IFNULL() - Prevent UI crashes on NULLs(Letting NULL bubble into frontend)
 SELECT IFNULL(profile_pic_url, 'default.png') FROM users;
+SELECT IFNULL(NULL, 'N/A'); -- Replaces NULL with a safe default valuethoo errors raakundaa
+SELECT property_id, IFNULL(parking, 'Not Available') FROM properties; -- Prevents NULL values from breaking UI and reports
 
 6. Type Conversion (ETL, APIs, Reports) - Freshers generalga inni functions focus cheyaru but you do 
 
@@ -123,7 +157,8 @@ CONVERT() | Change type         | Reporting tools   | SELECT CONVERT(created_at,
 
 CAST() / CONVERT() - Fix API mismatches, reporting toolslo vadatham
 SELECT CAST(price AS DECIMAL(10,2)) FROM products;
--> Mixing strings/numbers causing report errors
+SELECT CAST('1234.50' AS DECIMAL(10,2)); -- Converts text to a number for calculations
+SELECT CAST(rent AS DECIMAL(10,2)) FROM properties; -- nsures rent is treated as numeric for reports/APIs
 
 𝗨𝘀𝗲 𝗜𝗙𝗡𝗨𝗟𝗟() 𝘁𝗼 𝗮𝘃𝗼𝗶𝗱 𝗻𝘂𝗹𝗹𝘀 𝗯𝗿𝗲𝗮𝗸𝗶𝗻𝗴 𝗨𝗜
 𝗨𝘀𝗲 𝗥𝗢𝗨𝗡𝗗() 𝗳𝗼𝗿 𝗺𝗼𝗻𝗲𝘆 𝗲𝘃𝗲𝗿𝘆𝘄𝗵𝗲𝗿𝗲
@@ -136,10 +171,9 @@ Revenue this month -> SUM() + date filter
 Find inactive users (>30 days) -> DATEDIFF()
 Label risk tiers -> CASE
 Clean names -> TRIM()
-
 𝗦𝗵𝗼𝘄 𝗿𝗲𝘃𝗲𝗻𝘂𝗲: 𝗦𝗨𝗠(𝗮𝗺𝗼𝘂𝗻𝘁)
 𝗜𝗻𝗮𝗰𝘁𝗶𝘃𝗲 𝘂𝘀𝗲𝗿𝘀: 𝗗𝗔𝗧𝗘𝗗𝗜𝗙𝗙()
-𝗦𝘁𝗮𝘁𝘂𝘀 𝗹𝗮𝗯𝗲𝗹𝘀: 𝗖𝗔𝗦𝗘
+𝗦𝘁𝗮𝘁𝘂𝘀 𝗹𝗮𝗯𝗲𝗹𝘀ki: 𝗖𝗔𝗦𝗘
 𝗖𝗹𝗲𝗮𝗻 𝗻𝗮𝗺𝗲𝘀: 𝗧𝗥𝗜𝗠()
 𝗦𝗮𝗳𝗲 𝗨𝗜: 𝗜𝗙𝗡𝗨𝗟𝗟()
 𝗧𝗶𝗺𝗲𝘀𝘁𝗮𝗺𝗽𝘀: 𝗡𝗢𝗪()
