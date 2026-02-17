@@ -1,0 +1,128 @@
+From very begining nundi chudham SPARK
+
+1) DDL – Table Design cheskovalli
+CREATE TABLE properties (
+  property_id VARCHAR(50) PRIMARY KEY,
+  type VARCHAR(10),
+  activation_date DATETIME,
+  bathroom INT,
+  floor INT,
+  total_floor INT,
+  furnishing VARCHAR(20),
+  gym TINYINT,
+  latitude DECIMAL(10,6),
+  longitude DECIMAL(10,6),
+  lease_type VARCHAR(20),
+  lift TINYINT,
+  locality VARCHAR(100),
+  parking VARCHAR(20),
+  property_age INT,
+  property_size INT,
+  swimming_pool TINYINT,
+  pin_code INT,
+  rent INT,
+  deposit INT,
+  building_type VARCHAR(10)
+);
+
+2) DML – Data Ops (Insert / Update / Delete)
+-- Insert (example)
+INSERT INTO properties(property_id, type, rent, locality) 
+VALUES ('p1','BHK2',18000,'Brookefield');
+
+-- Update rent negotiation
+UPDATE properties SET rent = rent - 1000 WHERE property_id = 'p1';
+
+-- Delete wrong record
+DELETE FROM properties WHERE property_id = 'wrong_id';
+
+3) BAsicga Filtering (WHERE) – Search Features chudali kada
+-- 2BHK under 20k
+SELECT property_id, locality, rent
+FROM properties
+WHERE type = 'BHK2' AND rent < 20000;
+
+-- Furnished + Gym + Lift
+SELECT *
+FROM properties
+WHERE furnishing = 'FULLY_FURNISHED' AND gym = 1 AND lift = 1;
+
+-- Brookefield listings
+SELECT *
+FROM properties
+WHERE locality LIKE '%Brookefield%';
+
+4) Functions
+-- Card title for UI
+SELECT CONCAT(type,' in ',locality) AS title FROM properties;
+
+-- Days live
+SELECT property_id, DATEDIFF(NOW(), activation_date) AS days_live FROM properties;
+
+-- Safe null handling
+SELECT property_id, IFNULL(parking,'NA') FROM properties;
+
+-- Price buckets
+SELECT property_id,
+CASE 
+  WHEN rent < 15000 THEN 'Budget'
+  WHEN rent BETWEEN 15000 AND 30000 THEN 'Mid'
+  ELSE 'Premium'
+END AS price_segment
+FROM properties;
+
+5) Aggregations – Business insigHts kavali kadaa
+Total listings: 138 may be okasari chck cheyandi
+BHK distribution:
+BHK2: 65
+BHK3: 51
+BHK1: 15
+BHK4: 5
+RK1: 2
+
+SELECT type, COUNT(*) AS total
+FROM properties
+GROUP BY type;
+
+- Top expensive listings (all in Brookefield):[Ivi random meeru okasari check cheyandi]
+₹70,000 (bHk4)
+₹65,000 (BHk4)
+₹60,000 (BHK4)
+₹50,000 (BHk3)
+₹45,000 (BhK4)
+
+SELECT property_id, locality, rent, type
+FROM properties
+ORDER BY rent DESC
+LIMIT 5;
+
+combinationslo chudandii (gym + pool):
+No gym, no pool -> 62
+Gym + pool -> 53 (premium segment)
+Gym only -> 15
+Pool only -> 8
+
+SELECT gym, swimming_pool, COUNT(*) AS count
+FROM properties
+GROUP BY gym, swimming_pool;
+
+Avg rent by locality (top 10):[Meeru try cheyandi don't scroll]
+SELECT locality, AVG(rent) AS avg_rent
+FROM properties
+GROUP BY locality
+ORDER BY avg_rent DESC
+LIMIT 10;
+
+SAPRK find cheyagaligee Business insight ivee:
+- Brookefield is the premium hotspot -(highest rents + most top listings)
+- roperties with gym + pool dominate premium pricing anedi ardamyindaa
+
+6) TCL – Eppudina bulk Updates chedhamanppudu
+START TRANSACTION;
+
+UPDATE properties SET rent = rent * 1.05 WHERE locality = 'Brookefield';
+
+-- If wrong aythee
+ROLLBACK;
+-- If correct then
+COMMIT;
