@@ -41,8 +41,7 @@ SELECT property_id, locality
 FROM properties
 WHERE INSTR(locality, ',') > 0;
 
-2. 𝗡𝘂𝗺𝗲𝗿𝗶𝗰 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 (𝗕𝗶𝗹𝗹𝗶𝗻𝗴, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀, 𝗙𝗶𝗻𝗮𝗻𝗰𝗲) 
-
+2. 𝗡𝘂𝗺𝗲𝗿𝗶𝗰 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀 (𝗕𝗶𝗹𝗹𝗶𝗻𝗴, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀, 𝗙𝗶𝗻𝗮𝗻𝗰𝗲) - To deal with Numbered rows
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀)       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
  ROUND()            | Round decimals | Currency display         | SELECT ROUND(amount,2) FROM transactions;
 CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(discount) FROM offers;`        
@@ -50,7 +49,7 @@ CEIL() / FLOOR()    | Round up/down  | Billing rules            | SELECT CEIL(di
  MOD()              | Remainder      | Sharding/partition logic | SELECT MOD(user_id,4) FROM users;`         
 
 ROUND() -- I got an idea why we need to see again like thgis let's apply this on a Dataset (Scroll to page end)
-SELECT ROUND(amount, 2) FROM transactions;
+SELECT ROUND(Salaries, 3) FROM transactions;
 
 CEIL() / FLOOR() -- Round up/down
 SELECT CEIL(total_amount) FROM orders;
@@ -61,11 +60,10 @@ SELECT MOD(user_id, 4) AS shard FROM users;
 ABS() - Converts to positive, Showing absolute balances, deltas (Ivi Datathoo deal chesevalki telsuu ask your working people)
 SELECT ABS(balance_change) FROM wallet_logs;
 
-3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 koam)
-
+3.𝗗𝗮𝘁𝗲 & 𝗧𝗶𝗺𝗲 Functions (𝗔𝗰𝘁𝗶𝘃𝗶𝘁𝘆, 𝗧𝗿𝗶𝗮𝗹𝘀, 𝗥𝗲𝗽𝗼𝗿𝘁𝘀 kosam)
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
 NOW()           | Current date-time       | Store event time  | INSERT INTO logs(ts) VALUES (NOW());                  
-CURDATE()       | Today’s date       | Daily reports     | SELECT CURDATE();                                       
+CURDATE()       | Today’s date           | Daily reports      | SELECT CURDATE();                                       
 DATEDIFF()      | Days between dates     | Inactive users    | SELECT DATEDIFF(NOW(), last_login) FROM users;         
 TIMESTAMPDIFF() | Diff in units          | Trial expiry      | SELECT TIMESTAMPDIFF(DAY, start_at, NOW()) FROM trials; 
 DATE_FORMAT()   | Format date            | UI-friendly dates | SELECT DATE_FORMAT(created_at,'%d-%m-%Y') FROM users;   
@@ -98,7 +96,8 @@ Idi Freshers Mistakje: Using COUNT(column) when column can be NULL ->  wrong cou
 
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻          𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 teluskoo       𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
  IF()     | Simple condition    | Status label       | SELECT IF(balance>0,'Active','Blocked') FROM wallet;                                        
-CASE     | Multiple conditions | Risk/grade buckets | SELECT CASE WHEN score>=80 THEN 'High' WHEN score>=50 THEN 'Medium' ELSE 'Low' END FROM users;
+CASE     | Multiple conditions | Risk/grade buckets | SELECT CASE WHEN score>=80 THEN 'High' WHEN score>=50
+                                                       THEN 'Medium' ELSE 'Low' END FROM users;
 IFNULL() | Replace NULL        | Prevent UI crashes | SELECT IFNULL(middle_name,'N/A') FROM users;                                                   
 
 IF() - Simple flags in admin dashboards (Kinda example chudu words ardam kakapothe)
