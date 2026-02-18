@@ -132,7 +132,7 @@ CASE - Segmentation antee ekkuva valuesni seperate cheyandanniki
 SELECT 
 CASE 
   WHEN spend >= 100000 THEN 'VIP'
-  WHEN spend >= 20000 THEN 'Gold'
+  WHEN spend >= 20000 and spend <100000 THEN 'Gold'
   ELSE 'Regular'
 END AS segment
 FROM customers;
@@ -156,6 +156,14 @@ CAST()    | Change type         | API compatibility | SELECT CAST(price AS DECIM
 CONVERT() | Change type         | Reporting tools   | SELECT CONVERT(created_at, DATE) FROM users;
 
 CAST() / CONVERT() - Fix API mismatches, reporting toolslo vadatham
+->oth are used to change a value from one data type to another (string <-> number <-> date etc)
+=> CAST() is the SQLstandard way to convert data types
+=> CONVERT() is MySQL specific and more flexible (also used for character setsloo kuda)
+CAST(value AS TYPE)               CONVERT(value, TYPE)
+SELECT CAST('123.45' AS DECIMAL(10,2)); -- Converts string '123.45' into a number for calculations kosam
+SELECT CONVERT('123.45', DECIMAL(10,2)); --Same  result, different syntax anthee
+Converts string '123.45' into a numb er for calculations
+
 SELECT CAST(price AS DECIMAL(10,2)) FROM products;
 SELECT CAST('1234.50' AS DECIMAL(10,2)); -- Converts text to a number for calculations
 SELECT CAST(rent AS DECIMAL(10,2)) FROM properties; -- nsures rent is treated as numeric for reports/APIs
