@@ -1,7 +1,6 @@
 Types of Keys in MySQL
 Ee key antee enti meeru cheppandi:
-A key is used to identify records uniquely, connect tables, and keep data clean & reliable in production systems
-- Keys keep data unique, connected, and clean
+A key is used to identify records uniquely, connect tables, and keep data clean/Integrity & reliable in production systems
 - Without keys -> duplicate users, broken relationships, wrong reports
 
 𝗩𝗮𝗿𝗶𝗽𝘂𝘀 𝘁𝘆𝗽𝗲𝘀 𝗼𝗳 𝗞𝗲𝘆𝘀:
@@ -15,17 +14,17 @@ A key is used to identify records uniquely, connect tables, and keep data clean 
 8) Natural Key
 9) Surrogate Key
 
-1) Primary Key (PK)
+1) Primary Key (PK)-> (UNIQUE+NOT NULL)
 -> A column (or columns) that Uniquely identifies each row in a table
 -> Cannot be NULL - One per table ( No duplicates & No NULL)
-User ID, Order ID, Property ID, Aadhar, Transaction ID, mee clg roll_no
+Ex: User ID, Order ID, Property ID, Aadhar, Transaction ID, mee clg roll_no
 
 CREATE TABLE users (
   user_id INT PRIMARY KEY,
   name VARCHAR(50)
 );
 -- Fast lookup, Unique identity, Prevents duplicate records kosam
-Every user/order/property needs a unique ID
+Every user/order/property needs a unique(No duplicate) ID and without any NULL Values in that entire column
 
 Ex:2 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,11 +32,9 @@ Ex:2 CREATE TABLE users (
   email VARCHAR(100)
 );
 
-
-2) Foreign Key (FK)
-A column that references(Links) the Primary Key of another table which creates a relationship between tables
-- Connect users -> orders, properties -> bookings, customers -> payments
-
+2) Foreign Key (FK) (Links with Pk)
+A column that references/Links the Primary Key of another table which creates a relationship between tables
+Ex:  Connect users -> orders, properties -> bookings, customers -> payments
 
 (Users <-> Bookings <-> Properties)
 CREATE TABLE properties (
@@ -58,9 +55,12 @@ Why Algonex care:
 - Enforces data integrity
 - Safer deletes/updates
 
-3) Unique Key
--> Ensures a column value is unique across rows.
-- Multiple UNIQUE keys allowed
+- Main Table/parent Table/Primary Key Column Table -> Referencing Table
+- Sub Table/Child Table/Relation Table -> Referred Table
+
+3) Unique Key (Without duplicates)
+-> Ensures a column value is unique across rows
+- Multiple UNIQUE keys allowed in table
 - Allows NULL (one or more, depending on DB behavior)
 Ex: Email, phone number, username
 
@@ -76,20 +76,20 @@ CREATE TABLE users (
   phone VARCHAR(15) UNIQUE
 );
 
--- Prevent duplicate multiple accounts with same email/phones
+-- Prevent duplicate multiple accounts with same email/contacts
 Enforce business rules
+-- You can't save same contact with same Name
 
 4) Candidate Key
 -> Any column (or set of columns) that can uniquely identify a row
 - One of them is chosen as Primary Key
 
 => Email, Aadhaar, Passport, Employee Code
-Example (concept):
+Example:
 - user_id (unique)
 - email (unique)
 Both are candidate keys
 We choose user_id as Primary Key
-
 -- user_id and email both can uniquely identify a user
 
 Why Algonex care:
@@ -99,17 +99,18 @@ Helps choose the best PK
 
 5) Composite Key (Compound Key) 
 - A Primary Key made of multiple columns
--> A Primary Key made from more than one column, Used when one column alone is not enough
+-> A Primary Key made from more than one column, Used 
+when one column alone is not enough/not sufficient
+
 Many-to-many relationships:
 - (student_id + course_id), (order_id + product_id)
 
-CREATE TABLE Spark_enrollments (
+Ex: CREATE TABLE Spark_enrollments (
   student_id INT,
   course_id INT,
   PRIMARY KEY (student_id, course_id)
 );
--- Prevent duplicate relationships
-- Model real-world many-to-many links
+-- Prevent duplicate relationships and Model real-world many-to-many links
 
 CREATE TABLE property_visits (
   user_id INT,
@@ -120,29 +121,27 @@ CREATE TABLE property_visits (
   FOREIGN KEY (property_id) REFERENCES properties(property_id)
 );
 
-
 6) Super Key
-- Any set of columns that uniquely identifies a row (includes extra unnecessary columns)
-Conceptual (theory) – used in DB design & normalization
+- Any set of columns that uniquely identifies a row 
+(includes extra unnecessary columns)
+- used in DB design & normalization
+- Helps in schema normalization
+- Choosing minimal keys
 
 (user_id)
 (user_id, email)
 (user_id, name)
 
-Helps in schema normalization
-Choosing minimal keys
-
 7) Alternate Key
 Candidate keys not chosen as Primary Key
--> If PK is user_id, then email becomes Alternate Key
+-> If PK is user_id, then email(Unique column) becomes Alternate Key
 
 -- user_id = Primary Key
 -- email = Alternate Key (often enforced with UNIQUE)
-CREATE TABLE users (
+Ex: CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,  -- Primary Key
   email VARCHAR(100) UNIQUE                -- Alternate Key
 );
-
 
 -> Secondary unique identifiers
 -> Login using email instead of ID
@@ -153,7 +152,7 @@ Email, Phone number, Aadhaar
 
 Algo_email VARCHAR(100) UNIQUE
 
-Natural keys can change but risky for Primary Key kadaa
+Natural keys can change but risky for Primary Key
 Used as UNIQUE, not as PK (idi best practice)
 
 9) Surrogate Key
@@ -165,6 +164,8 @@ user_id INT AUTO_INCREMENT PRIMARY KEY
 Stable
 Never changes, fast
 Best practice for PKs
+
+Property_Mini-Project 2:
 
 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,     -- Surrogate Key
@@ -189,7 +190,7 @@ CREATE TABLE bookings (
  Foreign Key   | Connect tables     | No        | Yes                             booking.user_id        
  Unique Key    | Prevent duplicates |  Yes      | Yes                              email                  
  Composite Key | Multi-column PK    | Yes       | Yes                              (user_id, property_id) 
- Candidate Key | PK candidates      | Yes       |  Design                          email                  
+ Candidate Key | PK& candidates      | Yes       |  Design                          email                  
  Alternate Key | Non-PK unique      | Yes       |  (via UNIQUE)                    email                  
  Natural Key   | Business ID        | Yes       |  As UNIQUE                       phone                  
  Surrogate Key | System ID          | Yes      |  Best practice                     AUTO_INCREMENT         
