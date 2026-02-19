@@ -96,7 +96,7 @@ FROM properties
 ORDER BY rent DESC
 LIMIT 5;
 
-combinationslo chudandii (gym + pool):
+-- combinationslo chudandii (gym + pool):
 No gym, no pool -> 62
 Gym + pool -> 53 (premium segment)
 Gym only -> 15
@@ -113,7 +113,7 @@ GROUP BY locality
 ORDER BY avg_rent DESC
 LIMIT 10;
 
-SAPRK find cheyagaligee Business insight ivee:
+-- SAPRK find cheyagaligee Business insight ivee:
 - Brookefield is the premium hotspot -(highest rents + most top listings)
 - roperties with gym + pool dominate premium pricing anedi ardamyindaa
 
@@ -126,3 +126,6 @@ UPDATE properties SET rent = rent * 1.05 WHERE locality = 'Brookefield';
 ROLLBACK;
 -- If correct then
 COMMIT;
+
+
+
