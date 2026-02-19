@@ -1,0 +1,195 @@
+Types of Keys in MySQL
+Ee key antee enti meeru cheppandi:
+A key is used to identify records uniquely, connect tables, and keep data clean & reliable in production systems
+- Keys keep data unique, connected, and clean
+- Without keys -> duplicate users, broken relationships, wrong reports
+
+𝗩𝗮𝗿𝗶𝗽𝘂𝘀 𝘁𝘆𝗽𝗲𝘀 𝗼𝗳 𝗞𝗲𝘆𝘀:
+1) Primary Key (PK)
+2) Foreign Key (FK)
+3) Unique Key
+4) Candidate Key
+5) Composite Key (Compound Key)
+6) Super Key
+7) Alternate Key
+8) Natural Key
+9) Surrogate Key
+
+1) Primary Key (PK)
+-> A column (or columns) that Uniquely identifies each row in a table
+-> Cannot be NULL - One per table ( No duplicates & No NULL)
+User ID, Order ID, Property ID, Aadhar, Transaction ID, mee clg roll_no
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
+-- Fast lookup, Unique identity, Prevents duplicate records kosam
+Every user/order/property needs a unique ID
+
+Ex:2 CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  email VARCHAR(100)
+);
+
+
+2) Foreign Key (FK)
+A column that references(Links) the Primary Key of another table which creates a relationship between tables
+- Connect users -> orders, properties -> bookings, customers -> payments
+
+
+(Users <-> Bookings <-> Properties)
+CREATE TABLE properties (
+  property_id VARCHAR(50) PRIMARY KEY
+);
+
+CREATE TABLE bookings (
+  booking_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  property_id VARCHAR(50),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (property_id) REFERENCES properties(property_id)
+);
+
+Why Algonex care:
+- Prevents invalid data (no booking for non-existing user)
+- Keeps tables connected correctly
+- Enforces data integrity
+- Safer deletes/updates
+
+3) Unique Key
+-> Ensures a column value is unique across rows.
+- Multiple UNIQUE keys allowed
+- Allows NULL (one or more, depending on DB behavior)
+Ex: Email, phone number, username
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE
+);
+
+Ex:2 
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(15) UNIQUE
+);
+
+-- Prevent duplicate multiple accounts with same email/phones
+Enforce business rules
+
+4) Candidate Key
+-> Any column (or set of columns) that can uniquely identify a row
+- One of them is chosen as Primary Key
+
+=> Email, Aadhaar, Passport, Employee Code
+Example (concept):
+- user_id (unique)
+- email (unique)
+Both are candidate keys
+We choose user_id as Primary Key
+
+-- user_id and email both can uniquely identify a user
+
+Why Algonex care:
+- Good schema design untundhi
+- Backup identifiers
+Helps choose the best PK
+
+5) Composite Key (Compound Key) 
+- A Primary Key made of multiple columns
+-> A Primary Key made from more than one column, Used when one column alone is not enough
+Many-to-many relationships:
+- (student_id + course_id), (order_id + product_id)
+
+CREATE TABLE Spark_enrollments (
+  student_id INT,
+  course_id INT,
+  PRIMARY KEY (student_id, course_id)
+);
+-- Prevent duplicate relationships
+- Model real-world many-to-many links
+
+CREATE TABLE property_visits (
+  user_id INT,
+  property_id VARCHAR(50),
+  visit_date DATE,
+  PRIMARY KEY (user_id, property_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (property_id) REFERENCES properties(property_id)
+);
+
+
+6) Super Key
+- Any set of columns that uniquely identifies a row (includes extra unnecessary columns)
+Conceptual (theory) – used in DB design & normalization
+
+(user_id)
+(user_id, email)
+(user_id, name)
+
+Helps in schema normalization
+Choosing minimal keys
+
+7) Alternate Key
+Candidate keys not chosen as Primary Key
+-> If PK is user_id, then email becomes Alternate Key
+
+-- user_id = Primary Key
+-- email = Alternate Key (often enforced with UNIQUE)
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,  -- Primary Key
+  email VARCHAR(100) UNIQUE                -- Alternate Key
+);
+
+
+-> Secondary unique identifiers
+-> Login using email instead of ID
+
+8) Natural Key
+A real-world meaningful identifier antee general columns kosam
+Email, Phone number, Aadhaar
+
+Algo_email VARCHAR(100) UNIQUE
+
+Natural keys can change but risky for Primary Key kadaa
+Used as UNIQUE, not as PK (idi best practice)
+
+9) Surrogate Key
+Artificial system-generated key (no business meaning deeniki)
+- Auto-increment IDs, UUIDs
+
+user_id INT AUTO_INCREMENT PRIMARY KEY
+
+Stable
+Never changes, fast
+Best practice for PKs
+
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,     -- Surrogate Key
+  email VARCHAR(100) UNIQUE,                  -- Natural + Unique Key
+  phone VARCHAR(15) UNIQUE
+);
+
+CREATE TABLE properties (
+  property_id VARCHAR(50) PRIMARY KEY
+);
+
+CREATE TABLE bookings (
+  booking_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  property_id VARCHAR(50),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (property_id) REFERENCES properties(property_id)
+);
+
+𝗞𝗲𝘆               𝗧𝘆𝗽𝗲          𝗣𝘂𝗿𝗽𝗼𝘀𝗲 𝗨𝗻𝗶𝗾𝘂𝗲?      𝗨𝘀𝗲𝗱 𝗶𝗻 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻/𝗣𝗿𝗼𝗷𝗲𝗰𝘁𝗹𝗼𝗼?     𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+ Primary Key   | Main identifier    | Yes       | Mostly                          user_id                
+ Foreign Key   | Connect tables     | No        | Yes                             booking.user_id        
+ Unique Key    | Prevent duplicates |  Yes      | Yes                              email                  
+ Composite Key | Multi-column PK    | Yes       | Yes                              (user_id, property_id) 
+ Candidate Key | PK candidates      | Yes       |  Design                          email                  
+ Alternate Key | Non-PK unique      | Yes       |  (via UNIQUE)                    email                  
+ Natural Key   | Business ID        | Yes       |  As UNIQUE                       phone                  
+ Surrogate Key | System ID          | Yes      |  Best practice                     AUTO_INCREMENT         
