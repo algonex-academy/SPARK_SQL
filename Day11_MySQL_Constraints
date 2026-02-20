@@ -14,8 +14,8 @@ Why Constraints matter (in real projects):
 8. 𝑪𝒐𝒎𝒑𝒐𝒔𝒊𝒕𝒆 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕𝒔 (𝑴𝒖𝒍𝒕𝒊-𝑪𝒐𝒍𝒖𝒎𝒏)
 
 1. 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
-nsures a column must have a value (no NULL allowed)
-EX/: 𝑪𝑹𝑬𝑨𝑻𝑬 𝑻𝑨𝑩𝑳𝑬 𝒖𝒔𝒆𝒓𝒔 (
+Ensures a column must have a value (no NULL allowed)
+EX: 𝑪𝑹𝑬𝑨𝑻𝑬 𝑻𝑨𝑩𝑳𝑬 𝒖𝒔𝒆𝒓𝒔 (
 𝒖𝒔𝒆𝒓_𝒊𝒅 𝑰𝑵𝑻 𝑨𝑼𝑻𝑶_𝑰𝑵𝑪𝑹𝑬𝑴𝑬𝑵𝑻 𝑷𝑹𝑰𝑴𝑨𝑹𝒀 𝑲𝑬𝒀,
 𝒏𝒂𝒎𝒆 𝑽𝑨𝑹𝑪𝑯𝑨𝑹(50) 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳,
 𝒆𝒎𝒂𝒊𝒍 𝑽𝑨𝑹𝑪𝑯𝑨𝑹(100) 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳
@@ -23,7 +23,7 @@ EX/: 𝑪𝑹𝑬𝑨𝑻𝑬 𝑻𝑨𝑩𝑳𝑬 𝒖𝒔𝒆𝒓𝒔 (
 
 /* A user must have a name and email
 Prevents incomplete records
-Improves data quality */
+Improves data quality & Integrity */
 
 2. 𝑼𝑵𝑰𝑸𝑼𝑬 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
 Ensures values in a column are not duplicated
@@ -76,7 +76,7 @@ CREATE TABLE users (
 - Maintains relationships
 
 5. 𝐂𝐇𝐄𝐂𝐊 𝐂𝐨𝐧𝐬𝐭𝐫𝐚𝐢𝐧𝐭
-Restricts values based on a condition
+It restricts row values based on a condition for a particular column
 
 Ex: CREATE TABLE properties (
   property_id VARCHAR(50) PRIMARY KEY,
@@ -85,7 +85,7 @@ Ex: CREATE TABLE properties (
 );
 
 6. DEFAULT Constraint
-Sets a default value if none is provided
+Sets a default value if none(No Value) is provided for a column Insertion 
 
 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,7 +107,8 @@ CREATE TABLE orders (
 
 8. Composite Constraints (Multi-Column)
 Constraints applied to multiple columns together
-A composite constraint is a rule applied to more than one column together to enforce uniqueness or identity
+A composite constraint is a rule applied to more than one column together
+to enforce uniqueness or identity
 In short chudu:
 One column alone is not unique, but the combination of columns is unique
 
