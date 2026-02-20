@@ -1,0 +1,136 @@
+𝑴𝒚𝑺𝑸𝑳 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕𝒔
+
+Why Constraints matter (in real projects):
+𝖢𝗈𝗇𝗌𝗍𝗋𝖺𝗂𝗇𝗍𝗌 𝗉𝗋𝗈𝗍𝖾𝖼𝗍 𝗒𝗈𝗎𝗋 𝖽𝖺𝗍𝖺 𝖿𝗋𝗈𝗆 𝗐𝗋𝗈𝗇𝗀 𝖾𝗇𝗍𝗋𝗂𝖾𝗌, 𝖽𝗎𝗉𝗅𝗂𝖼𝖺𝗍𝖾𝗌, 𝖺𝗇𝖽 𝖻𝗋𝗈𝗄𝖾𝗇 𝗋𝖾𝗅𝖺𝗍𝗂𝗈𝗇𝗌𝗁𝗂𝗉𝗌
+-> In production, constraints are your first line of defense before backend validations
+
+1. 𝑼𝑵𝑰𝑸𝑼𝑬 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+2. 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+3. 𝑪𝑯𝑬𝑪𝑲
+4. 𝑷𝑹𝑰𝑴𝑨𝑹𝒀 𝑲𝑬𝒀 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+5. 𝑭𝑶𝑹𝑬𝑰𝑮𝑵 𝑲𝑬𝒀 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+6. 𝑫𝑬𝑭𝑨𝑼𝑳𝑻
+7. 𝑨𝑼𝑻𝑶_𝑰𝑵𝑪𝑹𝑬𝑴𝑬𝑵𝑻 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+8. 𝑪𝒐𝒎𝒑𝒐𝒔𝒊𝒕𝒆 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕𝒔 (𝑴𝒖𝒍𝒕𝒊-𝑪𝒐𝒍𝒖𝒎𝒏)
+
+1. 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+nsures a column must have a value (no NULL allowed)
+EX/: 𝑪𝑹𝑬𝑨𝑻𝑬 𝑻𝑨𝑩𝑳𝑬 𝒖𝒔𝒆𝒓𝒔 (
+𝒖𝒔𝒆𝒓_𝒊𝒅 𝑰𝑵𝑻 𝑨𝑼𝑻𝑶_𝑰𝑵𝑪𝑹𝑬𝑴𝑬𝑵𝑻 𝑷𝑹𝑰𝑴𝑨𝑹𝒀 𝑲𝑬𝒀,
+𝒏𝒂𝒎𝒆 𝑽𝑨𝑹𝑪𝑯𝑨𝑹(50) 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳,
+𝒆𝒎𝒂𝒊𝒍 𝑽𝑨𝑹𝑪𝑯𝑨𝑹(100) 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳
+);
+
+/* A user must have a name and email
+Prevents incomplete records
+Improves data quality */
+
+2. 𝑼𝑵𝑰𝑸𝑼𝑬 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+Ensures values in a column are not duplicated
+
+CREATE TABLE users ( 
+  user_id INT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE
+);
+
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE,
+  phone VARCHAR(15) UNIQUE
+);
+
+/* Prevent duplicate accounts
+Enforces business rules
+Avoids identity conflicts */
+
+3. 𝑷𝑹𝑰𝑴𝑨𝑹𝒀 𝑲𝑬𝒀 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+Uniquely identifies each row
+-> Cannot be NULL or duplicate
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY
+);
+
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+- Stable unique identity
+= Fast joins
+- Core reference for Foreign Keys
+
+4. 𝑭𝑶𝑹𝑬𝑰𝑮𝑵 𝑲𝑬𝒀 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+𝖢𝖱𝖤𝖠𝖳𝖤 𝖳𝖠𝖡𝖫𝖤 𝖻𝗈𝗈𝗄𝗂𝗇𝗀𝗌 (
+𝖻𝗈𝗈𝗄𝗂𝗇𝗀_𝗂𝖽 𝖨𝖭𝖳 𝖠𝖴𝖳𝖮_𝖨𝖭𝖢𝖱𝖤𝖬𝖤𝖭𝖳 𝖯𝖱𝖨𝖬𝖠𝖱𝖸 𝖪𝖤𝖸,
+𝗎𝗌𝖾𝗋_𝗂𝖽 𝖨𝖭𝖳 𝖭𝖮𝖳 𝖭𝖴𝖫𝖫,
+𝗉𝗋𝗈𝗉𝖾𝗋𝗍𝗒_𝗂𝖽 𝖵𝖠𝖱𝖢𝖧𝖠𝖱(𝟧𝟢) 𝖭𝖮𝖳 𝖭𝖴𝖫𝖫,
+𝖥𝖮𝖱𝖤𝖨𝖦𝖭 𝖪𝖤𝖸 (𝗎𝗌𝖾𝗋_𝗂𝖽) 𝖱𝖤𝖥𝖤𝖱𝖤𝖭𝖢𝖤𝖲 𝗎𝗌𝖾𝗋𝗌(𝗎𝗌𝖾𝗋_𝗂𝖽)
+𝖮𝖭 𝖣𝖤𝖫𝖤𝖳𝖤 𝖱𝖤𝖲𝖳𝖱𝖨𝖢𝖳
+𝖮𝖭 𝖴𝖯𝖣𝖠𝖳𝖤 𝖢𝖠𝖲𝖢𝖠𝖣𝖤,
+𝖥𝖮𝖱𝖤𝖨𝖦𝖭 𝖪𝖤𝖸 (𝗉𝗋𝗈𝗉𝖾𝗋𝗍𝗒_𝗂𝖽) 𝖱𝖤𝖥𝖤𝖱𝖤𝖭𝖢𝖤𝖲 𝗉𝗋𝗈𝗉𝖾𝗋𝗍𝗂𝖾𝗌(𝗉𝗋𝗈𝗉𝖾𝗋𝗍𝗒_𝗂𝖽)
+);
+
+- No orphan records
+- Safe updates/deletes
+- Maintains relationships
+
+5. 𝐂𝐇𝐄𝐂𝐊 𝐂𝐨𝐧𝐬𝐭𝐫𝐚𝐢𝐧𝐭
+Restricts values based on a condition
+
+Ex: CREATE TABLE properties (
+  property_id VARCHAR(50) PRIMARY KEY,
+  rent INT CHECK (rent >= 5000),
+  deposit INT CHECK (deposit >= rent)
+);
+
+6. DEFAULT Constraint
+Sets a default value if none is provided
+
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  status VARCHAR(20) DEFAULT 'ACTIVE',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+- Auto-set initial values
+- Reduces backend code
+- Prevents NULL states
+
+7. 𝑨𝑼𝑻𝑶_𝑰𝑵𝑪𝑹𝑬𝑴𝑬𝑵𝑻 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
+Automatically generates unique numbers for IDs
+
+CREATE TABLE orders (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  amount DECIMAL(10,2) NOT NULL
+);
+
+8. Composite Constraints (Multi-Column)
+Constraints applied to multiple columns together
+A composite constraint is a rule applied to more than one column together to enforce uniqueness or identity
+In short chudu:
+One column alone is not unique, but the combination of columns is unique
+
+CREATE TABLE property_visits (
+  user_id INT,
+  property_id VARCHAR(50),
+  visit_date DATE,
+  UNIQUE (user_id, property_id)
+);
+
+--Prevent duplicate relationships and also model real many-to-many rules
+
+Constraint            Purpose                               Example                
+ NOT NULL       | Prevent empty values                     name NOT NULL          
+ UNIQUE         | Prevent duplicates                      email UNIQUE           
+ PRIMARY KEY    | Unique row identity                    user_id PK             
+ FOREIGN KEY    | Link tables                            booking.user_id        
+ CHECK          | Enforce rules (MySQL 8+)               rent > 0               
+ DEFAULT        | Auto values                            status = 'ACTIVE'      
+ AUTO_INCREMENT | Auto ID                                user_id auto           
+ Composite      | Multi-column rules                     (user_id, property_id) 
+
+MySQL constraints enforce data rules at the database level
+-> NOT NULL ensures mandatory fields, UNIQUE prevents duplicates, PRIMARY KEY uniquely identifies rows, FOREIGN KEY maintains relationships, CHECK enforces business rules, DEFAULT sets initial values, and AUTO_INCREMENT generates IDs
+-> In production, constraints protect data integrity even if application validation fails
+
