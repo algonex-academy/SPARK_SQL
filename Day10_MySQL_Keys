@@ -32,6 +32,7 @@ Ex:2 CREATE TABLE users (
   email VARCHAR(100)
 );
 
+
 2) Foreign Key (FK) (Links with Pk)
 A column that references/Links the Primary Key of another table which creates a relationship between tables
 Ex:  Connect users -> orders, properties -> bookings, customers -> payments
