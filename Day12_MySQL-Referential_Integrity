@@ -1,9 +1,10 @@
-MySQL Referential Integrity (RI)
+𝑴𝒚𝑺𝑸𝑳 𝑹𝒆𝒇𝒆𝒓𝒆𝒏𝒕𝒊𝒂𝒍 𝑰𝒏𝒕𝒆𝒈𝒓𝒊𝒕𝒚 (𝑹𝑰)
+
 -> Every reference between tables must be valid and consistent
 If a table says "this booking belongs to user_id = 10", then: User with user_id = 10 must exist in the users table
 Ex Chudu: If a row in Table B refers to a row in Table A, that row in Table A must exist
 
-Real-Life Example:
+𝐑𝐞𝐚𝐥-𝐋𝐢𝐟𝐞 𝐄𝐱𝐚𝐦𝐩𝐥𝐞:
 - You have a Users table
 - You have an Orders table
 - Every order must belong to a real user
@@ -65,76 +66,76 @@ CREATE TABLE orders (
 );
 
 Delete Actions
-- ON DELETE RESTRICT / NO ACTION
-- ON DELETE CASCADE
-- ON DELETE SET NULL
+- 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐑𝐄𝐒𝐓𝐑𝐈𝐂𝐓 / 𝐍𝐎 𝐀𝐂𝐓𝐈𝐎𝐍
+- 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐂𝐀𝐒𝐂𝐀𝐃𝐄
+- 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐒𝐄𝐓 𝐍𝐔𝐋𝐋
 
 Update Actions
-- ON UPDATE RESTRICT / NO ACTION
-- ON UPDATE CASCADE
-- ON UPDATE SET NULL
+- 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧 / 𝗡𝗢 𝗔𝗖𝗧𝗜𝗢𝗡
+- 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗖𝗔𝗦𝗖𝗔𝗗𝗘
+- 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
 -> SET DEFAULT exists in SQL standard but is not reliable in MySQL -> don't use
 
 SPARK: If the parent row disappears or changes, should the child data still exist?
- Your Answer                                     Choose This              
+ If ques is this..                                   Choose This              
  Child data is meaningless without parent       | CASCADE              
  Child data is important history                | SET NULL             
  Parent should never be deleted if child exists | RESTRICT / NO ACTION
 
-1. ON DELETE CASCADE
+𝟏. 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐂𝐀𝐒𝐂𝐀𝐃𝐄
 - Deletes all child rows automatically when parent is deleted
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE CASCADE;
 DELETE FROM users WHERE user_id = 10;
 -- All orders of user 10 are deleted
 
-2. ON UPDATE CASCADE
+𝟮. 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗖𝗔𝗦𝗖𝗔𝗗𝗘
 - Updates child FK automatically when parent PK is updated
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON UPDATE CASCADE;
 UPDATE users SET user_id = 200 WHERE user_id = 20;
 -- All related orders.user_id become 200
 
-3. ON DELETE SET NULL
+𝟯. 𝗢𝗡 𝗗𝗘𝗟𝗘𝗧𝗘 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
 Sets child FK to NULL when parent is deleted
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE SET NULL;
 DELETE FROM users WHERE user_id = 10;
 -- Orders remain, but orders.user_id = NULL
 
-4. ON UPDATE SET NULL
+𝟰. 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
 -- Sets child FK to NULL when parent PK is updated
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON UPDATE SET NULL;
 UPDATE users SET user_id = 200 WHERE user_id = 20;
 -- orders.user_id becomes NULL
 
-5. ON DELETE RESTRICT
+𝟱. 𝗢𝗡 𝗗𝗘𝗟𝗘𝗧𝗘 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧
 -- Blocks deleting parent if child rows exist
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE RESTRICT;
 DELETE FROM users WHERE user_id = 10;
 -- Error if orders exist
 
-6. ON UPDATE RESTRICT
+𝟔. 𝐎𝐍 𝐔𝐏𝐃𝐀𝐓𝐄 𝐑𝐄𝐒𝐓𝐑𝐈𝐂𝐓
 -- Blocks updating parent PK if child rows exist
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON UPDATE RESTRICT;
 UPDATE users SET user_id = 200 WHERE user_id = 20;
 -- Error if orders exist
 
-7. ON DELETE NO ACTION
+𝟕. 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐍𝐎 𝐀𝐂𝐓𝐈𝐎𝐍
 -- Same as RESTRICT in MySQL (blocks delete)
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE NO ACTION;
 -- Used as same as RESTRICT
 
-8. ON UPDATE NO ACTION
+𝟴. 𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗡𝗢 𝗔𝗖𝗧𝗜𝗢𝗡
 -- Same as RESTRICT on update
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON UPDATE NO ACTION;
 
-CASCADE: propagates delete/update to children (risky for history)
-SET NULL: preserves child records, removes relationship
-RESTRICT/NO ACTION: blocks parent delete/update if children exist (safest)
-Best practice: Use RESTRICT for financial/audit data; CASCADE only for disposable child data
+𝗖𝗔𝗦𝗖𝗔𝗗𝗘 𝗉𝗋𝗈𝗉𝖺𝗀𝖺𝗍𝖾𝗌 𝖽𝖾𝗅𝖾𝗍𝖾/𝗎𝗉𝖽𝖺𝗍𝖾 𝗍𝗈 𝖼𝗁𝗂𝗅𝖽𝗋𝖾𝗇 (𝗋𝗂𝗌𝗄𝗒 𝖿𝗈𝗋 𝗁𝗂𝗌𝗍𝗈𝗋𝗒)
+𝗦𝗘𝗧 𝗡𝗨𝗟𝗟: preserves child records, removes relationship
+𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧/𝗡𝗢 𝗔𝗖𝗧𝗜𝗢𝗡: blocks parent delete/update if children exist (safest)
+Best practice: 𝑈𝑠𝑒 𝑅𝐸𝑆𝑇𝑅𝐼𝐶𝑇 𝑓𝑜𝑟 𝑓𝑖𝑛𝑎𝑛𝑐𝑖𝑎𝑙/𝑎𝑢𝑑𝑖𝑡 𝑑𝑎𝑡𝑎; 𝐶𝐴𝑆𝐶𝐴𝐷𝐸 𝑜𝑛𝑙𝑦 𝑓𝑜𝑟 𝑑𝑖𝑠𝑝𝑜𝑠𝑎𝑏𝑙𝑒 𝑐ℎ𝑖𝑙𝑑 𝑑𝑎𝑡𝑎
