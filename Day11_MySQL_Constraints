@@ -4,6 +4,13 @@ Why Constraints matter (in real projects):
 𝖢𝗈𝗇𝗌𝗍𝗋𝖺𝗂𝗇𝗍𝗌 𝗉𝗋𝗈𝗍𝖾𝖼𝗍 𝗒𝗈𝗎𝗋 𝖽𝖺𝗍𝖺 𝖿𝗋𝗈𝗆 𝗐𝗋𝗈𝗇𝗀 𝖾𝗇𝗍𝗋𝗂𝖾𝗌, 𝖽𝗎𝗉𝗅𝗂𝖼𝖺𝗍𝖾𝗌, 𝖺𝗇𝖽 𝖻𝗋𝗈𝗄𝖾𝗇 𝗋𝖾𝗅𝖺𝗍𝗂𝗈𝗇𝗌𝗁𝗂𝗉𝗌
 -> In production, constraints are your first line of defense before backend validations
 
+Idi chudandi: CREATE TABLE properties (
+  property_id VARCHAR(50) PRIMARY KEY,
+  rent INT NOT NULL CHECK (rent >= 5000),   -- CHECK + NOT NULL
+  email VARCHAR(100) UNIQUE,                -- UNIQUE
+  status VARCHAR(20) DEFAULT 'ACTIVE'       -- DEFAULT
+);
+
 1. 𝑼𝑵𝑰𝑸𝑼𝑬 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
 2. 𝑵𝑶𝑻 𝑵𝑼𝑳𝑳 𝑪𝒐𝒏𝒔𝒕𝒓𝒂𝒊𝒏𝒕
 3. 𝑪𝑯𝑬𝑪𝑲
