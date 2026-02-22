@@ -3,6 +3,17 @@ Ee key antee enti meeru cheppandi:
 A key is used to identify records uniquely, connect tables, and keep data clean/Integrity & reliable in production systems
 - Without keys -> duplicate users, broken relationships, wrong reports
 
+What to prepare:
+- Primary Key
+- Foreign Key
+- Unique
+- Composite Keys
+- Candidate, Alternate, Natural, Surrogate Keys
+- NOT NULL, CHECK, DEFAULT
+- ON DELETE CASCADE / SET NULL / RESTRICT
+-> Data integrity, Prevent duplicates, Prevent data loss
+-> PK vs FK, Composite key use-cases, CASCADE dangers
+
 𝗩𝗮𝗿𝗶𝗽𝘂𝘀 𝘁𝘆𝗽𝗲𝘀 𝗼𝗳 𝗞𝗲𝘆𝘀:
 1) Primary Key (PK)
 2) Foreign Key (FK)
