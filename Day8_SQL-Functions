@@ -1,5 +1,15 @@
 MySQL Functions - Realtimeloo ekkadoo kudaa nerchukondi)
 
+What to prepare
+- String: CONCAT, LOWER, TRIM, SUBSTRING, INSTR
+- Numeric: ROUND, CEIL, FLOOR, ABS
+- Date: NOW, CURDATE, DATEDIFF, DATE_FORMAT
+- Conditional: IF, CASE, IFNULL
+- Conversion: CAST, CONVERT
+- Aggregate: COUNT, SUM, AVG, MIN, MAX
+
+-> COUNT(*) vs COUNT(col), CASE vs IF, CAST vs CONVERT
+
 1. 𝗦𝗧𝗥𝗜𝗡𝗚 𝗙𝗨𝗡𝗖𝗧𝗜𝗢𝗡𝗦 (Used in login, search, cleaning user Dataloonu)
 
  𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻                𝗪𝗵𝗮𝘁 𝗶𝘁 𝗱𝗼𝗲𝘀 (Chudu)      𝗥𝗲𝗮𝗹-𝗧𝗶𝗺𝗲 Algonex 𝗨𝘀𝗲            𝗘𝘅𝗮𝗺𝗽𝗹𝗲 
