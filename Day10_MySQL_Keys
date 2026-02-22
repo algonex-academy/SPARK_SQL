@@ -98,6 +98,13 @@ Why Algonex care:
 - Backup identifiers
 Helps choose the best PK
 
+SPARK Ex: CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY, -- chosen PK
+  email VARCHAR(100) UNIQUE,              -- candidate → alternate key
+  phone VARCHAR(15) UNIQUE,               -- candidate → alternate key
+  name VARCHAR(50) NOT NULL
+);
+
 5) Composite Key (Compound Key) 
 - A Primary Key made of multiple columns
 -> A Primary Key made from more than one column, Used 
