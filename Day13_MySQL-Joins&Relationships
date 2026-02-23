@@ -1,8 +1,81 @@
+𝗔 𝗝𝗢𝗜𝗡 𝗰𝗼𝗺𝗯𝗶𝗻𝗲𝘀 𝗿𝗼𝘄𝘀 𝗳𝗿𝗼𝗺 𝘁𝘄𝗼 𝗼𝗿 𝗺𝗼𝗿𝗲 𝘁𝗮𝗯𝗹𝗲𝘀 𝘂𝘀𝗶𝗻𝗴 𝗮 𝗿𝗲𝗹𝗮𝘁𝗲𝗱 𝗰𝗼𝗹𝘂𝗺𝗻 (𝘂𝘀𝘂𝗮𝗹𝗹𝘆 𝗣𝗞 - 𝗙𝗞)
+
+real-Life example chudhama:
+-𝗨𝘀𝗲𝗿𝘀 𝘁𝗮𝗯𝗹𝗲 𝗵𝗮𝘀 𝘂𝘀𝗲𝗿 𝗶𝗻𝗳𝗼
+- 𝗢𝗿𝗱𝗲𝗿𝘀 𝘁𝗮𝗯𝗹𝗲 𝗵𝗮𝘀 𝗼𝗿𝗱𝗲𝗿 𝗶𝗻𝗳𝗼
+𝗝𝗢𝗜𝗡 antee "𝗦𝗵𝗼𝘄 𝗺𝗲 𝘂𝘀𝗲𝗿 𝗶𝗻𝗳𝗼 + 𝘁𝗵𝗲𝗶𝗿 𝗼𝗿𝗱𝗲𝗿𝘀 𝘁𝗼𝗴𝗲𝘁𝗵𝗲𝗿 ani"
+
 SPARK What to prepare
 - INNER JOIN
 - LEFT JOIN
 - RIGHT JOIN
+- FULL OUTER JOIN (not supported in MySQL directly)
 - SELF JOIN
+- CROSS JOIN
 Multi-table joins
 Join conditions
 Handling NULLs in joins
+
+
+1. INNER JOIN
+- Returns only rows that match in both tables
+
+𝖲𝖤𝖫𝖤𝖢𝖳 𝗎.𝗎𝗌𝖾𝗋_𝗂𝖽, 𝗎.𝗇𝖺𝗆𝖾, 𝗈.𝗈𝗋𝖽𝖾𝗋_𝗂𝖽, 𝗈.𝖺𝗆𝗈𝗎𝗇𝗍
+𝖥𝖱𝖮𝖬 𝗎𝗌𝖾𝗋𝗌 𝗎
+𝖨𝖭𝖭𝖤𝖱 𝖩𝖮𝖨𝖭 𝗈𝗋𝖽𝖾𝗋𝗌 𝗈
+𝖮𝖭 𝗎.𝗎𝗌𝖾𝗋_𝗂𝖽 = 𝗈.𝗎𝗌𝖾𝗋_𝗂𝖽;
+
+2. LEFT JOIN (All Left + Matching Right)
+Returns all rows from left table and matching rows from right table
+If no match -> right columns = NULL
+
+𝗦𝗘𝗟𝗘𝗖𝗧 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱, 𝘂.𝗻𝗮𝗺𝗲, 𝗼.𝗼𝗿𝗱𝗲𝗿_𝗶𝗱
+𝗙𝗥𝗢𝗠 𝘂𝘀𝗲𝗿𝘀 𝘂
+𝗟𝗘𝗙𝗧 𝗝𝗢𝗜𝗡 𝗼𝗿𝗱𝗲𝗿𝘀 𝗼
+𝗢𝗡 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱 = 𝗼.𝘂𝘀𝗲𝗿_𝗶𝗱;
+
+3. 𝑹𝑰𝑮𝑯𝑻 𝑱𝑶𝑰𝑵 (𝑨𝒍𝒍 𝑹𝒊𝒈𝒉𝒕 + 𝑴𝒂𝒕𝒄𝒉𝒊𝒏𝒈 𝑳𝒆𝒇𝒕)
+-> Returns all rows from right table and matching rows from left table
+
+𝗦𝗘𝗟𝗘𝗖𝗧 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱, 𝘂.𝗻𝗮𝗺𝗲, 𝗼.𝗼𝗿𝗱𝗲𝗿_𝗶𝗱
+𝗙𝗥𝗢𝗠 𝘂𝘀𝗲𝗿𝘀 𝘂
+𝗥𝗜𝗚𝗛𝗧 𝗝𝗢𝗜𝗡 𝗼𝗿𝗱𝗲𝗿𝘀 𝗼
+𝗢𝗡 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱 = 𝗼.𝘂𝘀𝗲𝗿_𝗶𝗱;
+
+4. FULL OUTER JOIN (MySQL Workaround)
+-> Returns rows that exist in either table (matched + unmatched both sides)
+SELECT u.user_id, u.name, o.order_id
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+UNION
+SELECT u.user_id, u.name, o.order_id
+FROM users u
+RIGHT JOIN orders o ON u.user_id = o.user_id;
+
+5. SELF JOIN (Table Joined With Itself)
+-> Joins a table to itself using aliases
+
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m
+  ON e.manager_id = m.emp_id;
+
+6. CROSS JOIN (All Combinations anochu)
+Returns every combination of rows from both tables
+SELECT u.name, p.plan_name
+FROM users u
+CROSS JOIN plans p;
+
+Ex: Find users with no orders
+SELECT u.user_id, u.name
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+WHERE o.order_id IS NULL;
+
+Ex:2 Top users by total spend
+
+SELECT u.user_id, u.name, SUM(o.amount) AS total_spent
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+GROUP BY u.user_id, u.name
+ORDER BY total_spent DESC;
