@@ -16,21 +16,21 @@ CREATE TABLE users (
 );
 
 Setup Chedham (Users <-> Bookings <-> Properties)
-CREATE TABLE properties (
-  property_id VARCHAR(50) PRIMARY KEY,
-  locality VARCHAR(100) NOT NULL
+𝗖𝗥𝗘𝗔𝗧𝗘 𝗧𝗔𝗕𝗟𝗘 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 (
+𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱 𝗩𝗔𝗥𝗖𝗛𝗔𝗥(𝟱𝟬) 𝗣𝗥𝗜𝗠𝗔𝗥𝗬 𝗞𝗘𝗬,
+𝗹𝗼𝗰𝗮𝗹𝗶𝘁𝘆 𝗩𝗔𝗥𝗖𝗛𝗔𝗥(𝟭𝟬𝟬) 𝗡𝗢𝗧 𝗡𝗨𝗟𝗟
 );
 
-CREATE TABLE bookings (
-  booking_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  property_id VARCHAR(50),
-  booked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  FOREIGN KEY (property_id) REFERENCES properties(property_id)
-    ON DELETE SET NULL
+𝗖𝗥𝗘𝗔𝗧𝗘 𝗧𝗔𝗕𝗟𝗘 𝗯𝗼𝗼𝗸𝗶𝗻𝗴𝘀 (
+𝗯𝗼𝗼𝗸𝗶𝗻𝗴_𝗶𝗱 𝗜𝗡𝗧 𝗔𝗨𝗧𝗢_𝗜𝗡𝗖𝗥𝗘𝗠𝗘𝗡𝗧 𝗣𝗥𝗜𝗠𝗔𝗥𝗬 𝗞𝗘𝗬,
+𝘂𝘀𝗲𝗿_𝗶𝗱 𝗜𝗡𝗧 𝗡𝗢𝗧 𝗡𝗨𝗟𝗟,
+𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱 𝗩𝗔𝗥𝗖𝗛𝗔𝗥(𝟱𝟬),
+𝗯𝗼𝗼𝗸𝗲𝗱_𝗮𝘁 𝗗𝗔𝗧𝗘𝗧𝗜𝗠𝗘 𝗗𝗘𝗙𝗔𝗨𝗟𝗧 𝗖𝗨𝗥𝗥𝗘𝗡𝗧_𝗧𝗜𝗠𝗘𝗦𝗧𝗔𝗠𝗣,
+𝗙𝗢𝗥𝗘𝗜𝗚𝗡 𝗞𝗘𝗬 (𝘂𝘀𝗲𝗿_𝗶𝗱) 𝗥𝗘𝗙𝗘𝗥𝗘𝗡𝗖𝗘𝗦 𝘂𝘀𝗲𝗿𝘀(𝘂𝘀𝗲𝗿_𝗶𝗱)
+𝗢𝗡 𝗗𝗘𝗟𝗘𝗧𝗘 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧
+𝗢𝗡 𝗨𝗣𝗗𝗔𝗧𝗘 𝗖𝗔𝗦𝗖𝗔𝗗𝗘,
+𝗙𝗢𝗥𝗘𝗜𝗚𝗡 𝗞𝗘𝗬 (𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱) 𝗥𝗘𝗙𝗘𝗥𝗘𝗡𝗖𝗘𝗦 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀(𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱)
+𝗢𝗡 𝗗𝗘𝗟𝗘𝗧𝗘 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
 );
 -- This schema enforces referential integrity
 Rule 1: Insert Rule (No Orphans on INSERT)
@@ -52,17 +52,17 @@ Depending on FK rule:
 - RESTRICT -> blocks deletion if bookings exist
 -- Prevents accidental data loss
 
-Parent -> Child Tables
-CREATE TABLE users (
-  user_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50)
+𝑷𝒂𝒓𝒆𝒏𝒕 -> 𝑪𝒉𝒊𝒍𝒅 𝑻𝒂𝒃𝒍𝒆𝒔 (𝑶𝒏𝒆 𝒎𝒐𝒓𝒆 𝑬𝒙𝒂𝒎𝒑𝒍𝒆)
+𝐶𝑅𝐸𝐴𝑇𝐸 𝑇𝐴𝐵𝐿𝐸 𝑢𝑠𝑒𝑟𝑠 (
+𝑢𝑠𝑒𝑟_𝑖𝑑 𝐼𝑁𝑇 𝐴𝑈𝑇𝑂_𝐼𝑁𝐶𝑅𝐸𝑀𝐸𝑁𝑇 𝑃𝑅𝐼𝑀𝐴𝑅𝑌 𝐾𝐸𝑌,
+𝑛𝑎𝑚𝑒 𝑉𝐴𝑅𝐶𝐻𝐴𝑅(50)
 );
 
-CREATE TABLE orders (
-  order_id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
-    -- We will change the actions here to see behavior
+𝐶𝑅𝐸𝐴𝑇𝐸 𝑇𝐴𝐵𝐿𝐸 𝑜𝑟𝑑𝑒𝑟𝑠 (
+𝑜𝑟𝑑𝑒𝑟_𝑖𝑑 𝐼𝑁𝑇 𝐴𝑈𝑇𝑂_𝐼𝑁𝐶𝑅𝐸𝑀𝐸𝑁𝑇 𝑃𝑅𝐼𝑀𝐴𝑅𝑌 𝐾𝐸𝑌,
+𝑢𝑠𝑒𝑟_𝑖𝑑 𝐼𝑁𝑇,
+𝐹𝑂𝑅𝐸𝐼𝐺𝑁 𝐾𝐸𝑌 (𝑢𝑠𝑒𝑟_𝑖𝑑) 𝑅𝐸𝐹𝐸𝑅𝐸𝑁𝐶𝐸𝑆 𝑢𝑠𝑒𝑟𝑠(𝑢𝑠𝑒𝑟_𝑖𝑑)
+-- 𝑊𝑒 𝑤𝑖𝑙𝑙 𝑐ℎ𝑎𝑛𝑔𝑒 𝑡ℎ𝑒 𝑎𝑐𝑡𝑖𝑜𝑛𝑠 ℎ𝑒𝑟𝑒 𝑡𝑜 𝑠𝑒𝑒 𝑏𝑒ℎ𝑎𝑣𝑖𝑜𝑟
 );
 
 Delete Actions
@@ -139,3 +139,36 @@ ON UPDATE NO ACTION;
 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟: preserves child records, removes relationship
 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧/𝗡𝗢 𝗔𝗖𝗧𝗜𝗢𝗡: blocks parent delete/update if children exist (safest)
 Best practice: 𝑈𝑠𝑒 𝑅𝐸𝑆𝑇𝑅𝐼𝐶𝑇 𝑓𝑜𝑟 𝑓𝑖𝑛𝑎𝑛𝑐𝑖𝑎𝑙/𝑎𝑢𝑑𝑖𝑡 𝑑𝑎𝑡𝑎; 𝐶𝐴𝑆𝐶𝐴𝐷𝐸 𝑜𝑛𝑙𝑦 𝑓𝑜𝑟 𝑑𝑖𝑠𝑝𝑜𝑠𝑎𝑏𝑙𝑒 𝑐ℎ𝑖𝑙𝑑 𝑑𝑎𝑡𝑎
+
+Referential Integrity (RI) antee recall cheskondi:
+-𝗥𝗜 𝗲𝗻𝘀𝘂𝗿𝗲𝘀 𝗰𝗵𝗶𝗹𝗱 𝗿𝗼𝘄𝘀 𝗮𝗹𝘄𝗮𝘆𝘀 𝗿𝗲𝗳𝗲𝗿𝗲𝗻𝗰𝗲 𝘃𝗮𝗹𝗶𝗱 𝗽𝗮𝗿𝗲𝗻𝘁 𝗿𝗼𝘄𝘀
+- 𝗘𝗻𝗳𝗼𝗿𝗰𝗲𝗱 𝘂𝘀𝗶𝗻𝗴 𝗙𝗢𝗥𝗘𝗜𝗚𝗡 𝗞𝗘𝗬 𝗰𝗼𝗻𝘀𝘁𝗿𝗮𝗶𝗻𝘁𝘀
+- 𝗣𝗿𝗲𝘃𝗲𝗻𝘁𝘀 𝗼𝗿𝗽𝗵𝗮𝗻 𝗿𝗲𝗰𝗼𝗿𝗱𝘀, 𝗯𝗿𝗼𝗸𝗲𝗻 𝗿𝗲𝗹𝗮𝘁𝗶𝗼𝗻𝘀𝗵𝗶𝗽𝘀, 𝗮𝗻𝗱 𝘄𝗿𝗼𝗻𝗴 𝗿𝗲𝗽𝗼𝗿𝘁𝘀
+
+Parent vs Child (Mental Modelga gurthupetkondi)
+- 𝗣𝗮𝗿𝗲𝗻𝘁 𝘁𝗮𝗯𝗹𝗲 -> 𝗺𝗮𝗶𝗻 𝗲𝗻𝘁𝗶𝘁𝘆 (𝘂𝘀𝗲𝗿𝘀, 𝗽𝗿𝗼𝗱𝘂𝗰𝘁𝘀)
+- 𝗖𝗵𝗶𝗹𝗱 𝘁𝗮𝗯𝗹𝗲 -> 𝗱𝗲𝗽𝗲𝗻𝗱𝗲𝗻𝘁 𝗲𝗻𝘁𝗶𝘁𝘆 (𝗼𝗿𝗱𝗲𝗿𝘀, 𝗯𝗼𝗼𝗸𝗶𝗻𝗴𝘀)
+=> Child’s FK must match parent's PK
+
+On DELETE / On UPDATE:
+- 𝗖𝗔𝗦𝗖𝗔𝗗𝗘
+- 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
+- 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧
+- 𝗡𝗢 𝗔𝗖𝗧𝗜𝗢𝗡 (𝘀𝗮𝗺𝗲 𝗮𝘀 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟)
+SET DEFAULT exists in SQL standard but is not reliable in MySQL -> avoid
+
+What Each Action Means 
+ON DELETE CASCADE
+- 𝑫𝒆𝒍𝒆𝒕𝒆 𝒑𝒂𝒓𝒆𝒏𝒕 ⇒ 𝒅𝒆𝒍𝒆𝒕𝒆 𝒂𝒍𝒍 𝒄𝒉𝒊𝒍𝒅𝒓𝒆𝒏 (𝒅𝒂𝒕𝒂 𝒍𝒐𝒔𝒔 𝒓𝒊𝒔𝒌 𝒖𝒏𝒕𝒖𝒏𝒅𝒊𝒌𝒌𝒂𝒅𝒂)
+
+ON UPDATE CASCADE
+- 𝑈𝑝𝑑𝑎𝑡𝑒 𝑝𝑎𝑟𝑒𝑛𝑡 𝑃𝐾 ⇒ 𝑢𝑝𝑑𝑎𝑡𝑒 𝑐ℎ𝑖𝑙𝑑 𝐹𝐾𝑠 (𝑢𝑠𝑒𝑑 𝑓𝑜𝑟 𝑚𝑖𝑔𝑟𝑎𝑡𝑖𝑜𝑛𝑠)
+
+ON DELETE SET NULL
+- 𝐷𝑒𝑙𝑒𝑡𝑒 𝑝𝑎𝑟𝑒𝑛𝑡 ⇒ 𝑘𝑒𝑒𝑝 𝑐ℎ𝑖𝑙𝑑, 𝑠𝑒𝑡 𝐹𝐾 𝑡𝑜 𝑁𝑈𝐿𝐿 (𝑘𝑒𝑒𝑝 ℎ𝑖𝑠𝑡𝑜𝑟𝑦)
+
+ON UPDATE SET NULL
+- 𝑈𝑝𝑑𝑎𝑡𝑒 𝑝𝑎𝑟𝑒𝑛𝑡 𝑃𝐾 ⇒ 𝑐ℎ𝑖𝑙𝑑 𝐹𝐾 𝑏𝑒𝑐𝑜𝑚𝑒𝑠 𝑁𝑈𝐿𝐿 (𝑟𝑎𝑟𝑒, 𝑟𝑖𝑠𝑘𝑦)
+
+RESTRICT / NO ACTION
+- 𝐵𝑙𝑜𝑐𝑘 𝑝𝑎𝑟𝑒𝑛𝑡 𝑑𝑒𝑙𝑒𝑡𝑒/𝑢𝑝𝑑𝑎𝑡𝑒 𝑖𝑓 𝑐ℎ𝑖𝑙𝑑𝑟𝑒𝑛 𝑒𝑥𝑖𝑠𝑡 ( 𝑠𝑎𝑓𝑒𝑠𝑡)
