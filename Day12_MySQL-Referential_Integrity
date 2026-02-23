@@ -5,8 +5,8 @@ If a table says "this booking belongs to user_id = 10", then: User with user_id 
 Ex Chudu: If a row in Table B refers to a row in Table A, that row in Table A must exist
 
 𝐑𝐞𝐚𝐥-𝐋𝐢𝐟𝐞 𝐄𝐱𝐚𝐦𝐩𝐥𝐞:
-- You have a Users table
-- You have an Orders table
+- You have a Users(Parent) table
+- You have an Orders(Child) table
 - Every order must belong to a real user
 If an order says user_id = 10, then user with id = 10 must exist
 
@@ -78,12 +78,12 @@ Update Actions
 
 SPARK: If the parent row disappears or changes, should the child data still exist?
  If ques is this..                                   Choose This              
- Child data is meaningless without parent       | CASCADE              
+ If Child data is meaningless without parent       | CASCADE              
  Child data is important history                | SET NULL             
  Parent should never be deleted if child exists | RESTRICT / NO ACTION
 
 𝟏. 𝐎𝐍 𝐃𝐄𝐋𝐄𝐓𝐄 𝐂𝐀𝐒𝐂𝐀𝐃𝐄
-- Deletes all child rows automatically when parent is deleted
+- It Deletes all child rows automatically when parent is deleted
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE CASCADE;
 DELETE FROM users WHERE user_id = 10;
@@ -97,7 +97,7 @@ UPDATE users SET user_id = 200 WHERE user_id = 20;
 -- All related orders.user_id become 200
 
 𝟯. 𝗢𝗡 𝗗𝗘𝗟𝗘𝗧𝗘 𝗦𝗘𝗧 𝗡𝗨𝗟𝗟
-Sets child FK to NULL when parent is deleted
+It Sets child FK to NULL when parent is deleted
 FOREIGN KEY (user_id) REFERENCES users(user_id)
 ON DELETE SET NULL;
 DELETE FROM users WHERE user_id = 10;
