@@ -16,8 +16,8 @@ SPARK What to prepare
 - INNER JOIN -> only matching records
 - LEFT JOIN -> keep all from left table
 - RIGHT JOIN -> keep all from right table
-= FULL OUTER JOIN -> everything (MySQL via UNION as not supported in MySQL directly)
-- SELF JOIN - table joins with itself
+= FULL OUTER JOIN -> everything (MySQL supports UNION as not supported in MySQL directly)
+- SELF JOIN - table joins with itself for Hierarchy 
 - CROSS JOIN -> all combinations (use carefully SPARK)
 Multi-table joins
 Join conditions
@@ -29,7 +29,7 @@ Handling NULLs in joins
 
 Ex: Show only valid transactions (users who placed orders)
 𝖲𝖤𝖫𝖤𝖢𝖳 𝗎.𝗎𝗌𝖾𝗋_𝗂𝖽, 𝗎.𝗇𝖺𝗆𝖾, 𝗈.𝗈𝗋𝖽𝖾𝗋_𝗂𝖽, 𝗈.𝖺𝗆𝗈𝗎𝗇𝗍
-𝖥𝖱𝖮𝖬 𝗎𝗌𝖾𝗋𝗌 𝗎
+𝖥𝖱𝖮𝖬 𝗎𝗌𝖾𝗋𝗌 as 𝗎
 𝖨𝖭𝖭𝖤𝖱 𝖩𝖮𝖨𝖭 𝗈𝗋𝖽𝖾𝗋𝗌 𝗈
 𝖮𝖭 𝗎.𝗎𝗌𝖾𝗋_𝗂𝖽 = 𝗈.𝗎𝗌𝖾𝗋_𝗂𝖽;
 
@@ -40,7 +40,7 @@ JOIN orders o ON u.user_id = o.user_id;
 
 2. LEFT JOIN (All Left + Matching Right) - Find Missing Data – Super Important in Industry
 Returns all rows from left table and matching rows from right table
-If no match -> right columns = NULL
+If no match in right-> right columns = NULL
 
 𝗦𝗘𝗟𝗘𝗖𝗧 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱, 𝘂.𝗻𝗮𝗺𝗲, 𝗼.𝗼𝗿𝗱𝗲𝗿_𝗶𝗱
 𝗙𝗥𝗢𝗠 𝘂𝘀𝗲𝗿𝘀 𝘂
@@ -62,7 +62,7 @@ WHERE o.order_id IS NULL;
 𝗥𝗜𝗚𝗛𝗧 𝗝𝗢𝗜𝗡 𝗼𝗿𝗱𝗲𝗿𝘀 𝗼
 𝗢𝗡 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱 = 𝗼.𝘂𝘀𝗲𝗿_𝗶𝗱;
 
--- Same as swapping tables in LEFT JOIN. Prefer LEFT JOIN for clarity
+-- Same as swapping tables in LEFT JOIN but prefer LEFT JOIN for clarity
 SELECT u.user_id, u.name, o.order_id
 FROM users u
 RIGHT JOIN orders o ON u.user_id = o.user_id;
