@@ -2,6 +2,7 @@ MySQL JOINS start chedhaama:
 
 𝗔 𝗝𝗢𝗜𝗡 𝗰𝗼𝗺𝗯𝗶𝗻𝗲𝘀 𝗿𝗼𝘄𝘀 𝗳𝗿𝗼𝗺 𝘁𝘄𝗼 𝗼𝗿 𝗺𝗼𝗿𝗲 𝘁𝗮𝗯𝗹𝗲𝘀 𝘂𝘀𝗶𝗻𝗴 𝗮 𝗿𝗲𝗹𝗮𝘁𝗲𝗱 𝗰𝗼𝗹𝘂𝗺𝗻 (𝘂𝘀𝘂𝗮𝗹𝗹𝘆 𝗣𝗞 - 𝗙𝗞)
 -> Bring related data from another table using a common key
+-> combine facts from multiple tables to answer a business question
 
 real-Life example chudhama:
 -𝗨𝘀𝗲𝗿𝘀 𝘁𝗮𝗯𝗹𝗲 𝗵𝗮𝘀 𝘂𝘀𝗲𝗿 𝗶𝗻𝗳𝗼
@@ -22,7 +23,51 @@ SPARK What to prepare
 Multi-table joins
 Join conditions
 Handling NULLs in joins
+-> RIGHT JOIN exists, but in teams we prefer LEFT JOIN for readability and CROSS JOIN is rare; use carefully
 
+Oka example Teeskundhaama:employees and projects
+Production-Ready Tables ready chrdham:
+-- Employees master
+CREATE TABLE employees (
+  emp_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  team VARCHAR(50) NOT NULL,
+  joining_date DATE NOT NULL
+);
+
+-- Projects master
+CREATE TABLE projects (
+  project_id INT AUTO_INCREMENT PRIMARY KEY,
+  project_name VARCHAR(100) NOT NULL,
+  status VARCHAR(20) NOT NULL
+);
+
+-- Mapping table (many-to-many)
+CREATE TABLE employee_projects (
+  emp_id INT NOT NULL,
+  project_id INT NOT NULL,
+  role VARCHAR(50),
+  PRIMARY KEY (emp_id, project_id),
+  FOREIGN KEY (emp_id) REFERENCES employees(emp_id),
+  FOREIGN KEY (project_id) REFERENCES projects(project_id)
+);
+
+INSERT INTO employees (name, team, joining_date) VALUES
+('Aarav', 'Platform', '2024-01-10'),
+('Meera', 'Platform', '2024-03-12'),
+('Rohan', 'AI', '2023-11-01'),
+('Sara', 'QA', '2024-05-20');
+
+INSERT INTO projects (project_name, status) VALUES
+('Core API Revamp', 'ACTIVE'),
+('ML Recommendation', 'ACTIVE'),
+('Test Automation', 'ON_HOLD');
+
+INSERT INTO employee_projects (emp_id, project_id, role) VALUES
+(1, 1, 'Backend Dev'),
+(1, 2, 'API Integrator'),
+(2, 1, 'Frontend Dev'),
+(3, 2, 'ML Engineer');
 
 1. INNER JOIN [ Dashboards & Reports]
 - Returns only rows that match in both tables
@@ -38,6 +83,19 @@ FROM users u
 JOIN orders o ON u.user_id = o.user_id;
 -- Show me users who actually ordered something
 
+Ex: Show employees who are working on projects - INNER JOIN
+SELECT e.emp_id, e.name, p.project_name, ep.role
+FROM employees e
+JOIN employee_projects ep ON e.emp_id = ep.emp_id
+JOIN projects p ON ep.project_id = p.project_id; -- Only employees who are assigned to projects appear
+
+Ex: INNER JOIN —> Who is actively working on what??? chudhama
+SELECT e.emp_id, e.name, p.project_name, ep.role
+FROM employees e
+JOIN employee_projects ep ON e.emp_id = ep.emp_id
+JOIN projects p ON p.project_id = ep.project_id
+WHERE p.status = 'ACTIVE';
+
 2. LEFT JOIN (All Left + Matching Right) - Find Missing Data – Super Important in Industry
 Returns all rows from left table and matching rows from right table
 If no match in right-> right columns = NULL
@@ -47,12 +105,98 @@ If no match in right-> right columns = NULL
 𝗟𝗘𝗙𝗧 𝗝𝗢𝗜𝗡 𝗼𝗿𝗱𝗲𝗿𝘀 𝗼
 𝗢𝗡 𝘂.𝘂𝘀𝗲𝗿_𝗶𝗱 = 𝗼.𝘂𝘀𝗲𝗿_𝗶𝗱;
 
-Ex: Find users who never placed an order (activation metric)
+Ex: Find users who never placed an order (LEFT JOIN + NULL filter)
 SELECT u.user_id, u.name
 FROM users u
 LEFT JOIN orders o ON u.user_id = o.user_id
 WHERE o.order_id IS NULL;
  -- Show me users even if they have no orders
+
+Ex: Find orders that don’t have payments (Data quality check kosam)
+SELECT o.order_id, o.amount
+FROM orders o
+LEFT JOIN payments p ON o.order_id = p.order_id
+WHERE p.payment_id IS NULL;
+
+Ex: Revenue per user (JOIN + GROUP BY)
+SELECT u.user_id, u.name, SUM(o.amount) AS revenue
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+WHERE o.status = 'PAID'
+GROUP BY u.user_id, u.name
+ORDER BY revenue DESC;
+
+Ex: Users with failed payments (Multi-table JOIN vadthunaam)
+SELECT DISTINCT u.user_id, u.name
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+JOIN payments p ON o.order_id = p.order_id
+WHERE p.status = 'FAILED';
+
+LEFT JOIN Done Right (Avoid the #1 Fresher Bug)
+Wrong (turns LEFT into INNER):
+SELECT u.user_id
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+WHERE o.status = 'PAID';   -- filters NULLs -> becomes INNER JOIN
+
+Correct (filter in ON):
+SELECT u.user_id
+FROM users u
+LEFT JOIN orders o
+  ON u.user_id = o.user_id AND o.status = 'PAID';
+-- Filters for the right table go in ON for LEFT JOIN
+
+Ex: Find Employees Without Projects (LEFT JOIN + NULL filter) -> Who is on bench /unassigned
+SELECT e.emp_id, e.name
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+WHERE ep.project_id IS NULL;
+-- Resource planning, utilization reports
+
+Ex: Show all employees, even those not assigned to any project -- LEFT JOIN
+SELECT e.emp_id, e.name, p.project_name
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+LEFT JOIN projects p ON ep.project_id = p.project_id;
+
+# The "Production-Ready" Template
+SELECT
+  u.user_id,
+  u.name,
+  SUM(o.amount) AS revenue
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+LEFT JOIN payments p ON o.order_id = p.order_id
+WHERE o.created_at >= CURDATE() - INTERVAL 30 DAY
+GROUP BY u.user_id, u.name
+ORDER BY revenue DESC
+LIMIT 20;
+
+LEFT JOIN — Show everyone, even if unassigned
+SELECT e.emp_id, e.name, p.project_name
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+LEFT JOIN projects p ON p.project_id = ep.project_id;
+
+Ex: Antiloin (Projects with no engineers evarunnaroo telsukoo)
+SELECT p.project_id, p.project_name
+FROM projects p
+LEFT JOIN employee_projects ep ON p.project_id = ep.project_id
+WHERE ep.emp_id IS NULL;
+
+Ex: Aggregation with JOIN —> Team utilization elaa avuthundoo chudandi
+SELECT e.team, COUNT(DISTINCT ep.emp_id) AS engineers_assigned
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+GROUP BY e.team;
+
+Ex: Projects per employee
+SELECT e.emp_id, e.name, COUNT(ep.project_id) AS projects_count
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+GROUP BY e.emp_id, e.name
+ORDER BY projects_count DESC;
 
 3. 𝑹𝑰𝑮𝑯𝑻 𝑱𝑶𝑰𝑵 (𝑨𝒍𝒍 𝑹𝒊𝒈𝒉𝒕 + 𝑴𝒂𝒕𝒄𝒉𝒊𝒏𝒈 𝑳𝒆𝒇𝒕) - Rare, But Know It
 -> Returns all rows from right table and matching rows from left table
@@ -67,6 +211,13 @@ SELECT u.user_id, u.name, o.order_id
 FROM users u
 RIGHT JOIN orders o ON u.user_id = o.user_id;
 
+Ex: Show all projects, even if no one is assigned yet
+SELECT p.project_id, p.project_name, e.name
+FROM employees e
+RIGHT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+RIGHT JOIN projects p ON ep.project_id = p.project_id;
+-- In real teams, idi LEFT JOIN by swapping tables anamaata
+
 4. FULL OUTER JOIN (MySQL Workaround) - Audit & Reconciliation kosam
 -> Returns rows that exist in either table (matched + unmatched both sides)
 
@@ -80,6 +231,18 @@ FROM users u
 RIGHT JOIN orders o ON u.user_id = o.user_id;
 -- It's like show everything, matched or not
 
+-> FULL JOIN antee: Show everything: employees with projects + employees without projects + projects without employees
+SELECT e.emp_id, e.name, p.project_name
+FROM employees e
+LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+LEFT JOIN projects p ON ep.project_id = p.project_id
+UNION
+
+SELECT e.emp_id, e.name, p.project_name
+FROM employees e
+RIGHT JOIN employee_projects ep ON e.emp_id = ep.emp_id
+RIGHT JOIN projects p ON ep.project_id = p.project_id;
+
 5. SELF JOIN (Table Joined With Itself) - Hierarchies & Referrals
 -> Joins a table to itself using aliases
 
@@ -88,6 +251,11 @@ SELECT e.name AS employee, m.name AS manager
 FROM employees e
 LEFT JOIN employees m
   ON e.manager_id = m.emp_id;
+-> Manager–Employee Hierarchy – Optional Add-on
+If we extend employees: ALTER TABLE employees ADD COLUMN manager_id INT;
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.emp_id;
 
 6. CROSS JOIN (All Combinations anochu) - Matrices & Test Data
 -> Returns every combination of rows from both tables
