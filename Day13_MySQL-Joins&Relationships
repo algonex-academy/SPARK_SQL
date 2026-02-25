@@ -218,8 +218,8 @@ RIGHT JOIN employee_projects ep ON e.emp_id = ep.emp_id
 RIGHT JOIN projects p ON ep.project_id = p.project_id;
 -- In real teams, idi LEFT JOIN by swapping tables anamaata
 
-4. FULL OUTER JOIN (MySQL Workaround) - Audit & Reconciliation kosam
--> Returns rows that exist in either table (matched + unmatched both sides)
+4. FULL OUTER JOIN (MySQL Workaround) - Audit & Reconciliation(Restoring) kosam -Combination of LEFT + RIGHT JOIN 
+-> Returns rows that exist in either table (matched + unmatched rows both side tables)
 
 Ex: Find mismatches between systems (e.g., orders vs payments)
 SELECT u.user_id, u.name, o.order_id
@@ -229,15 +229,15 @@ UNION
 SELECT u.user_id, u.name, o.order_id
 FROM users u
 RIGHT JOIN orders o ON u.user_id = o.user_id;
--- It's like show everything, matched or not
+-- It's like show everything, matched or not(NULL's if not exists)
 
--> FULL JOIN antee: Show everything: employees with projects + employees without projects + projects without employees
+-> FULL JOIN antee: Show everything: 
+employees with projects + employees without projects + projects without employees
 SELECT e.emp_id, e.name, p.project_name
 FROM employees e
 LEFT JOIN employee_projects ep ON e.emp_id = ep.emp_id
 LEFT JOIN projects p ON ep.project_id = p.project_id
 UNION
-
 SELECT e.emp_id, e.name, p.project_name
 FROM employees e
 RIGHT JOIN employee_projects ep ON e.emp_id = ep.emp_id
