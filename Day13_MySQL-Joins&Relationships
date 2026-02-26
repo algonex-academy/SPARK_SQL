@@ -244,12 +244,12 @@ RIGHT JOIN employee_projects ep ON e.emp_id = ep.emp_id
 RIGHT JOIN projects p ON ep.project_id = p.project_id;
 
 5. SELF JOIN (Table Joined With Itself) - Hierarchies & Referrals
--> Joins a table to itself using aliases
+-> This Joins a table to itself using aliases(as)
 
 Ex: Employee–Manager mapping, referral chains
 SELECT e.name AS employee, m.name AS manager
 FROM employees e
-LEFT JOIN employees m
+SELF JOIN employees m
   ON e.manager_id = m.emp_id;
 -> Manager–Employee Hierarchy – Optional Add-on
 If we extend employees: ALTER TABLE employees ADD COLUMN manager_id INT;
@@ -257,17 +257,18 @@ SELECT e.name AS employee, m.name AS manager
 FROM employees e
 LEFT JOIN employees m ON e.manager_id = m.emp_id;
 
-6. CROSS JOIN (All Combinations anochu) - Matrices & Test Data
+6. CROSS JOIN (Specifies all Combinations anochu) - Matrices & Test Data (Cartesian Product of all rows)
 -> Returns every combination of rows from both tables
 
 Ex: Pricing combinations, feature experiments
 SELECT u.name, p.plan_name
 FROM users u
-CROSS JOIN plans p;
+CROSS JOIN plans p
+on u.user_id = p.user_id;
 -- Remember SPARK this CROSS JOIN Can create huge result sets chuskoni vaadali
 
 Few Questions for SPARK: 
-Ex: Find users with no orders
+Ex:1 Find users with no orders
 SELECT u.user_id, u.name
 FROM users u
 LEFT JOIN orders o ON u.user_id = o.user_id
