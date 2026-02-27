@@ -1,0 +1,127 @@
+Set Operations? - Okasaari mee school syllabus ki veldhaam
+
+"Set operations combine results of multiple SELECT queries"
+
+JOIN -> combine columns of two or  more tables 
+SET OPERATION  combine rows across multiple tables using Select
+
+If JOIN is horizontal merging -> Set operations are vertical stacking (One by one rows)
+
+Types of Set Operations in MySQL
+MySQL officially supports:
+1️.UNION
+2️. UNION ALL
+
+MySQL does NOT directly support:
+3️. INTERSECT 
+4️. EXCEPT 
+
+But we can simulate them (I'll show you SPARK how)
+
+employees(emp_id, name, team)
+contractors(contract_id, name, team)
+
+1. UNION
+This set operator Combines results of two queries and removes duplicates records
+Query: 
+SELECT name FROM employees
+UNION
+SELECT name FROM contractors;
+
+Usecases: - All unique names from both tables
+- Duplicate records/rows will automatically removed
+
+See this real Use Case 
+HR wants:
+Give me a list of all people working in the company (full-time + contractors)
+
+Important Rules:
+- Same number of columns (As it needs to combine within the same column in the stack(one-by-one way)
+- Same data types
+- Order of columns must match
+
+2. UNION ALL
+This set operator combines result  of rows but keeps duplicates
+
+SELECT name FROM employees
+UNION ALL
+SELECT name FROM contractors;
+
+- All rows stacked (Joined one -by-one)
+- No duplicate removal ikada
+
+Real Use Case:
+- Finance report where duplicates matter
+- Amazon return order will give a duplicate record again with same order_id
+
+Performance Insight Entantee
+- UNION ALL is faster than UNION
+(because it does not remove duplicates)
+
+In production, prefer UNION ALL unless deduplication is required
+
+3. INTERSECT (Not Supported Directly in MySQL remeber SPARK)
+Return only rows common in both queries.
+Example (conceptually):
+SELECT name FROM employees
+INTERSECT
+SELECT name FROM contractors; -- MySQL does not support this
+
+Then How to Simulate INTERSECT
+SELECT name FROM employees
+WHERE name IN (
+    SELECT name FROM contractors
+);
+
+OR idinaa
+
+SELECT e.name
+FROM employees e
+JOIN contractors c ON e.name = c.name;
+
+Real Use Case
+
+Find people who:
+Are both employees and contractors (data issue)
+Exist in two systems
+
+4️. EXCEPT (Not Supported Directly)
+- Return rows in first query but NOT in second
+SELECT name FROM employees
+EXCEPT
+SELECT name FROM contractors; -- Not supported in MySQL
+
+How to Simulate EXCEPT
+SELECT name
+FROM employees
+WHERE name NOT IN (
+    SELECT name FROM contractors
+);
+
+OR (safer versionloo):
+
+SELECT e.name
+FROM employees e
+LEFT JOIN contractors c
+  ON e.name = c.name
+WHERE c.name IS NULL; -- Find employees who are not contractors
+
+ Operation  Removes Duplicates?  Supported in MySQL     Performance chudandi
+ UNION      Yes               | Yes               | Slower      
+ UNION ALL  No                | Yes               | Faster      
+ INTERSECT  Yes               | No                | Simulated   
+ EXCEPT     Yes               | No                | Simulated   
+
+Common Fresher chesee Mistakes
+- Column count mismatch
+- Different data types
+-- Using UNION instead of UNION ALL
+- Using NOT IN with NULL values (dangerous)
+-- Forgetting ORDER BY applies to final result only
+
+
+Interview-Ready Answer
+
+MySQL supports UNION and UNION ALL for combining result sets
+UNION removes duplicates, while UNION ALL keeps them and performs better
+MySQL does not directly support INTERSECT and EXCEPT, but they can be simulated using JOINs or subqueries
