@@ -1,0 +1,143 @@
+COMPLETE MYSQL REVISION
+
+Basic Nundi - Intermediate - Advanced - Set Operations daaka) revise chedcham
+
+PHASE 1: VERY BASIC CONCEPTS
+1️. What is Database?
+- Organized collection of data
+- Stored in tables
+- Used by applications (apps, websites, dashboards)
+
+2️. What is MySQL?
+- Relational Database Management System (RDBMS) kadaa
+- Uses SQL language
+- Data stored in tables with rows & columns
+
+Basic Structure of Table
+CREATE TABLE employees (
+  emp_id INT PRIMARY KEY,
+  name VARCHAR(50),
+  salary DECIMAL(10,2)
+);
+
+Important Basics
+Rows = records
+Columns = attributes
+Data types matter
+NULL vs NOT NULL
+
+PHASE 2: DDL, DML, TCL, DCL
+1.DDL (Structure Commands)
+CREATE
+ALTER
+DROP
+TRUNCATE
+
+2. DML (Data Commands)
+- INSERT
+= UPDATE
+- DELETE
+- SELECT
+
+3️, TCL (Transaction Control)
+START TRANSACTION
+COMMIT
+ROLLBACK
+
+4️. DCL (Access Control)
+GRANT
+REVOKE
+
+PHASE 3: KEYS (Identity & Relationships)
+Typoe of Keys
+ Key            Purpose               
+ Primary Key   | Unique identity       
+ Foreign Key   | Connect tables        
+ Unique Key    | Prevent duplicates    
+ Composite Key | Multi-column identity 
+ Candidate Key | Possible PK           
+ Alternate Key | Candidate not chosen  
+ Super Key     | Any unique set        
+ Surrogate Key | Auto-generated ID     
+
+PHASE 4: CONSTRAINTS (Data Safety Layer)
+NOT NULL
+UNIQUE
+PRIMARY KEY
+FOREIGN KEY
+CHECK
+DEFAULT
+AUTO_INCREMENT
+
+Why Algonex SPARK Uses Them?
+Prevent bad data
+Protect database
+Enforce business rules
+
+PHASE 5: REFERENTIAL INTEGRITY
+Meeku telsindee kadaa:
+No orphan records
+Valid relationships
+Implemented using:
+
+FOREIGN KEY (emp_id) REFERENCES employees(emp_id)
+
+PHASE 6: CASCADE TYPES
+ON DELETE
+- CASCADE
+- SET NULL
+- RESTRICT
+- NO ACTION
+
+ON UPDATE
+- CASCADE
+- SET NULL
+- RESTRICT
+- NO ACTION
+
+PHASE 7: JOINS (Most Important Topic)
+Types of Joins chudu
+INNER JOIN
+LEFT JOIN
+RIGHT JOIN
+FULL JOIN (via UNION)
+SELF JOIN
+CROSS JOIN
+
+Find unmatched rows:
+LEFT JOIN ... WHERE table2.id IS NULL
+
+Aggregation with join: JOIN + GROUP BY
+Avoid this mistake: Filtering LEFT JOIN in WHERE (turns into INNER)
+
+PHASE 8: AGGREGATIONS & GROUPING
+Functions:
+COUNT
+SUM
+AVG
+MIN
+MAX
+
+With:
+GROUP BY
+HAVING
+
+SELECT team, COUNT(*) 
+FROM employees
+GROUP BY team;
+
+PHASE 10: SET OPERATIONS
+Supported in MySQL:
+UNION
+UNION ALL
+
+Not Directly Supported:
+INTERSECT
+EXCEPT
+
+Simulated using:
+JOIN
+IN
+NOT IN
+LEFT JOIN + IS NULL
+
