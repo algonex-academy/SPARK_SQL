@@ -1,0 +1,258 @@
+𝗦𝗤𝗟𝗔𝗜 𝗙𝗲𝗹𝗹𝗼𝘄𝘀𝗵𝗶𝗽 𝗠𝗼𝗱𝗲𝗹 𝗹𝗲𝗮𝗿𝗻𝗶𝗻𝗴: SQLloo oka safe sidee daatesaaru now coming to industry standards 
+(Algonex Fellowship – Hands-On Real-Time SQL Track)
+𝚃𝚑𝚒𝚗𝚔 𝚕𝚒𝚔𝚎 𝚋𝚊𝚌𝚔𝚎𝚗𝚍 𝚎𝚗𝚐𝚒𝚗𝚎𝚎𝚛𝚜
+𝚃𝚑𝚒𝚗𝚔 𝚕𝚒𝚔𝚎 𝚍𝚊𝚝𝚊 𝚊𝚗𝚊𝚕𝚢𝚜𝚝𝚜
+𝚃𝚑𝚒𝚗𝚔 𝚕𝚒𝚔𝚎 𝚙𝚛𝚘𝚍𝚞𝚌𝚝𝚒𝚘𝚗 𝚜𝚞𝚙𝚙𝚘𝚛𝚝 𝚎𝚗𝚐𝚒𝚗𝚎𝚎𝚛𝚜
+𝙳𝚎𝚋𝚞𝚐 𝚛𝚎𝚊𝚕 𝚜𝚢𝚜𝚝𝚎𝚖𝚜
+𝙾𝚙𝚝𝚒𝚖𝚒𝚣𝚎 𝚚𝚞𝚎𝚛𝚒𝚎𝚜
+𝙲𝚘𝚗𝚟𝚎𝚛𝚝 𝚜𝚕𝚘𝚠 𝚚𝚞𝚎𝚛𝚒𝚎𝚜 𝚒𝚗𝚝𝚘 𝚏𝚊𝚜𝚝 𝚘𝚗𝚎𝚜
+
+What business problem you're solving?
+𝗜𝗻 𝗰𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀, 𝘀𝘂𝗯𝗾𝘂𝗲𝗿𝗶𝗲𝘀 𝗮𝗿𝗲 𝘂𝘀𝗲𝗱 𝗳𝗼𝗿:
+- Performance dashboards
+- Data validation
+- Detecting anomalies
+- Filtering dynamic data
+- Replacing temporary variables
+- Conditional filtering
+- Security filtering
+
+𝗦𝗨𝗕𝗤𝗨𝗘𝗥𝗜𝗘𝗦 𝗜𝗡 𝗠𝗬𝗦𝗤𝗟
+
+A subquery is a query inside another query
+First get some data → then use it in main query
+SELECT ...
+FROM ...
+WHERE column IN (SELECT ...); -- The inner query runs first
+
+Sample Production Table
+employees(emp_id, name, team, salary)
+
+𝐓𝐲𝐩𝐞𝐬 𝐨𝐟 𝐒𝐮𝐛𝐪𝐮𝐞𝐫𝐢𝐞𝐬:
+There are 4 main types:
+𝟣️. 𝖲𝗂𝗇𝗀𝗅𝖾-𝗋𝗈𝗐 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
+𝟤️. 𝖬𝗎𝗅𝗍𝗂-𝗋𝗈𝗐 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
+𝟥️. 𝖢𝗈𝗋𝗋𝖾𝗅𝖺𝗍𝖾𝖽 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
+𝟦️. 𝖲𝗎𝖻𝗊𝗎𝖾𝗋𝗒 𝗂𝗇 𝖲𝖤𝖫𝖤𝖢𝖳 𝖼𝗅𝖺𝗎𝗌𝖾
+
+𝟭️. 𝗦𝗶𝗻𝗴𝗹𝗲-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆
+Returns only one value
+Example:
+Find employees earning more than average salary
+SELECT name, salary
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary) FROM employees
+);
+-- Compare values against benchmark (avg, max, min)
+
+𝟮️. 𝗠𝘂𝗹𝘁𝗶-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 -- 𝗥𝗲𝘁𝘂𝗿𝗻𝘀 𝗺𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝘃𝗮𝗹𝘂𝗲𝘀.
+SPARK Used with:
+- IN
+- ANY
+- ALL
+- EXISTS
+
+Example:
+Find employees from teams that have high salary (> 100000)
+SELECT name, team
+FROM employees
+WHERE team IN (
+    SELECT team
+    FROM employees
+    WHERE salary > 100000
+);
+
+ANY vs ALL (Interview Favorite idii)
+
+ANY - Condition true if matches any value.
+ALL - Condition true only if matches all values.
+
+SELECT name
+FROM employees
+WHERE salary > ALL (
+    SELECT salary FROM employees WHERE team = 'QA'
+); -- Employee salary is greater than every QA employee
+
+
+3️. Correlated Subquery (Advanced & Important idi collegelo eppudinaa vinnara? SPARK)
+This subquery depends on outer query row
+-> Runs once for every outer row
+
+Example:
+Find employees earning more than team average
+SELECT e.name, e.salary
+FROM employees e
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+    WHERE team = e.team
+);
+
+4️. Subquery in SELECT Clause
+Used to add derived column
+
+SELECT name,
+       (SELECT AVG(salary) FROM SPARK) AS company_avg
+FROM SPARK; -- Adds company average to each row
+
+3️. EXISTS vs IN
+IN - Compares values.
+EXISTS - Checks existence of rows.
+
+Example: SELECT name
+FROM employees e
+WHERE EXISTS (
+    SELECT 1
+    FROM employees
+    WHERE team = e.team
+      AND salary > 100000
+);
+Industrialoo ela vadthaaru:
+EXISTS is faster for large datasets
+Stops at first match
+
+Dangerous Trap idi chdu: NOT IN with NULL
+WHERE salary NOT IN (SELECT salary FROM employees);
+--  Endukantee If subquery returns NULL -> entire condition fails
+Idi better: WHERE NOT EXISTS (...)
+
+
+Konni SPARK Examples: 
+1️. Second Highest Salary
+SELECT MAX(salary)
+FROM SPARK_Fellow
+WHERE salary < (
+    SELECT MAX(salary) FROM employees
+);
+
+-- Find employees earning more than company average
+SELECT name, salary
+FROM employees
+WHERE salary > (
+    SELECT AVG(salary) FROM employees
+);
+Enduku antee: Compensation review, Bonus eligibility, HR analytics
+
+2. Find Duplicate Salaries
+SELECT salary
+FROM Algonex
+GROUP BY salary
+HAVING COUNT(*) > 1;
+
+Or using subquery ilaa kuda arayachu:
+SELECT *
+FROM employees
+WHERE salary IN (
+    SELECT salary
+    FROM employees
+    GROUP BY salary
+    HAVING COUNT(*) > 1
+);
+
+Fellowship Practice Schema/DB (Production-Oriented chedham ikanindi)
+employees(emp_id, name, team, salary, joining_date)
+projects(project_id, project_name, status)
+employee_projects(emp_id, project_id) -- Ee tables names mee istam jsut sample i'm telling
+
+Eee example: - IT services
+- Product teams
+- Resource allocation
+- Performance tracking
+
+Dynamic Group-Based Filtering:
+Find employees earning more than their team average (Ee compelxicityloo nerchukondii job pakkana kurchuntadii)
+SELECT e.name, e.salary
+FROM employees e
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees
+    WHERE team = e.team
+);
+-- Team performance analysis, Internal fairness reviewloonu vadthuntaam
+
+Spark Kosam: Data Integrity Checking
+-- Find employees assigned to projects that are ON_HOLD
+SELECT name
+FROM employees
+WHERE emp_id IN (
+    SELECT ep.emp_id
+    FROM employee_projects ep
+    JOIN projects p ON ep.project_id = p.project_id
+    WHERE p.status = 'ON_HOLD'
+);
+Enduku: Delivery risk report, Resource reallocation
+
+-- EXISTS vs IN (Idi Performance chespthundii)
+SELECT e.name
+FROM employees e
+WHERE EXISTS (
+    SELECT 1
+    FROM employee_projects ep
+    JOIN projects p ON ep.project_id = p.project_id
+    WHERE ep.emp_id = e.emp_id
+      AND p.status = 'ON_HOLD'
+);
+
+EXISTS -> when checking existence
+IN -> when subquery result is small
+JOIN -> when fetching related data
+NOT EXISTS -> instead of NOT IN
+
+-- Anti-Join Pattern (Bench people kosam)
+Find employees not assigned to any project
+SELECT name
+FROM employees e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM employee_projects ep
+    WHERE ep.emp_id = e.emp_id
+);
+Endukantee: Utilization reports, Bench tracking, SLA compliance
+
+-- 𝗥𝗲𝗽𝗹𝗮𝗰𝗲 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 𝘄𝗶𝘁𝗵 𝗝𝗢𝗜𝗡
+𝖲𝖤𝖫𝖤𝖢𝖳 𝗇𝖺𝗆𝖾
+𝖥𝖱𝖮𝖬 𝖾𝗆𝗉𝗅𝗈𝗒𝖾𝖾𝗌
+𝖶𝖧𝖤𝖱𝖤 𝖾𝗆𝗉_𝗂𝖽 𝖨𝖭 (
+𝖲𝖤𝖫𝖤𝖢𝖳 𝖾𝗆𝗉_𝗂𝖽 𝖥𝖱𝖮𝖬 𝖾𝗆𝗉𝗅𝗈𝗒𝖾𝖾_𝗉𝗋𝗈𝗃𝖾𝖼𝗍𝗌
+);
+
+𝗦𝗘𝗟𝗘𝗖𝗧 𝗗𝗜𝗦𝗧𝗜𝗡𝗖𝗧 𝗲.𝗻𝗮𝗺𝗲
+𝗙𝗥𝗢𝗠 𝗲𝗺𝗽𝗹𝗼𝘆𝗲𝗲𝘀 𝗲
+𝗝𝗢𝗜𝗡 𝗲𝗺𝗽𝗹𝗼𝘆𝗲𝗲_𝗽𝗿𝗼𝗷𝗲𝗰𝘁𝘀 𝗲𝗽
+𝗢𝗡 𝗲.𝗲𝗺𝗽_𝗶𝗱 = 𝗲𝗽.𝗲𝗺𝗽_𝗶𝗱; -- Comapare cheyandi ee 2 Queries
+
+𝗦𝗰𝗲𝗻𝗮𝗿𝗶𝗼: 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 𝘀𝘂𝗱𝗱𝗲𝗻𝗹𝘆 𝘀𝗹𝗼𝘄 𝗶𝗻 𝗽𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻
+Checklist chudalli:
+- Is it correlated?
+- Are columns indexed?
+- Can it be converted to JOIN?
+- Can EXISTS replace IN?
+- Does subquery return too many rows?
+
+
+OOOOKKK Ippudu Subquery vs Join chudham (Freshers confuse ayye part )
+ Subquery                      Join                   
+ Simple logic       | Better performance     
+ Readable           | More flexible          
+ Good for filtering | Better for multi-table 
+
+Memu prefer chesdi: Use JOIN when possible for better performance
+
+Performance Advice for SPARK:
+- Avoid correlated subqueries on large tables
+- Avoid NOT IN when NULL may exist
+- Prefer EXISTS over IN for large datasets
+- Use indexes
+- Check with EXPLAIN
+
+Interview rapidfire chudhamaa:
+- Difference between IN and EXISTS?
+- What is correlated subquery?
+- Why NOT IN fails with NULL?
+- Can subquery return multiple columns?
+- Subquery vs JOIN difference?
+- When to use ALL?
+- How to optimize correlated subquery?
+
+
