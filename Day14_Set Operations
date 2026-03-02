@@ -78,7 +78,7 @@ Then How to Simulate INTERSECT
 SELECT name FROM employees
 WHERE name IN (
     SELECT name FROM contractors
-);
+); -- Use EXISTS when dealing with large datasets
 
 OR idinaa
 
@@ -87,12 +87,11 @@ FROM employees e
 JOIN contractors c ON e.name = c.name;
 
 Real Use Case
-
 Find people who:
 Are both employees and contractors (data issue)
 Exist in two systems
 
-4️. EXCEPT (Not Supported Directly)
+4️. EXCEPT (Not Supported directly in MYSQL)
 - Return rows in first query but NOT appear in second query
 SELECT column FROM table1
 EXCEPT
@@ -102,14 +101,14 @@ SELECT name FROM employees
 EXCEPT
 SELECT name FROM contractors; -- Not supported in MySQL
 
-How to Simulate EXCEPT
+How to Simulate EXCEPT:
 SELECT name
 FROM employees
 WHERE name NOT IN (
     SELECT name FROM contractors
 );
 
-OR (safer versionloo):
+OR (safer in versionloo):
 
 SELECT e.name
 FROM employees e
@@ -127,12 +126,10 @@ Common Fresher chesee Mistakes
 - Column count mismatch
 - Different data types
 -- Using UNION instead of UNION ALL
-- Using NOT IN with NULL values (dangerous)
+- Using NOT IN with NULL values (dangerous) - Soo use LEFT JOIN with NULL condition 
 -- Forgetting ORDER BY applies to final result only
 
-
 Interview-Ready Answer
-
 MySQL supports UNION and UNION ALL for combining result sets
 UNION removes duplicates, while UNION ALL keeps them and performs better
 MySQL does not directly support INTERSECT and EXCEPT, but they can be simulated using JOINs or subqueries
