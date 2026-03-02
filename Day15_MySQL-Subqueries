@@ -12,18 +12,18 @@ What business problem you're solving?
 - Performance dashboards
 - Data validation
 - Detecting anomalies
-- Filtering dynamic data
 - Replacing temporary variables
 - Conditional filtering
 - Security filtering
+- Filtering dynamic data
 
 𝗦𝗨𝗕𝗤𝗨𝗘𝗥𝗜𝗘𝗦 𝗜𝗡 𝗠𝗬𝗦𝗤𝗟
-
 A subquery is a query inside another query
-First get some data → then use it in main query
+First get some data -> then use it in main query
 SELECT ...
 FROM ...
 WHERE column IN (SELECT ...); -- The inner query runs first
+- Inner Query/Nested query is also called Subquery
 
 Sample Production Table
 employees(emp_id, name, team, salary)
@@ -36,15 +36,15 @@ There are 4 main types:
 𝟦️. 𝖲𝗎𝖻𝗊𝗎𝖾𝗋𝗒 𝗂𝗇 𝖲𝖤𝖫𝖤𝖢𝖳 𝖼𝗅𝖺𝗎𝗌𝖾
 
 𝟭️. 𝗦𝗶𝗻𝗴𝗹𝗲-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆
-Returns only one value
+It Returns only one value
 Example:
-Find employees earning more than average salary
+-- Find employees earning more than average salary
 SELECT name, salary
 FROM employees
 WHERE salary > (
     SELECT AVG(salary) FROM employees
 );
--- Compare values against benchmark (avg, max, min)
+-- Compare values against benchmark(result of inner query) (avg, max, min)
 
 𝟮️. 𝗠𝘂𝗹𝘁𝗶-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 -- 𝗥𝗲𝘁𝘂𝗿𝗻𝘀 𝗺𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝘃𝗮𝗹𝘂𝗲𝘀.
 SPARK Used with:
