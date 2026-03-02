@@ -10,7 +10,7 @@ If JOIN is horizontal merging -> Set operations are vertical stacking (One by on
 Types of Set Operations in MySQL
 MySQL officially supports:
 1️.UNION
-2️. UNION ALL
+2️.UNION ALL
 
 MySQL does NOT directly support:
 3️. INTERSECT 
@@ -61,11 +61,18 @@ Performance Insight Entantee
 In production, prefer UNION ALL unless deduplication is required
 
 3. INTERSECT (Not Supported Directly in MySQL remeber SPARK)
-Return only rows common in both queries.
+In MySQL:- Does NOT support INTERSECT
+- Does NOT support EXCEPT (Unlike PostgreSQL, SQL Server, Oracle)
+
+Return only rows common/appear in both queries.
 Example (conceptually):
-SELECT name FROM employees
+SELECT column FROM table1
 INTERSECT
-SELECT name FROM contractors; -- MySQL does not support this
+SELECT column FROM table2;
+
+Ex: SELECT name FROM employees
+INTERSECT
+SELECT name FROM contractors; -- Give me common records (But MySQL does not support this )
 
 Then How to Simulate INTERSECT
 SELECT name FROM employees
@@ -86,7 +93,11 @@ Are both employees and contractors (data issue)
 Exist in two systems
 
 4️. EXCEPT (Not Supported Directly)
-- Return rows in first query but NOT in second
+- Return rows in first query but NOT appear in second query
+SELECT column FROM table1
+EXCEPT
+SELECT column FROM table2; -- Give me records in A but not in B
+
 SELECT name FROM employees
 EXCEPT
 SELECT name FROM contractors; -- Not supported in MySQL
