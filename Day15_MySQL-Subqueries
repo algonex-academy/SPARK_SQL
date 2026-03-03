@@ -8,9 +8,10 @@
 𝙲𝚘𝚗𝚟𝚎𝚛𝚝 𝚜𝚕𝚘𝚠 𝚚𝚞𝚎𝚛𝚒𝚎𝚜 𝚒𝚗𝚝𝚘 𝚏𝚊𝚜𝚝 𝚘𝚗𝚎𝚜
 
 What business problem you're solving?
-𝗜𝗻 𝗰𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀, 𝘀𝘂𝗯𝗾𝘂𝗲𝗿𝗶𝗲𝘀 𝗮𝗿𝗲 𝘂𝘀𝗲𝗱 𝗳𝗼𝗿:
-- Performance dashboards
+Forget definitions SPARK in 𝗰𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀, 𝘀𝘂𝗯𝗾𝘂𝗲𝗿𝗶𝗲𝘀 𝗮𝗿𝗲 𝘂𝘀𝗲𝗱 like:
+- Filtering dynamic conditions
 - Data validation
+- Comparing against aggregated values
 - Detecting anomalies
 - Replacing temporary variables
 - Conditional filtering
@@ -25,15 +26,27 @@ FROM ...
 WHERE column IN (SELECT ...); -- The inner query runs first
 - Inner Query/Nested query is also called Subquery
 
-Sample Production Table
-employees(emp_id, name, team, salary)
 
 𝐓𝐲𝐩𝐞𝐬 𝐨𝐟 𝐒𝐮𝐛𝐪𝐮𝐞𝐫𝐢𝐞𝐬:
-There are 4 main types:
+There are 3 main types:
 𝟣️. 𝖲𝗂𝗇𝗀𝗅𝖾-𝗋𝗈𝗐 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
 𝟤️. 𝖬𝗎𝗅𝗍𝗂-𝗋𝗈𝗐 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
 𝟥️. 𝖢𝗈𝗋𝗋𝖾𝗅𝖺𝗍𝖾𝖽 𝗌𝗎𝖻𝗊𝗎𝖾𝗋𝗒
 𝟦️. 𝖲𝗎𝖻𝗊𝗎𝖾𝗋𝗒 𝗂𝗇 𝖲𝖤𝖫𝖤𝖢𝖳 𝖼𝗅𝖺𝗎𝗌𝖾
+5. Subquery in FROM clause (Derived table)
+6. EXISTS / NOT EXISTS
+7. ANY / ALL
+8. Nested subqueries
+
+Sample Production Table teeskoo
+employees(emp_id, name, team, salary, joining_date)
+projects(project_id, project_name, status)
+employee_projects(emp_id, project_id)
+This resembles:
+- IT services
+- Product teams
+- Resource allocation
+- Internal dashboards
 
 𝟭️. 𝗦𝗶𝗻𝗴𝗹𝗲-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆
 It Returns only one value
@@ -45,8 +58,9 @@ WHERE salary > (
     SELECT AVG(salary) FROM employees
 );
 -- Compare values against benchmark(result of inner query) (avg, max, min)
+-- Bonus eligibility, Performance filtering, Compensation analysis kosam
 
-𝟮️. 𝗠𝘂𝗹𝘁𝗶-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 -- 𝗥𝗲𝘁𝘂𝗿𝗻𝘀 𝗺𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝘃𝗮𝗹𝘂𝗲𝘀.
+𝟮️. 𝗠𝘂𝗹𝘁𝗶-𝗥𝗼𝘄 𝗦𝘂𝗯𝗾𝘂𝗲𝗿𝘆 -- It r𝗲𝘁𝘂𝗿𝗻𝘀 𝗺𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝘃𝗮𝗹𝘂𝗲𝘀 as the inner query result and sends back to outer query
 SPARK Used with:
 - IN
 - ANY
@@ -62,22 +76,31 @@ WHERE team IN (
     FROM employees
     WHERE salary > 100000
 );
-
-ANY vs ALL (Interview Favorite idii)
-
-ANY - Condition true if matches any value.
-ALL - Condition true only if matches all values.
-
+Ex: Find employees working on ON_HOLD projects (Using IN chudandi)
 SELECT name
 FROM employees
+WHERE emp_id IN (
+    SELECT ep.emp_id
+    FROM employee_projects ep
+    JOIN projects p ON ep.project_id = p.project_id
+    WHERE p.status = 'ON_HOLD'
+);
+
+ANY vs ALL (Interview Favourite idii)
+ANY - Condition true if matches any value
+ALL - Condition true only if matches all values
+
+Ex: SELECT name
+FROM Algonex
 WHERE salary > ALL (
-    SELECT salary FROM employees WHERE team = 'QA'
-); -- Employee salary is greater than every QA employee
+    SELECT salary FROM Algonex WHERE team = 'SPARK'
+); -- Algonex salary is greater than every 'SPARK' employee
 
 
 3️. Correlated Subquery (Advanced & Important idi collegelo eppudinaa vinnara? SPARK)
 This subquery depends on outer query row
--> Runs once for every outer row
+-> Runs once for every outer row 
+-> This Co-related subquery is slow on large datasets
 
 Example:
 Find employees earning more than team average
@@ -88,13 +111,27 @@ WHERE salary > (
     FROM employees
     WHERE team = e.team
 );
+Uscase entantee: Team-level performance evaluation, Internal salary fairness audit
+-> Slow on large datasets, soo Optimize (Using JOIN)
 
-4️. Subquery in SELECT Clause
-Used to add derived column
+Optimized Query using JOIN: 
+SELECT e.name, e.salary
+FROM employees e
+JOIN (
+    SELECT team, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY team
+) as t ON e.team = t.team
+WHERE e.salary > t.avg_sal;
 
+4️. Subquery in SELECT Clause 
+Used to add derived column/ Used to add calculated column
+
+Ex: Show each employee along with company average salary
 SELECT name,
        (SELECT AVG(salary) FROM SPARK) AS company_avg
 FROM SPARK; -- Adds company average to each row
+
 
 3️. EXISTS vs IN
 IN - Compares values.
@@ -112,11 +149,53 @@ Industrialoo ela vadthaaru:
 EXISTS is faster for large datasets
 Stops at first match
 
-Dangerous Trap idi chdu: NOT IN with NULL
+Dangerous Trap idi chdu: NOT IN with NULL (Use NOT EXISTS always)
 WHERE salary NOT IN (SELECT salary FROM employees);
 --  Endukantee If subquery returns NULL -> entire condition fails
 Idi better: WHERE NOT EXISTS (...)
 
+5. Subquery in FROM Clause (Derived Table)
+Here the Subquery acts like temporary table
+Find teams where average salary > 80,000
+Exc: SELECT team
+FROM (
+    SELECT team, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY team
+) t
+WHERE avg_sal > 80000;
+
+6. EXISTS (Performance kosam chestham) - Efficient for large datasets (last time cheppukunnam kadaa)
+It Checks existence of rows -> Stops at first match
+Find employees assigned to ACTIVE projects
+SELECT e.name
+FROM Spark_employe e
+WHERE EXISTS (
+    SELECT 1
+    FROM Fellow_projects ep
+    JOIN projects p ON ep.project_id = p.project_id
+    WHERE ep.emp_id = e.emp_id
+      AND p.status = 'ACTIVE'
+);
+
+7. NOT EXISTS (Anti-Join Pattern)
+Find employees not assigned to any project
+SELECT name
+FROM employees e
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM employee_projects ep
+    WHERE ep.emp_id = e.emp_id
+);
+8/ ANY and ALL: Advanced comparison operators
+Find employees earning more than all QA team members
+SELECT name
+FROM employees
+WHERE salary > ALL (
+    SELECT salary
+    FROM employees
+    WHERE team = 'QA'
+); -- Salary is greater than every QA salary
 
 Konni SPARK Examples: 
 1️. Second Highest Salary
@@ -124,6 +203,28 @@ SELECT MAX(salary)
 FROM SPARK_Fellow
 WHERE salary < (
     SELECT MAX(salary) FROM employees
+);
+
+ANY: SELECT name
+FROM employees
+WHERE salary > ANY (
+    SELECT salary
+    FROM employees
+    WHERE team = 'QA'
+); --Salary is greater than at least one QA employee
+
+9. Nested Subqueries: Subquery inside another subquery
+Find employees working on projects that belong to teams with average salary > 90,000
+SELECT name
+FROM employees
+WHERE emp_id IN (
+    SELECT emp_id
+    FROM employee_projects
+    WHERE project_id IN (
+        SELECT project_id
+        FROM projects
+        WHERE status = 'ACTIVE'
+    )
 );
 
 -- Find employees earning more than company average
