@@ -125,19 +125,19 @@ JOIN (
 WHERE e.salary > t.avg_sal;
 
 4️. Subquery in SELECT Clause 
-Used to add derived column/ Used to add calculated column
+It is Used to add derived column/ to add calculated column
 
 Ex: Show each employee along with company average salary
 SELECT name,
-       (SELECT AVG(salary) FROM SPARK) AS company_avg
+       (SELECT AVG(salary) FROM SPARK) AS company_avg -- Best practice when you don't want to use Group by
 FROM SPARK; -- Adds company average to each row
 
-
 3️. EXISTS vs IN
-IN - Compares values.
-EXISTS - Checks existence of rows.
+IN - It Compares values across the same tables
+EXISTS - Checks existence of rows within similar tables
 
-Example: SELECT name
+Example: 
+SELECT name
 FROM employees e
 WHERE EXISTS (
     SELECT 1
@@ -146,18 +146,17 @@ WHERE EXISTS (
       AND salary > 100000
 );
 Industrialoo ela vadthaaru:
-EXISTS is faster for large datasets
-Stops at first match
+-> EXISTS is faster for large datasets and Stops at first match
 
-Dangerous Trap idi chdu: NOT IN with NULL (Use NOT EXISTS always)
+Dangerous Trap idi chdu: NOT IN with NULL [Use NOT EXISTS always]
 WHERE salary NOT IN (SELECT salary FROM employees);
 --  Endukantee If subquery returns NULL -> entire condition fails
-Idi better: WHERE NOT EXISTS (...)
+Better to go with: WHERE NOT EXISTS (...) ->  As it will give 1 for all NULL Values
 
-5. Subquery in FROM Clause (Derived Table)
-Here the Subquery acts like temporary table
-Find teams where average salary > 80,000
-Exc: SELECT team
+5. Subquery in 'FROM' Clause (Derived Table)
+This type of Subquery acts like a temporary table
+Ex: Find teams where average salary > 80,000
+SELECT team
 FROM (
     SELECT team, AVG(salary) AS avg_sal
     FROM employees
@@ -167,11 +166,13 @@ WHERE avg_sal > 80000;
 
 6. EXISTS (Performance kosam chestham) - Efficient for large datasets (last time cheppukunnam kadaa)
 It Checks existence of rows -> Stops at first match
-Find employees assigned to ACTIVE projects
+Ex: Find employees assigned to ACTIVE projects
 SELECT e.name
-FROM Spark_employe e
+FROM Spark_employee e
 WHERE EXISTS (
     SELECT 1
+/* For every row in the table, return the constant value 1 
+and the purpose is not to return data but just to check whether rows exist or not */
     FROM Fellow_projects ep
     JOIN projects p ON ep.project_id = p.project_id
     WHERE ep.emp_id = e.emp_id
@@ -179,7 +180,7 @@ WHERE EXISTS (
 );
 
 7. NOT EXISTS (Anti-Join Pattern)
-Find employees not assigned to any project
+Ex: Find employees not assigned to any project
 SELECT name
 FROM employees e
 WHERE NOT EXISTS (
@@ -214,7 +215,7 @@ WHERE salary > ANY (
 ); --Salary is greater than at least one QA employee
 
 9. Nested Subqueries: Subquery inside another subquery
-Find employees working on projects that belong to teams with average salary > 90,000
+Ex: Find employees working on projects that belong to teams with salary > 90,000
 SELECT name
 FROM employees
 WHERE emp_id IN (
@@ -223,7 +224,7 @@ WHERE emp_id IN (
     WHERE project_id IN (
         SELECT project_id
         FROM projects
-        WHERE status = 'ACTIVE'
+        WHERE status = 'ACTIVE' and salary > 90,000
     )
 );
 
