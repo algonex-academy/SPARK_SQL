@@ -168,8 +168,7 @@ FROM properties
 WHERE parking = 0;
 
 
--- 16. T
-op Expensive Localities
+-- 16. Top Expensive Localities
 SELECT locality,
 AVG(rent) AS avg_rent
 FROM properties
