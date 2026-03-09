@@ -1,0 +1,121 @@
+MySQL 𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀
+𝐴 𝑊𝑖𝑛𝑑𝑜𝑤 𝐹𝑢𝑛𝑐𝑡𝑖𝑜𝑛 𝑝𝑒𝑟𝑓𝑜𝑟𝑚𝑠 𝑐𝑎𝑙𝑐𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠 𝑎𝑐𝑟𝑜𝑠𝑠 𝑎 𝑠𝑒𝑡 𝑜𝑓 𝑟𝑜𝑤𝑠 𝑟𝑒𝑙𝑎𝑡𝑒𝑑 𝑡𝑜 𝑡ℎ𝑒 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑟𝑜𝑤 𝑤𝑖𝑡ℎ𝑜𝑢𝑡 𝑐𝑜𝑙𝑙𝑎𝑝𝑠𝑖𝑛𝑔 𝑟𝑜𝑤𝑠 𝑙𝑖𝑘𝑒 𝐺𝑅𝑂𝑈𝑃 𝐵𝑌
+
+𝗚𝗥𝗢𝗨𝗣 𝗕𝗬            𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻
+Reduced             | Same number of rows               
+Aggregation         | Analytics                         
+Avg salary per team | Compare each salary with team avg 
+
+𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗_𝚗𝚊𝚖𝚎() 𝙾𝚅𝙴𝚁 (
+𝙿𝙰𝚁𝚃𝙸𝚃𝙸𝙾𝙽 𝙱𝚈 𝚌𝚘𝚕𝚞𝚖𝚗
+𝙾𝚁𝙳𝙴𝚁 𝙱𝚈 𝚌𝚘𝚕𝚞𝚖𝚗
+)
+
+𝐂𝐨𝐦𝐩𝐨𝐧𝐞𝐧𝐭𝐬:
+• 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧_𝐧𝐚𝐦𝐞() - 𝐫𝐚𝐧𝐤𝐢𝐧𝐠 𝐨𝐫 𝐚𝐠𝐠𝐫𝐞𝐠𝐚𝐭𝐢𝐨𝐧
+• 𝐎𝐕𝐄𝐑() - 𝐝𝐞𝐟𝐢𝐧𝐞𝐬 \𝐰𝐢𝐧𝐝𝐨𝐰
+• 𝐏𝐀𝐑𝐓𝐈𝐓𝐈𝐎𝐍 𝐁𝐘 - 𝐠𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐥𝐢𝐤𝐞 𝐆𝐑𝐎𝐔𝐏 𝐁𝐘
+• 𝐎𝐑𝐃𝐄𝐑 𝐁𝐘 - 𝐫𝐨𝐰 𝐨𝐫𝐝𝐞𝐫𝐢𝐧𝐠
+
+1️. ROW_NUMBER()
+2️. RANK()
+3️. DENSE_RANK()
+4️. PARTITION BY
+5️. SUM() OVER()
+6️. AVG() OVER()
+7️. LAG()
+8️. LEAD()
+
+𝟭️. 𝗥𝗢𝗪_𝗡𝗨𝗠𝗕𝗘𝗥()
+- 𝗔𝘀𝘀𝗶𝗴𝗻𝘀 𝗮 𝘂𝗻𝗶𝗾𝘂𝗲 𝗿𝗮𝗻𝗸 𝘁𝗼 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄
+
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+𝗥𝗮𝗻𝗸 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝗯𝘆 𝗿𝗲𝗻𝘁
+SELECT property_id,
+       locality,
+       rent,
+       ROW_NUMBER() OVER (ORDER BY rent DESC) AS rent_rank
+FROM properties; -- Real estate platforms showing top expensive properties
+
+𝟐️. 𝐑𝐀𝐍𝐊()
+-- 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤
+SELECT property_id,
+       rent,
+       RANK() OVER (ORDER BY rent DESC) AS rank_rent
+FROM properties;
+ rent    rank 
+ 100000 | 1    
+ 100000 | 1    
+ 90000  | 3    
+
+𝟯️. 𝗗𝗘𝗡𝗦𝗘_𝗥𝗔𝗡𝗞()
+
+- 𝗟𝗶𝗸𝗲 𝗿𝗮𝗻𝗸 𝗯𝘂𝘁 𝗻𝗼 𝗴𝗮𝗽𝘀
+𝑆𝐸𝐿𝐸𝐶𝑇 𝑝𝑟𝑜𝑝𝑒𝑟𝑡𝑦_𝑖𝑑,
+𝑟𝑒𝑛𝑡,
+𝐷𝐸𝑁𝑆𝐸_𝑅𝐴𝑁𝐾() 𝑂𝑉𝐸𝑅 (𝑂𝑅𝐷𝐸𝑅 𝐵𝑌 𝑟𝑒𝑛𝑡 𝐷𝐸𝑆𝐶) 𝐴𝑆 𝑑𝑒𝑛𝑠𝑒_𝑟𝑎𝑛𝑘_𝑟𝑒𝑛𝑡
+𝐹𝑅𝑂𝑀 𝑝𝑟𝑜𝑝𝑒𝑟𝑡𝑖𝑒𝑠;
+ rent   | dense_rank 
+ 100000 | 1          
+ 100000 | 1          
+ 90000  | 2          
+
+𝟰️. 𝗣𝗔𝗥𝗧𝗜𝗧𝗜𝗢𝗡 𝗕𝗬
+-- 𝗪𝗼𝗿𝗸𝘀 𝗹𝗶𝗸𝗲 𝗴𝗿𝗼𝘂𝗽𝗶𝗻𝗴 𝗶𝗻𝘀𝗶𝗱𝗲 𝘄𝗶𝗻𝗱𝗼𝘄 𝗳𝘂𝗻𝗰𝘁𝗶𝗼𝗻
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲: 𝗥𝗮𝗻𝗸 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝘄𝗶𝘁𝗵𝗶𝗻 𝗲𝗮𝗰𝗵 𝗹𝗼𝗰𝗮𝗹𝗶𝘁𝘆
+SELECT property_id,
+       locality,
+       rent,
+       ROW_NUMBER() OVER (
+           PARTITION BY locality
+           ORDER BY rent DESC
+       ) AS rank_in_locality
+FROM properties; -- Find top property in each locality
+
+𝟓️. 𝐒𝐔𝐌() 𝐎𝐕𝐄𝐑()
+-- 𝐑𝐮𝐧𝐧𝐢𝐧𝐠 𝐭𝐨𝐭𝐚𝐥 𝐨𝐫 𝐜𝐮𝐦𝐮𝐥𝐚𝐭𝐢𝐯𝐞 𝐦𝐞𝐭𝐫𝐢𝐜𝐬
+SELECT property_id,
+       rent,
+       SUM(rent) OVER (ORDER BY rent) AS running_rent_total
+FROM properties;
+
+𝟲️. 𝗔𝗩𝗚() 𝗢𝗩𝗘𝗥()
+-- 𝗖𝗼𝗺𝗽𝗮𝗿𝗲 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄 𝘄𝗶𝘁𝗵 𝗮𝘃𝗲𝗿𝗮𝗴𝗲
+SELECT property_id,
+       locality,
+       rent,
+       AVG(rent) OVER (PARTITION BY locality) AS locality_avg_rent
+FROM properties; -- Find properties above locality average rent
+
+𝟳️．𝗟𝗔𝗚()
+Access previous row value
+SELECT property_id,
+       rent,
+       LAG(rent) OVER (ORDER BY rent) AS previous_rent
+FROM properties;
+
+Use case:
+Compare rent differences
+
+８️。 ＬＥＡＤ（）
+Access next row value
+SELECT property_id,
+       rent,
+       LEAD(rent) OVER (ORDER BY rent) AS next_rent
+FROM propertie
+Use case: Trend comparison
+
+-- Find top 3 expensive properties per locality
+Projec:t Example
+SELECT *
+FROM (
+    SELECT property_id,
+           locality,
+           rent,
+           ROW_NUMBER() OVER (
+               PARTITION BY locality
+               ORDER BY rent DESC
+           ) AS rank_local
+    FROM properties
+) t
+WHERE rank_local <= 3;
