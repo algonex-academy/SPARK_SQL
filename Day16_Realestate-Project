@@ -1,0 +1,198 @@
+real_estate_project on 5 datasets
+
+Columns in the dataset
+property_id
+type
+activation_date
+bathroom
+floor
+total_floor
+furnishing
+gym
+latitude
+longitude
+lease_type
+lift
+locality
+parking
+property_age
+property_size
+swimming_pool
+pin_code
+rent
+deposit
+building_type
+
+Real Project Architecture
+We will build a Rental Property Analytics Database
+
+Tables
+1️. properties
+2️. amenities
+3️. locations
+4️ rent_analysis
+5️ property_features
+
+But your dataset currently is a denormalized table
+So first step is data modeling
+
+CREATE DATABASE real_estate_project;
+USE real_estate_project;
+
+CREATE TABLE properties (
+property_id VARCHAR(50) PRIMARY KEY,
+type VARCHAR(20),
+activation_date DATE,
+bathroom INT,
+floor INT,
+total_floor INT,
+furnishing VARCHAR(20),
+gym BOOLEAN,
+latitude FLOAT,
+longitude FLOAT,
+lease_type VARCHAR(20),
+lift BOOLEAN,
+locality VARCHAR(100),
+parking BOOLEAN,
+property_age INT,
+property_size INT,
+swimming_pool BOOLEAN,
+pin_code INT,
+rent INT,
+deposit INT,
+building_type VARCHAR(50)
+);
+
+SELECT * FROM properties;
+-- 1. Filtering (Find all 2BHK apartments)
+SELECT property_id, locality, rent
+FROM properties
+WHERE type = 'BHK2';
+
+-- 2. Sorting
+SELECT locality, rent
+FROM properties
+ORDER BY rent DESC;
+
+-- 3. Limit
+SELECT * 
+FROM properties
+LIMIT 10;
+
+Aggregations (Real anlytics chedhma)
+-- 4. Average Rent by Locality
+SELECT locality,
+AVG(rent) AS avg_rent
+FROM properties
+GROUP BY locality;
+
+--5. Maximum Rent
+SELECT MAX(rent)
+FROM properties;
+
+-- 6. Properties Count per Area
+SELECT locality,
+COUNT(*) AS total_properties
+FROM properties
+GROUP BY locality;
+
+Next Data Quality checks  cheyali
+-- 7. Find missing values
+SELECT *
+FROM properties
+WHERE rent IS NULL;
+
+-- 8. Detect Duplicate Properties
+SELECT property_id, COUNT(*)
+FROM properties
+GROUP BY property_id
+HAVING COUNT(*) > 1;
+
+Subqueries chedhama inka
+-- 9.Find properties with rent above average
+SELECT property_id, locality, rent
+FROM properties
+WHERE rent >
+(
+SELECT AVG(rent)
+FROM properties
+);
+
+-- 10. Find localities with above average rent
+SELECT locality
+FROM properties
+GROUP BY locality
+HAVING AVG(rent) >
+(
+SELECT AVG(rent)
+FROM properties
+);
+
+Correlated Subquery
+-- 11. Find properties with rent higher than their locality average
+SELECT p.property_id, p.locality, p.rent
+FROM properties p
+WHERE rent >
+(
+SELECT AVG(rent)
+FROM properties
+WHERE locality = p.locality
+);
+
+Self Join
+-- 12. Find properties in the same locality with higher rent
+SELECT p1.property_id, p2.property_id
+FROM properties p1
+JOIN properties p2
+ON p1.locality = p2.locality
+AND p1.rent < p2.rent;
+
+Set Operations
+UNION exmple chudandi
+-- 13. Combine properties with high rent and high deposit
+SELECT property_id FROM properties WHERE rent > 50000
+UNION
+SELECT property_id FROM properties WHERE deposit > 200000;
+
+Simulating INTERSECT
+-- 14. Properties with high rent AND swimming pool
+SELECT property_id
+FROM properties
+WHERE rent > 50000
+AND swimming_pool = 1;
+
+Simulating EXCEPT
+-- 15. Properties without parking
+SELECT property_id
+FROM properties
+WHERE parking = 0;
+
+
+-- 16. T
+op Expensive Localities
+SELECT locality,
+AVG(rent) AS avg_rent
+FROM properties
+GROUP BY locality
+ORDER BY avg_rent DESC
+LIMIT 10;
+
+-- 17. Furnished vs Unfurnished Rent Comparison
+SELECT furnishing,
+AVG(rent)
+FROM properties
+GROUP BY furnishing;
+
+-- 17. Amenities Impact on Rent
+SELECT gym,
+AVG(rent)
+FROM properties
+GROUP BY gym;
+
+-- 18 Performance Optimization cheyadaaniki
+Create indexes:
+CREATE INDEX idx_locality
+ON properties(locality);
+
+CREATE INDEX idx_rent
+ON properties(rent);
