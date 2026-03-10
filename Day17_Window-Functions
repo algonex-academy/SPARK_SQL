@@ -17,6 +17,12 @@ Avg salary per team | Compare each salary with team avg
 • 𝐏𝐀𝐑𝐓𝐈𝐓𝐈𝐎𝐍 𝐁𝐘 - 𝐠𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐥𝐢𝐤𝐞 𝐆𝐑𝐎𝐔𝐏 𝐁𝐘
 • 𝐎𝐑𝐃𝐄𝐑 𝐁𝐘 - 𝐫𝐨𝐰 𝐨𝐫𝐝𝐞𝐫𝐢𝐧𝐠
 
+ Each Part                Meaning chudandi                                      
+ function_name() | Window function (ROW_NUMBER, RANK, SUM etc 
+ OVER()          | Defines the window                           
+ PARTITION BY    | Splits rows into groups                      
+ ORDER BY        | Defines order inside window                  
+
 1️. ROW_NUMBER()
 2️. RANK()
 3️. DENSE_RANK()
@@ -28,7 +34,8 @@ Avg salary per team | Compare each salary with team avg
 
 𝟭️. 𝗥𝗢𝗪_𝗡𝗨𝗠𝗕𝗘𝗥()
 - 𝗔𝘀𝘀𝗶𝗴𝗻𝘀 𝗮 𝘂𝗻𝗶𝗾𝘂𝗲 𝗿𝗮𝗻𝗸 𝘁𝗼 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄
-
+ROW_NUMBER() assigns a unique sequential number to each row within a window
+-> Even if two rows have the same values, the numbers will still be unique
 𝗘𝘅𝗮𝗺𝗽𝗹𝗲
 𝗥𝗮𝗻𝗸 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝗯𝘆 𝗿𝗲𝗻𝘁
 SELECT property_id,
@@ -36,6 +43,8 @@ SELECT property_id,
        rent,
        ROW_NUMBER() OVER (ORDER BY rent DESC) AS rent_rank
 FROM properties; -- Real estate platforms showing top expensive properties
+
+
 
 𝟐️. 𝐑𝐀𝐍𝐊()
 -- 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤
