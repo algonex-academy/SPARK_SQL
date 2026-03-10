@@ -1,21 +1,31 @@
 MySQL 𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀
 𝐴 𝑊𝑖𝑛𝑑𝑜𝑤 𝐹𝑢𝑛𝑐𝑡𝑖𝑜𝑛 𝑝𝑒𝑟𝑓𝑜𝑟𝑚𝑠 𝑐𝑎𝑙𝑐𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠 𝑎𝑐𝑟𝑜𝑠𝑠 𝑎 𝑠𝑒𝑡 𝑜𝑓 𝑟𝑜𝑤𝑠 𝑟𝑒𝑙𝑎𝑡𝑒𝑑 𝑡𝑜 𝑡ℎ𝑒 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑟𝑜𝑤 𝑤𝑖𝑡ℎ𝑜𝑢𝑡 𝑐𝑜𝑙𝑙𝑎𝑝𝑠𝑖𝑛𝑔 𝑟𝑜𝑤𝑠 𝑙𝑖𝑘𝑒 𝐺𝑅𝑂𝑈𝑃 𝐵𝑌
 
+A Window Function performs calculations across a set of rows (a “window”) related to the current row, without collapsing the result set like aggregate functions (e.g., SUM, AVG) do with GROUP BY
+They are used for advanced analytics, such as rankings, running totals, or moving averages
+
 𝗚𝗥𝗢𝗨𝗣 𝗕𝗬                          𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻
 Reduced rows into one          | Same number of rows               
 Aggregation on multiple rows   | Analytics                         
 Ex: Avg salary per team        | Ex: Compare each salary with team avg 
 
+WINDOW Fuctions STRUCTURE
 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗_𝚗𝚊𝚖𝚎() 𝙾𝚅𝙴𝚁 (
 𝙿𝙰𝚁𝚃𝙸𝚃𝙸𝙾𝙽 𝙱𝚈 𝚌𝚘𝚕𝚞𝚖𝚗
 𝙾𝚁𝙳𝙴𝚁 𝙱𝚈 𝚌𝚘𝚕𝚞𝚖𝚗
 )
 
+SELECT column1,
+window_function() OVER (PARTITION BY column2 ORDER BY column3) AS alias 
+FROM table_name;
+
 𝐂𝐨𝐦𝐩𝐨𝐧𝐞𝐧𝐭𝐬:
-• 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧_𝐧𝐚𝐦𝐞() - 𝐫𝐚𝐧𝐤𝐢𝐧𝐠 𝐨𝐫 𝐚𝐠𝐠𝐫𝐞𝐠𝐚𝐭𝐢𝐨𝐧
-• 𝐎𝐕𝐄𝐑() - 𝐝𝐞𝐟𝐢𝐧𝐞𝐬 \𝐰𝐢𝐧𝐝𝐨𝐰 for particular rows to include
-• 𝐏𝐀𝐑𝐓𝐈𝐓𝐈𝐎𝐍 𝐁𝐘 - 𝐠𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐥𝐢𝐤𝐞 𝐆𝐑𝐎𝐔𝐏 𝐁𝐘
-• 𝐎𝐑𝐃𝐄𝐑 𝐁𝐘 - 𝐫𝐨𝐰 𝐨𝐫𝐝𝐞𝐫𝐢𝐧𝐠
+• 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧_𝐧𝐚𝐦𝐞() - 𝐫𝐚𝐧𝐤𝐢𝐧𝐠 𝐨𝐫 𝐚𝐠𝐠𝐫𝐞𝐠𝐚𝐭𝐢𝐨𝐧 (Includes ROW_NUMBER(), RANK(), DENSE_RANK(), SUM(), AVG(), LAG(), LEAD())
+• 𝐎𝐕𝐄𝐑() - 𝐝𝐞𝐟𝐢𝐧𝐞𝐬 𝐰𝐢𝐧𝐝𝐨𝐰 for particular rows to include
+• 𝐏𝐀𝐑𝐓𝐈𝐓𝐈𝐎𝐍 𝐁𝐘 - 𝐠𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐥𝐢𝐤𝐞 𝐆𝐑𝐎𝐔𝐏 𝐁𝐘-> Divides the data into groups (like GROUP BY, but keeps all rows)
+• 𝐎𝐑𝐃𝐄𝐑 𝐁𝐘 - 𝐫𝐨𝐰 𝐨𝐫𝐝𝐞𝐫𝐢𝐧𝐠 ante it Specifies the order of rows within each partition
+- Frame Specification: 
+Defines the subset of rows in the window (e.g., ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
 
  Each Part                Meaning chudandi                                      
  function_name() | Window function (ROW_NUMBER, RANK, SUM etc 
@@ -23,15 +33,18 @@ Ex: Avg salary per team        | Ex: Compare each salary with team avg
  PARTITION BY    | Splits rows into groups                      
  ORDER BY        | Defines order inside window                  
 
-1️. ROW_NUMBER()
-2️. RANK()
-3️. DENSE_RANK()
-4️. PARTITION BY
-5️. SUM() OVER()
-6️. AVG() OVER()
-7️. LAG()
-8️. LEAD()
 
+Types of Window Functions
+1. Ranking Functions(ROW_NUMBER(),RANK(),DENSE_RANK())
+2. Aggregate Window Functions (SUM() OVER(), AVG() OVER(), MAX(),..)
+3. Value Window Functions (LEAD(), LAG() )
+4. Frame- Based Window Functions (Defines the subset of rows in the window (e.g., ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW))
+
+
+Ranking Functions: (ROW_NUMBER(),RANK(),DENSE_RANK())
+Assign ranks or numbers to rows within a partition
+
+Types CHUDHAAMA:
 𝟭️. 𝗥𝗢𝗪_𝗡𝗨𝗠𝗕𝗘𝗥()
 - 𝗔𝘀𝘀𝗶𝗴𝗻𝘀 𝗮 𝘂𝗻𝗶𝗾𝘂𝗲 𝗿𝗮𝗻𝗸 𝘁𝗼 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄
 ROW_NUMBER() assigns a unique sequential number to each row within a window
@@ -44,15 +57,34 @@ SELECT property_id,
        ROW_NUMBER() OVER (ORDER BY rent DESC) AS rent_rank
 FROM properties; -- Real estate platforms showing top expensive properties
 
-property_id  | locality   | rent   rent__rank
+property_id   locality       rent   rent_rank
 101            Marathahalli   50k    1
-102            Somala         40k    2
+102            Somala         50k    2
 103             KSR           32k    3
 104             DMM           23k    4 
+-- Notice SPARK, two rows with same rent still get different numbers
+
+Real Industry Use
+- Ranking products by sales cheyochu
+- Leaderboards (Assume JEE Mains example)
+- Finding top records
+
+OOK Example chudu: Top 5 expensive properties
+SELECT *
+FROM (
+    SELECT property_id,
+           rent,
+           ROW_NUMBER() OVER (ORDER BY rent DESC) AS rank_rent
+    FROM properties
+) t
+WHERE rank_rent <= 5;
 
 𝟐️. 𝐑𝐀𝐍𝐊()
--- 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬/Same rows 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤
-SELECT property_id,
+-> 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬/Same rows 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤 ( RANK() assigns the same rank for ties, but skips numbers afterward)
+Assigns ranks, with ties(same row values) getting the same rank and gaps in numbering
+Example case ardamcheskoo: If 10 students got 100/100 will give the Rank 1 only for them and rest ranks or numbers followed
+
+Ex: SELECT property_id,
        rent,
        RANK() OVER (ORDER BY rent DESC) AS rank_rent
 FROM properties;
@@ -60,9 +92,11 @@ FROM properties;
     1              30k          1    
     2              30k          1    
     3              10k          3    
+Heyy SPARK did you noticed rank 2 is skipped
 
 𝟯️. 𝗗𝗘𝗡𝗦𝗘_𝗥𝗔𝗡𝗞()
 𝗟𝗶𝗸𝗲 𝗿𝗮𝗻𝗸 𝗯𝘂𝘁 𝗻𝗼 𝗴𝗮𝗽𝘀
+-> Similar to RANK(), but no gaps in numbering for ties(same row values)
 
 Ex: getting continuos ranks for each group/similar rents
 𝑆𝐸𝐿𝐸𝐶𝑇 𝑝𝑟𝑜𝑝𝑒𝑟𝑡𝑦_𝑖𝑑,
@@ -72,12 +106,16 @@ Ex: getting continuos ranks for each group/similar rents
  property_id       rent        rank_rent 
     1              30k          1    
     2              30k          1    
-    3              10k          2            
+    3              10k          2      
+-- Better for top N queries where ranking gaps are not desired
 
 𝟰️. 𝗣𝗔𝗥𝗧𝗜𝗧𝗜𝗢𝗡 𝗕𝗬
 -- 𝗪𝗼𝗿𝗸𝘀 𝗹𝗶𝗸𝗲 𝗴𝗿𝗼𝘂𝗽𝗶𝗻𝗴 𝗶𝗻𝘀𝗶𝗱𝗲 𝘄𝗶𝗻𝗱𝗼𝘄 𝗳𝘂𝗻𝗰𝘁𝗶𝗼𝗻 result
 => Partition is nothing but dividing only but after divding all the similar rows/values
 will become a group of particular window function result
+
+or UNDERSTAND THIS: PARTITION BY divides the data into groups (windows) before applying the function
+It is similar to GROUP BY but does not collapse rows (ARDAMINDAA spark)
 𝗘𝘅𝗮𝗺𝗽𝗹𝗲: 𝗥𝗮𝗻𝗸 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝘄𝗶𝘁𝗵𝗶𝗻 𝗲𝗮𝗰𝗵 𝗹𝗼𝗰𝗮𝗹𝗶𝘁𝘆
 SELECT property_id,
        locality,
@@ -87,42 +125,117 @@ SELECT property_id,
            ORDER BY rent DESC
        ) AS rank_in_locality
 FROM properties; -- Find top property in each locality
+Output Chudraa: 
+ locality     property  rent   rank 
+ Whitefield   P101      80000   1    
+ Whitefield   P205      70000   2    
+ Indiranagar  P330      90000   1    
+
+ALGONEX Interns USECASE:
+Top products per category
+Top employees per department
+Top properties per location
+
+2. Aggregate Window Functions:
+Which Perform aggregations (e.g., SUM, AVG, COUNT) OVER a window)
 
 𝟓️. 𝐒𝐔𝐌() 𝐎𝐕𝐄𝐑()
--- 𝐑𝐮𝐧𝐧𝐢𝐧𝐠 𝐭𝐨𝐭𝐚𝐥 𝐨𝐫 𝐜𝐮𝐦𝐮𝐥𝐚𝐭𝐢𝐯𝐞 𝐦𝐞𝐭𝐫𝐢𝐜𝐬
+-- 𝐑𝐮𝐧𝐧𝐢𝐧𝐠 𝐭𝐨𝐭𝐚𝐥 𝐨𝐫 𝐜𝐮𝐦𝐮𝐥𝐚𝐭𝐢𝐯𝐞 𝐦𝐞𝐭𝐫𝐢𝐜𝐬 across rows
 SELECT property_id,
        rent,
        SUM(rent) OVER (ORDER BY rent) AS running_rent_total
 FROM properties;
 
+ property  rent   running_total 
+ P101      20000    20000         
+ P205      25000    45000         
+ P330      30000    75000         
+
+- Revenue accumulation
+- Financial reporting
+- Sales trends 
 𝟲️. 𝗔𝗩𝗚() 𝗢𝗩𝗘𝗥()
--- 𝗖𝗼𝗺𝗽𝗮𝗿𝗲 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄 𝘄𝗶𝘁𝗵 𝗮𝘃𝗲𝗿𝗮𝗴𝗲
+-- 𝗖𝗼𝗺𝗽𝗮𝗿𝗲 𝗲𝗮𝗰𝗵 𝗿𝗼𝘄 𝘄𝗶𝘁𝗵 𝗮𝘃𝗲𝗿𝗮𝗴𝗲 / Calculates average while keeping all rows visible unchi
+Ex: Compare rent with locality average
 SELECT property_id,
        locality,
        rent,
        AVG(rent) OVER (PARTITION BY locality) AS locality_avg_rent
 FROM properties; -- Find properties above locality average rent
 
+ locality    rent   locality_avg 
+ Whitefield  50000  42000        
+ Whitefield  34000  42000        
+
+- Salary vs department average
+- Property vs area pricing
+- Customer spending vs segment average
+
+3. Value Window Functions: - LEAD() & LAG()
+- Access values from other rows in the window (e.g., LAG(), LEAD())
+
 𝟳️．𝗟𝗔𝗚()
-Access previous row value
+It Access/Returns previous row value simple wordsloo
 SELECT property_id,
        rent,
        LAG(rent) OVER (ORDER BY rent) AS previous_rent
-FROM properties;
+FROM properties; -- Compare rent differences
 
-Use case:
-Compare rent differences
+ property_id          rent    previous_rent 
+       100d            20000    NULL          
+      2230c           25000    20000         
+      cd234           30000    25000         
+
+/* Sales comparison kosam
+Price change detection
+Trend analysis telsukodaniki */
 
 ８️。 ＬＥＡＤ（）
-Access next row value
+This Function Access/Returns next row value
 SELECT property_id,
        rent,
        LEAD(rent) OVER (ORDER BY rent) AS next_rent
 FROM propertie
 Use case: Trend comparison
 
+ rent   next_rent 
+ 20000   25000     
+ 25000   30000     
+ 30000   NULL      
+
+Ask Somala to mention in comments: Forecast comparisons (ANtee stocks, predictions..)
+Next transaction analysis
+
+10. ＮＴＩＬＥ（）
+This Divides rows into equal buckets
+Ex chudu: Divide properties into 4 rent segments
+SELECT property_id,
+       rent,
+       NTILE(4) OVER (ORDER BY rent) AS rent_segment
+FROM properties;
+
+Customer segmentation cheyadaniki
+Risk categories (Simple dividng anochu)
+Sales quartiles antee telsa SPARK?
+
+𝗙𝗿𝗮𝗺𝗲-𝗕𝗮𝘀𝗲𝗱 𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀:
+-- Use frame specifications to define a subset of rows in the window (e.g., running totals)
+and It defines range of rows used in calculation
+
+Ex: SUM(rent) OVER (
+    ORDER BY rent
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+);
+-- Calculate cumulative sum from start to current row
+
+Ex:2
+SELECT sensor_id, value, timestamp, location_id, 
+SUM(value) OVER ( PARTITION BY location_id ORDER BY timestamp ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW ) AS running_total
+FROM sensors;
+
+See some SPARK examples:- 
 -- Find top 3 expensive properties per locality
-Projec:t Example
+Project Example:
 SELECT *
 FROM (
     SELECT property_id,
@@ -134,4 +247,22 @@ FROM (
            ) AS rank_local
     FROM properties
 ) t
-WHERE rank_local <= 3;
+WHERE rank_local <= 5;
+
+-- Properties above locality average rent
+SELECT *
+FROM (
+SELECT property_id,
+       locality,
+       rent,
+       AVG(rent) OVER (PARTITION BY locality) avg_rent
+FROM properties
+) t
+WHERE rent > avg_rent;
+
+WINDOW_FUCNTIONS will replace complex:
+- self joins
+- correlated subqueries
+- nested aggregations
+
+-- Idi Interviewski best topic ok 
