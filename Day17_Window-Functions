@@ -1,7 +1,7 @@
 MySQL 𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀
-𝐴 𝑊𝑖𝑛𝑑𝑜𝑤 𝐹𝑢𝑛𝑐𝑡𝑖𝑜𝑛 𝑝𝑒𝑟𝑓𝑜𝑟𝑚𝑠 𝑐𝑎𝑙𝑐𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠 𝑎𝑐𝑟𝑜𝑠𝑠 𝑎 𝑠𝑒𝑡 𝑜𝑓 𝑟𝑜𝑤𝑠 𝑟𝑒𝑙𝑎𝑡𝑒𝑑 𝑡𝑜 𝑡ℎ𝑒 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑟𝑜𝑤 𝑤𝑖𝑡ℎ𝑜𝑢𝑡 𝑐𝑜𝑙𝑙𝑎𝑝𝑠𝑖𝑛𝑔 𝑟𝑜𝑤𝑠 𝑙𝑖𝑘𝑒 𝐺𝑅𝑂𝑈𝑃 𝐵𝑌
+=> 𝐴 𝑊𝑖𝑛𝑑𝑜𝑤 𝐹𝑢𝑛𝑐𝑡𝑖𝑜𝑛 𝑝𝑒𝑟𝑓𝑜𝑟𝑚𝑠 𝑐𝑎𝑙𝑐𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠 𝑎𝑐𝑟𝑜𝑠𝑠 𝑎 𝑠𝑒𝑡 𝑜𝑓 𝑟𝑜𝑤𝑠 𝑟𝑒𝑙𝑎𝑡𝑒𝑑 𝑡𝑜 𝑡ℎ𝑒 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑟𝑜𝑤 𝑤𝑖𝑡ℎ𝑜𝑢𝑡 𝑐𝑜𝑙𝑙𝑎𝑝𝑠𝑖𝑛𝑔 𝑟𝑜𝑤𝑠 𝑙𝑖𝑘𝑒 𝐺𝑅𝑂𝑈𝑃 𝐵𝑌
 
-A Window Function performs calculations across a set of rows (a “window”) related to the current row, without collapsing the result set like aggregate functions (e.g., SUM, AVG) do with GROUP BY
+A Window Function performs calculations across a set of rows (a window) related to the current row, without collapsing the result set like aggregate functions (e.g., SUM, AVG) do with GROUP BY
 They are used for advanced analytics, such as rankings, running totals, or moving averages
 
 𝗚𝗥𝗢𝗨𝗣 𝗕𝗬                          𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻
