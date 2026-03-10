@@ -1,10 +1,10 @@
 MySQL 𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻𝘀
 𝐴 𝑊𝑖𝑛𝑑𝑜𝑤 𝐹𝑢𝑛𝑐𝑡𝑖𝑜𝑛 𝑝𝑒𝑟𝑓𝑜𝑟𝑚𝑠 𝑐𝑎𝑙𝑐𝑢𝑙𝑎𝑡𝑖𝑜𝑛𝑠 𝑎𝑐𝑟𝑜𝑠𝑠 𝑎 𝑠𝑒𝑡 𝑜𝑓 𝑟𝑜𝑤𝑠 𝑟𝑒𝑙𝑎𝑡𝑒𝑑 𝑡𝑜 𝑡ℎ𝑒 𝑐𝑢𝑟𝑟𝑒𝑛𝑡 𝑟𝑜𝑤 𝑤𝑖𝑡ℎ𝑜𝑢𝑡 𝑐𝑜𝑙𝑙𝑎𝑝𝑠𝑖𝑛𝑔 𝑟𝑜𝑤𝑠 𝑙𝑖𝑘𝑒 𝐺𝑅𝑂𝑈𝑃 𝐵𝑌
 
-𝗚𝗥𝗢𝗨𝗣 𝗕𝗬            𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻
-Reduced             | Same number of rows               
-Aggregation         | Analytics                         
-Avg salary per team | Compare each salary with team avg 
+𝗚𝗥𝗢𝗨𝗣 𝗕𝗬                          𝗪𝗶𝗻𝗱𝗼𝘄 𝗙𝘂𝗻𝗰𝘁𝗶𝗼𝗻
+Reduced rows into one          | Same number of rows               
+Aggregation on multiple rows   | Analytics                         
+Ex: Avg salary per team        | Ex: Compare each salary with team avg 
 
 𝚏𝚞𝚗𝚌𝚝𝚒𝚘𝚗_𝚗𝚊𝚖𝚎() 𝙾𝚅𝙴𝚁 (
 𝙿𝙰𝚁𝚃𝙸𝚃𝙸𝙾𝙽 𝙱𝚈 𝚌𝚘𝚕𝚞𝚖𝚗
@@ -13,7 +13,7 @@ Avg salary per team | Compare each salary with team avg
 
 𝐂𝐨𝐦𝐩𝐨𝐧𝐞𝐧𝐭𝐬:
 • 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧_𝐧𝐚𝐦𝐞() - 𝐫𝐚𝐧𝐤𝐢𝐧𝐠 𝐨𝐫 𝐚𝐠𝐠𝐫𝐞𝐠𝐚𝐭𝐢𝐨𝐧
-• 𝐎𝐕𝐄𝐑() - 𝐝𝐞𝐟𝐢𝐧𝐞𝐬 \𝐰𝐢𝐧𝐝𝐨𝐰
+• 𝐎𝐕𝐄𝐑() - 𝐝𝐞𝐟𝐢𝐧𝐞𝐬 \𝐰𝐢𝐧𝐝𝐨𝐰 for particular rows to include
 • 𝐏𝐀𝐑𝐓𝐈𝐓𝐈𝐎𝐍 𝐁𝐘 - 𝐠𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐥𝐢𝐤𝐞 𝐆𝐑𝐎𝐔𝐏 𝐁𝐘
 • 𝐎𝐑𝐃𝐄𝐑 𝐁𝐘 - 𝐫𝐨𝐰 𝐨𝐫𝐝𝐞𝐫𝐢𝐧𝐠
 
@@ -44,33 +44,40 @@ SELECT property_id,
        ROW_NUMBER() OVER (ORDER BY rent DESC) AS rent_rank
 FROM properties; -- Real estate platforms showing top expensive properties
 
-
+property_id  | locality   | rent   rent__rank
+101            Marathahalli   50k    1
+102            Somala         40k    2
+103             KSR           32k    3
+104             DMM           23k    4 
 
 𝟐️. 𝐑𝐀𝐍𝐊()
--- 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤
+-- 𝐒𝐢𝐦𝐢𝐥𝐚𝐫 𝐭𝐨 𝐫𝐨𝐰 𝐧𝐮𝐦𝐛𝐞𝐫 𝐛𝐮𝐭 𝐭𝐢𝐞𝐬/Same rows 𝐠𝐞𝐭 𝐬𝐚𝐦𝐞 𝐫𝐚𝐧𝐤
 SELECT property_id,
        rent,
        RANK() OVER (ORDER BY rent DESC) AS rank_rent
 FROM properties;
- rent    rank 
- 100000 | 1    
- 100000 | 1    
- 90000  | 3    
+ property_id       rent        rank_rent 
+    1              30k          1    
+    2              30k          1    
+    3              10k          3    
 
 𝟯️. 𝗗𝗘𝗡𝗦𝗘_𝗥𝗔𝗡𝗞()
+𝗟𝗶𝗸𝗲 𝗿𝗮𝗻𝗸 𝗯𝘂𝘁 𝗻𝗼 𝗴𝗮𝗽𝘀
 
-- 𝗟𝗶𝗸𝗲 𝗿𝗮𝗻𝗸 𝗯𝘂𝘁 𝗻𝗼 𝗴𝗮𝗽𝘀
+Ex: getting continuos ranks for each group/similar rents
 𝑆𝐸𝐿𝐸𝐶𝑇 𝑝𝑟𝑜𝑝𝑒𝑟𝑡𝑦_𝑖𝑑,
 𝑟𝑒𝑛𝑡,
 𝐷𝐸𝑁𝑆𝐸_𝑅𝐴𝑁𝐾() 𝑂𝑉𝐸𝑅 (𝑂𝑅𝐷𝐸𝑅 𝐵𝑌 𝑟𝑒𝑛𝑡 𝐷𝐸𝑆𝐶) 𝐴𝑆 𝑑𝑒𝑛𝑠𝑒_𝑟𝑎𝑛𝑘_𝑟𝑒𝑛𝑡
 𝐹𝑅𝑂𝑀 𝑝𝑟𝑜𝑝𝑒𝑟𝑡𝑖𝑒𝑠;
- rent   | dense_rank 
- 100000 | 1          
- 100000 | 1          
- 90000  | 2          
+ property_id       rent        rank_rent 
+    1              30k          1    
+    2              30k          1    
+    3              10k          2            
 
 𝟰️. 𝗣𝗔𝗥𝗧𝗜𝗧𝗜𝗢𝗡 𝗕𝗬
--- 𝗪𝗼𝗿𝗸𝘀 𝗹𝗶𝗸𝗲 𝗴𝗿𝗼𝘂𝗽𝗶𝗻𝗴 𝗶𝗻𝘀𝗶𝗱𝗲 𝘄𝗶𝗻𝗱𝗼𝘄 𝗳𝘂𝗻𝗰𝘁𝗶𝗼𝗻
+-- 𝗪𝗼𝗿𝗸𝘀 𝗹𝗶𝗸𝗲 𝗴𝗿𝗼𝘂𝗽𝗶𝗻𝗴 𝗶𝗻𝘀𝗶𝗱𝗲 𝘄𝗶𝗻𝗱𝗼𝘄 𝗳𝘂𝗻𝗰𝘁𝗶𝗼𝗻 result
+=> Partition is nothing but dividing only but after divding all the similar rows/values
+will become a group of particular window function result
 𝗘𝘅𝗮𝗺𝗽𝗹𝗲: 𝗥𝗮𝗻𝗸 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝘄𝗶𝘁𝗵𝗶𝗻 𝗲𝗮𝗰𝗵 𝗹𝗼𝗰𝗮𝗹𝗶𝘁𝘆
 SELECT property_id,
        locality,
