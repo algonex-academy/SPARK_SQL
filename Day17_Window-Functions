@@ -260,9 +260,112 @@ FROM properties
 ) t
 WHERE rent > avg_rent;
 
+-- 4. Rank Properties by Rent
+Scenario: A property listing platform wants to show rank of properties by price.
+1-> We must sort properties by rent
+2-> SQL
+SELECT property_id,
+       locality,
+       rent,
+       ROW_NUMBER() OVER (ORDER BY rent DESC) AS rent_rank
+FROM properties;
+3-> First window function
+- Ranking rows
+- Ordering inside windows
+
+-- 5. op 3 Expensive Properties per Locality
+Scenario: The platform wants to show Top 3 expensive homes in each locality
+- We need ranking within each locality
+SELECT *
+FROM (
+SELECT property_id,
+       locality,
+       rent,
+       ROW_NUMBER() OVER (
+           PARTITION BY locality
+           ORDER BY rent DESC
+       ) AS rank_locality
+FROM properties
+) t
+WHERE rank_locality <= 3;
+
+Focuson : PARTITION BY
+- Ranking per group
+- Subquery + window function
+Inkonni Examples: 
+Top products per category
+- Top employees per department
+- Top cities by revenue
+
+-- 6. Detect Overpriced Properties chudhama (mee project kosam ivanni)
+Scenario: Find properties priced above the locality average
+Steap1:- We need locality average but still keep all rows
+Step2: SQL
+SELECT property_id,
+       locality,
+       rent,
+       AVG(rent) OVER (PARTITION BY locality) AS locality_avg
+FROM properties;
+
+NNow filter: 
+SELECT *
+FROM (
+SELECT property_id,
+       locality,
+       rent,
+       AVG(rent) OVER (PARTITION BY locality) AS locality_avg
+FROM properties
+) t
+WHERE rent > locality_avg;
+
+-- 7. Rent Trend Comparison
+Scenario: Compare each property's rent with the previous property
+SELECT property_id,
+       rent,
+       LAG(rent) OVER (ORDER BY rent) AS previous_rent
+FROM properties;
+-- LAG() and accessing previous rows
+
+--8. Find Rent Growth
+Calculate difference between current rent and previous rent
+SELECT property_id,
+       rent,
+       rent - LAG(rent) OVER (ORDER BY rent) AS rent_difference
+FROM properties;
+
+-- 9. Next Property Rent ( Using LEAD())
+SELECT property_id,
+       rent,
+       LEAD(rent) OVER (ORDER BY rent) AS next_rent
+FROM properties;
+-- forward comparison, trend prediction
+
+--10. Segment Properties by Price
+Ex: Segment Properties by Price
+SELECT property_id,
+       rent,
+       NTILE(4) OVER (ORDER BY rent) AS price_segment
+FROM properties;
+
+GROUP BY vs Window Functions
+SELECT locality, AVG(rent)
+FROM properties
+GROUP BY locality;
+
+SELECT locality,
+       rent,
+       AVG(rent) OVER (PARTITION BY locality)
+FROM properties;
+
 WINDOW_FUCNTIONS will replace complex:
 - self joins
 - correlated subqueries
 - nested aggregations
 
 -- Idi Interviewski best topic ok 
+Ee 5Ques solve chwynadi SPARK
+1.Find top 5 expensive properties overall
+2. Find most expensive property per locality
+3. Find properties cheaper than locality average
+4. Calculate running total of rent
+5. Find difference between consecutive property rents
