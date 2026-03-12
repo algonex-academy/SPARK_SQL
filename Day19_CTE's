@@ -1,0 +1,153 @@
+                                      MYSQL CTE? - Common Table Expression
+A CTE (Common Table Expression) is a temporary result set defined within a query that you can reference later in the same query
+=> Think of it as a temporary named query block
+Finalga: A CTE is a temporary query result table created within a query using the WITH clause that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement
+
+Structure of CTE:
+WITH cte_name AS (
+    SELECT columns
+    FROM table
+    WHERE condition
+)
+SELECT *
+FROM cte_name;
+
+ Part             Meaning                          
+ WITH        | Starts the CTE                  
+ cte_name    | Name of temporary result         
+ AS          | Defines the query                
+ (SELECT...) | The query used to create the CTE 
+
+xample 1 — Basic CTE
+Ex: Find properties with rent above average
+Without CTE:
+SELECT property_id, rent
+FROM properties
+WHERE rent > (
+    SELECT AVG(rent)
+    FROM properties
+);
+
+Using CTE:
+WITH avg_rent AS (
+    SELECT AVG(rent) AS avg_value
+    FROM properties
+)
+SELECT property_id, rent
+FROM properties, avg_rent
+WHERE rent > avg_value;
+-- The average calculation is separated from the main query, making it easier to read
+1. CTE calculates average rent
+2️. The main query uses that value
+3️. Properties with rent above average are returned
+
+Example 2 — Multi-Step Analysis
+Find localities where average rent is above ₹50,000
+WITH locality_avg AS (
+    SELECT locality,
+           AVG(rent) AS avg_rent
+    FROM properties
+    GROUP BY locality
+)
+SELECT *
+FROM locality_avg
+WHERE avg_rent > 50000;
+
+Example 3 — CTE with Ranking
+Find top 3 expensive properties per locality
+WITH ranked_properties AS (
+    SELECT property_id,
+           locality,
+           rent,
+           ROW_NUMBER() OVER (
+               PARTITION BY locality
+               ORDER BY rent DESC
+           ) AS rank_local
+    FROM properties
+)
+SELECT *
+FROM ranked_properties
+WHERE rank_local <= 3;
+
+Why CTE Helps alochinchandi SPARK
+Instead of writing a large nested query, we split the logic:
+Step 1 - create ranking
+Step 2 - filter top properties
+
+Example 4 — Multiple CTEs
+You can define multiple CTEs in one query
+Ex: Find expensive localities and their properties
+WITH locality_avg AS (
+    SELECT locality,
+           AVG(rent) AS avg_rent
+    FROM properties
+    GROUP BY locality
+),
+high_localities AS (
+    SELECT locality
+    FROM locality_avg
+    WHERE avg_rent > 50000
+)
+SELECT p.property_id,
+       p.locality,
+       p.rent
+FROM properties p
+JOIN high_localities h
+ON p.locality = h.locality;
+
+Recursive CTE (Advanced Concept Fresherga telsukovaali)
+=> Recursive CTEs are used for hierarchical data
+employee_id
+employee_name
+manager_id
+
+Recursive CTE example:
+WITH RECURSIVE employee_hierarchy AS (
+    SELECT employee_id, employee_name, manager_id
+    FROM employees
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    SELECT e.employee_id, e.employee_name, e.manager_id
+    FROM employees e
+    JOIN employee_hierarchy eh
+    ON e.manager_id = eh.employee_id
+)
+SELECT *
+FROM employee_hierarchy;
+
+Example chudandi — Converting Subquery to CTE
+Subquery: SELECT *
+FROM properties
+WHERE rent > (
+    SELECT AVG(rent)
+    FROM properties
+);
+
+CTE Version: 
+WITH avg_table AS (
+    SELECT AVG(rent) AS avg_rent
+    FROM properties
+)
+SELECT *
+FROM properties, avg_table
+WHERE rent > avg_rent;
+
+Oka EXAMPLE CHUDANDI Finalga:
+WITH SPARK_monthly_sales AS (
+    SELECT month,
+           SUM(revenue) AS total_sales
+    FROM sales
+    GROUP BY month
+),
+growth AS (
+    SELECT month,
+           total_sales,
+           LAG(total_sales) OVER (ORDER BY month) AS prev_sales
+    FROM SPARK_monthly_sales
+)
+SELECT month,
+       total_sales,
+       total_sales - prev_sales AS growth
+FROM growth;
