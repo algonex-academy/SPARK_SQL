@@ -7,6 +7,10 @@ Instead, it stores the query definition
 When you query the view, MySQL runs the underlying query
 => A view is a saved SQL query that behaves like a table antee chudham
 
+A view in MySQL is a virtual and temporary table defined by a stored SQL query
+-- It doesn’t store data physically but retrieves data dynamically from underlying tables when queried. Views act like shortcuts to complex queries, providing a simplified interface for users or applications to work with particular data by taking access.
+=> It is a temporary purpose means once we close MySQL Workbench window the created View tables won't be visible 
+
 CREATE VIEW high_rent_properties AS
 SELECT property_id, locality, rent
 FROM properties
@@ -28,7 +32,28 @@ Why Views Are Used in ALGONEX Industry:
 𝘍𝘙𝘖𝘔 𝘵𝘢𝘣𝘭𝘦
 𝘞𝘏𝘌𝘙𝘌 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯;
 
-𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝟏/ 𝐇𝐢𝐠𝐡 𝐑𝐞𝐧𝐭 𝐏𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬 𝐕𝐢𝐞𝐰
+
+Key Characteristics:
+- Created using the CREATE VIEW statement.
+- Based on a SELECT query that can include joins, subqueries, CTEs, window functions, or other SQL constructs.
+- Can be queried like a regular table (e.g., SELECT * FROM view_name).
+- Updates dynamically when underlying table data changes.
+- Can restrict access to specific columns or rows for security.
+- May be updatable under certain conditions (e.g., simple views without joins or aggregations)
+
+
+Types of Views in MySQL
+1. Simple Views
+2. complex views
+3. Updatable Views
+4. Materialized views
+- Views with CHECK option
+
+Simple Views:
+-- Simple Views are Based on a single table with no joins, aggregations, or subqueries
+=> Often updatable (can use INSERT, UPDATE, or DELETE)
+
+𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝟏: 𝐇𝐢𝐠𝐡 𝐑𝐞𝐧𝐭 𝐏𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬 𝐕𝐢𝐞𝐰
 The SQL Fellos analytics team wants a quick dataset of expensive properties:
 CREATE VIEW expensive_properties AS
 SELECT property_id, locality, rent
@@ -46,6 +71,9 @@ WHERE furnishing = 'Furnished';
 
 SELECT * FROM furnished_properties;
 
+Complex Views:
+-- Complex Views Involve in usage of joins, subqueries, CTEs, window functions, or aggregations
+=> Typically not updatable/modifiable due to complexity
 𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟯 – 𝗟𝗼𝗰𝗮𝗹𝗶𝘁𝘆 𝗥𝗲𝗻𝘁 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀 𝗩𝗶𝗲𝘄
 Scenario chudu: Analytics team needs average rent per locality
 CREATE VIEW locality_rent_summary AS
@@ -68,7 +96,7 @@ FROM properties
 GROUP BY gym, parking, swimming_pool;
 -- This helps data analysts see which features increase property value chudochu
 
-Ｕｐｄａｔｉｎｇ Ｖｉｅｗｓ
+3. Ｕｐｄａｔｉｎｇ Ｖｉｅｗｓ
 If underlying data changes, views automatically reflect updates
 UPDATE properties
 SET rent = 75000
@@ -88,6 +116,18 @@ Update through view:
 𝗦𝗘𝗧 𝗿𝗲𝗻𝘁 = 𝟯𝟬𝟬𝟬𝟬
 𝗪𝗛𝗘𝗥𝗘 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱 = '𝗣𝟮𝟬𝟮';
 -- Works only if the view meets certain conditions kada
+
+4. Materialized Views (MySQL-specific note):
+MySQL does not natively support materialized views (physical storage of view data), unlike some databases (e.g., PostgreSQL, Oracle). 
+You can simulate them by creating a table from a view’s query and refreshing it periodically:
+=> You must manually refresh the table (e.g using a scheduled job or stored procedure)
+
+
+USECASE: Views with CHECK OPTION:
+-- It Ensures that updates or inserts through the view confirm to the view’s WHERE condition
+CREATE VIEW positive_sensors AS SELECT sensor_id, value, timestamp FROM sensors WHERE value > 0 WITH CHECK OPTION;
+
+INSERT INTO positive_sensors (sensor_id, value, timestamp) VALUES ('sensor999', -10, '2025-07-02 10:00:00'); -- Fails: Violates CHECK OPTION (value must be > 0)
 
 Ｄｒｏｐｐｉｎｇ／Ｒｅｍｏｖｉｎｇ ａ Ｖｉｅｗ
 DROP VIEW expensive_properties;
