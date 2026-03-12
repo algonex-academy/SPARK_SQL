@@ -1,0 +1,102 @@
+                                            Ｖｉｅｗ ｉｎ ＭｙＳＱＬ？
+                       Collegelo em nerchukunnaru SPARK: A View is a virtual table created from a SQL query
+
+View does not store data physically (unless its a materialized view in other systems)
+Instead, it stores the query definition
+
+When you query the view, MySQL runs the underlying query
+=> A view is a saved SQL query that behaves like a table antee chudham
+
+CREATE VIEW high_rent_properties AS
+SELECT property_id, locality, rent
+FROM properties
+WHERE rent > 50000;
+
+SELECT * FROM high_rent_properties;
+
+Why Views Are Used in ALGONEX Industry:
+ Purpose                               Explanation                     
+ Simplify complex queries | Avoid rewriting long queries    
+ Data security            | Hide sensitive columns          
+ Reusable logic           | Standardized reports            
+ Data abstraction         | Hide underlying table structure 
+ BI dashboards            | Provide clean datasets          
+
+𝓢𝓽𝓻𝓾𝓬𝓽𝓾𝓻𝓮 𝓸𝓯 𝓥𝓘𝓔𝓦:
+𝘊𝘙𝘌𝘈𝘛𝘌 𝘝𝘐𝘌𝘞 𝘷𝘪𝘦𝘸_𝘯𝘢𝘮𝘦 𝘈𝘚
+𝘚𝘌𝘓𝘌𝘊𝘛 𝘤𝘰𝘭𝘶𝘮𝘯𝘴
+𝘍𝘙𝘖𝘔 𝘵𝘢𝘣𝘭𝘦
+𝘞𝘏𝘌𝘙𝘌 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯;
+
+𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝟏/ 𝐇𝐢𝐠𝐡 𝐑𝐞𝐧𝐭 𝐏𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬 𝐕𝐢𝐞𝐰
+The SQL Fellos analytics team wants a quick dataset of expensive properties:
+CREATE VIEW expensive_properties AS
+SELECT property_id, locality, rent
+FROM properties
+WHERE rent > 60000;
+
+SELECT * FROM expensive_properties;
+
+𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝟐 – 𝐅𝐮𝐫𝐧𝐢𝐬𝐡𝐞𝐝 𝐏𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬 𝐕𝐢𝐞𝐰
+Ex: Marketing team wants all furnished properties
+CREATE VIEW furnished_properties AS
+SELECT property_id, locality, rent, furnishing
+FROM properties
+WHERE furnishing = 'Furnished';
+
+SELECT * FROM furnished_properties;
+
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟯 – 𝗟𝗼𝗰𝗮𝗹𝗶𝘁𝘆 𝗥𝗲𝗻𝘁 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀 𝗩𝗶𝗲𝘄
+Scenario chudu: Analytics team needs average rent per locality
+CREATE VIEW locality_rent_summary AS
+SELECT locality,
+       COUNT(*) AS total_properties,
+       AVG(rent) AS avg_rent
+FROM properties
+GROUP BY locality;
+
+SELECT * FROM locality_rent_summary;
+
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟰 - 𝗔𝗺𝗲𝗻𝗶𝘁𝗶𝗲𝘀 𝗔𝗻𝗮𝗹𝘆𝘀𝗶𝘀 𝗩𝗶𝗲𝘄 (Ivanni meeru chese projectki use avuthaay focus cheyandi)
+Example Scenario: Check how amenities affect rent
+CREATE VIEW amenities_analysis AS
+SELECT gym,
+       parking,
+       swimming_pool,
+       AVG(rent) AS avg_rent
+FROM properties
+GROUP BY gym, parking, swimming_pool;
+-- This helps data analysts see which features increase property value chudochu
+
+Ｕｐｄａｔｉｎｇ Ｖｉｅｗｓ
+If underlying data changes, views automatically reflect updates
+UPDATE properties
+SET rent = 75000
+WHERE property_id = 'P101';
+
+SELECT * FROM expensive_properties; -- The result automatically updates
+
+Updating Data Through Views
+Sometimes views can be used to update data
+𝐂𝐑𝐄𝐀𝐓𝐄 𝐕𝐈𝐄𝐖 𝐬𝐦𝐚𝐥𝐥_𝐩𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬 𝐀𝐒
+𝐒𝐄𝐋𝐄𝐂𝐓 𝐩𝐫𝐨𝐩𝐞𝐫𝐭𝐲_𝐢𝐝, 𝐫𝐞𝐧𝐭
+𝐅𝐑𝐎𝐌 𝐩𝐫𝐨𝐩𝐞𝐫𝐭𝐢𝐞𝐬
+𝐖𝐇𝐄𝐑𝐄 𝐩𝐫𝐨𝐩𝐞𝐫𝐭𝐲_𝐬𝐢𝐳𝐞 < 𝟏𝟎𝟎𝟎;
+
+Update through view:
+𝗨𝗣𝗗𝗔𝗧𝗘 𝘀𝗺𝗮𝗹𝗹_𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀
+𝗦𝗘𝗧 𝗿𝗲𝗻𝘁 = 𝟯𝟬𝟬𝟬𝟬
+𝗪𝗛𝗘𝗥𝗘 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝘆_𝗶𝗱 = '𝗣𝟮𝟬𝟮';
+-- Works only if the view meets certain conditions kada
+
+Ｄｒｏｐｐｉｎｇ／Ｒｅｍｏｖｉｎｇ ａ Ｖｉｅｗ
+DROP VIEW expensive_properties;
+
+SHOW CREATE VIEW expensive_properties; -- See Definition
+
+𝗖𝗥𝗘𝗔𝗧𝗘 𝗩𝗜𝗘𝗪 𝘁𝗼𝗽_𝗰𝘂𝘀𝘁𝗼𝗺𝗲𝗿𝘀 𝗔𝗦
+𝗦𝗘𝗟𝗘𝗖𝗧 𝗰𝘂𝘀𝘁𝗼𝗺𝗲𝗿_𝗶𝗱,
+𝗦𝗨𝗠(𝗼𝗿𝗱𝗲𝗿_𝗮𝗺𝗼𝘂𝗻𝘁) 𝗔𝗦 𝘁𝗼𝘁𝗮𝗹_𝘀𝗽𝗲𝗻𝘁
+𝗙𝗥𝗢𝗠 𝗼𝗿𝗱𝗲𝗿𝘀
+𝗚𝗥𝗢𝗨𝗣 𝗕𝗬 𝗰𝘂𝘀𝘁𝗼𝗺𝗲𝗿_𝗶𝗱
+𝗛𝗔𝗩𝗜𝗡𝗚 𝘁𝗼𝘁𝗮𝗹_𝘀𝗽𝗲𝗻𝘁 > 𝟭𝟬𝟬𝟬𝟬𝟬;
