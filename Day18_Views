@@ -34,11 +34,11 @@ Why Views Are Used in ALGONEX Industry:
 
 
 Key Characteristics:
-- Created using the CREATE VIEW statement.
+- Created using the CREATE VIEW statement
 - Based on a SELECT query that can include joins, subqueries, CTEs, window functions, or other SQL constructs.
-- Can be queried like a regular table (e.g., SELECT * FROM view_name).
-- Updates dynamically when underlying table data changes.
-- Can restrict access to specific columns or rows for security.
+- Can be queried like a regular table (e.g., SELECT * FROM view_name)
+- Updates dynamically when underlying table data changes
+- Can restrict access to specific columns or rows for security(select c1,c2 from view_name)
 - May be updatable under certain conditions (e.g., simple views without joins or aggregations)
 
 
@@ -125,9 +125,11 @@ You can simulate them by creating a table from a view’s query and refreshing i
 
 USECASE: Views with CHECK OPTION:
 -- It Ensures that updates or inserts through the view confirm to the view’s WHERE condition
-CREATE VIEW positive_sensors AS SELECT sensor_id, value, timestamp FROM sensors WHERE value > 0 WITH CHECK OPTION;
+CREATE VIEW positive_sensors AS SELECT sensor_id, value, timestamp FROM sensors 
+WHERE value > 0 WITH CHECK OPTION;
 
-INSERT INTO positive_sensors (sensor_id, value, timestamp) VALUES ('sensor999', -10, '2025-07-02 10:00:00'); -- Fails: Violates CHECK OPTION (value must be > 0)
+INSERT INTO positive_sensors (sensor_id, value, timestamp) VALUES ('sensor999', -10, '2025-07-02 10:00:00'); 
+-- Fails: Violates CHECK OPTION (value must be > 0)
 
 Ｄｒｏｐｐｉｎｇ／Ｒｅｍｏｖｉｎｇ ａ Ｖｉｅｗ
 DROP VIEW expensive_properties;
