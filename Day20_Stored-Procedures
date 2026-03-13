@@ -1,0 +1,55 @@
+                                Stored Procedures in MySQL for SPARK Amigos
+
+/* A stored procedure is a precompiled set of SQL statements stored in the database under a specific name, which can be executed as a single unit by calling it */
+
+=> Stored procedures allow you to encapsulate complex logic, improve performance, and enhance security by centralizing database operations
+-- It acts like a program or a function that resides on the database server, 
+allowing you to encapsulate complex logic, reuse code, and improve performance by reducing communication overhead between applications and the database
+
+=> Instead of writing the same SQL queries repeatedly, we store them once and run them using CALL
+Main Points Chudu: (Same like other lang. functions laaganee)
+= Defined using the CREATE PROCEDURE statement
+- Can include multiple SQL statements (e.g., SELECT, INSERT, UPDATE, DELETE, joins, subqueries, CTEs, etc.)
+- Supports parameters (input, output, or both) for dynamic execution
+- Stored in the database and executed with the CALL statement
+- Can include control structures (e.g., IF, WHILE, LOOP) and error handling
+- Improves performance by reducing network traffic (executed server-side) and caching query plans
+
+Think of it like a function in a Database:
+def func(a,b):
+          a+b
+          c=b%2
+          d = a*2
+          return c,a,b,d
+a= 10
+b=100
+func(a,b)
+
+DELIMITER *
+CREATE PROCEDURE procedure_name([parameters])
+BEGIN
+    -- SQL statements
+END;
+*
+DELIMITER ;
+-- Parameters are optional
+
+CALL procedure_name([parameters]
+
+Procedure - calculate average rent
+Call - CALL avg_rent();
+
+ALGONEX use stored procedures for business logic and automation
+ Benefit               Explanation                               
+ Reusability     | Write logic once and reuse                
+ Performance     | Query execution is faster                 
+ Security        | Users access procedures instead of tables 
+ Automation      | Multiple SQL statements in one execution  
+ Maintainability | Easier to manage complex logic            
+
+Example in a real estate syste CHUDANDI:
+- Get expensive properties
+- Calculate rent analytics
+- Update rent automatically
+
+Eeroju ivi chaalu rest teeskondi
