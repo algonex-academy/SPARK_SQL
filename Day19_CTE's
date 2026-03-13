@@ -1,5 +1,6 @@
                                        MYSQL CTE? - Common Table Expression
-A CTE (Common Table Expression) is a temporary result set defined within a query that you can reference later in the same query using the WITH Clause
+A CTE (Common Table Expression] is a temporary result set defined within a query that you can reference later
+in the same query using the WITH Clause
 => Think of it as a temporary named query block
 Finalga: A CTE is a temporary query result table created within a query using the WITH clause that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement
 
@@ -49,7 +50,7 @@ WHERE rent > avg_value;
 2️. The main query uses that value
 3️. Properties with rent above average are returned
 
-Example 2 — Multi-Step Analysis
+Example 2 — Multi-tep Analysis chudandi
 Find localities where average rent is above ₹50,000
 WITH locality_avg AS (
     SELECT locality,
