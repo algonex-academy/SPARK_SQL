@@ -1,6 +1,6 @@
-                                Stored Procedures in MySQL for SPARK Amigos
+                                      𝗦𝘁𝗼𝗿𝗲𝗱 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲𝘀 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟 𝗳𝗼𝗿 𝗦𝗣𝗔𝗥𝗞 𝗔𝗺𝗶𝗴𝗼𝘀
 
-/* A stored procedure is a precompiled set of SQL statements stored in the database under a specific name, which can be executed as a single unit by calling it */
+/* 𝐀 𝐬𝐭𝐨𝐫𝐞𝐝 𝐩𝐫𝐨𝐜𝐞𝐝𝐮𝐫𝐞 𝐢𝐬 𝐚 𝐩𝐫𝐞𝐜𝐨𝐦𝐩𝐢𝐥𝐞𝐝 𝐬𝐞𝐭 𝐨𝐟 𝐒𝐐𝐋 𝐬𝐭𝐚𝐭𝐞𝐦𝐞𝐧𝐭𝐬 𝐬𝐭𝐨𝐫𝐞𝐝 𝐢𝐧 𝐭𝐡𝐞 𝐝𝐚𝐭𝐚𝐛𝐚𝐬𝐞 𝐮𝐧𝐝𝐞𝐫 𝐚 𝐬𝐩𝐞𝐜𝐢𝐟𝐢𝐜 𝐧𝐚𝐦𝐞, 𝐰𝐡𝐢𝐜𝐡 𝐜𝐚𝐧 𝐛𝐞 𝐞𝐱𝐞𝐜𝐮𝐭𝐞𝐝 𝐚𝐬 𝐚 𝐬𝐢𝐧𝐠𝐥𝐞 𝐮𝐧𝐢𝐭 𝐛𝐲 𝐜𝐚𝐥𝐥𝐢𝐧𝐠 𝐢𝐭 */
 
 => Stored procedures allow you to encapsulate complex logic, improve performance, and enhance security by centralizing database operations
 -- It acts like a program or a function that resides on the database server, 
@@ -8,38 +8,38 @@ allowing you to encapsulate complex logic, reuse code, and improve performance b
 
 => Instead of writing the same SQL queries repeatedly, we store them once and run them using CALL
 Main Points Chudu: (Same like other lang. functions laaganee)
-= Defined using the CREATE PROCEDURE statement
-- Can include multiple SQL statements (e.g., SELECT, INSERT, UPDATE, DELETE, joins, subqueries, CTEs, etc.)
-- Supports parameters (input, output, or both) for dynamic execution
-- Stored in the database and executed with the CALL statement
-- Can include control structures (e.g., IF, WHILE, LOOP) and error handling
-- Improves performance by reducing network traffic (executed server-side) and caching query plans
+- 𝗗𝗲𝗳𝗶𝗻𝗲𝗱 𝘂𝘀𝗶𝗻𝗴 𝘁𝗵𝗲 𝗖𝗥𝗘𝗔𝗧𝗘 𝗣𝗥𝗢𝗖𝗘𝗗𝗨𝗥𝗘 𝘀𝘁𝗮𝘁𝗲𝗺𝗲𝗻𝘁
+- 𝗖𝗮𝗻 𝗶𝗻𝗰𝗹𝘂𝗱𝗲 𝗺𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝗦𝗤𝗟 𝘀𝘁𝗮𝘁𝗲𝗺𝗲𝗻𝘁𝘀 (𝗲.𝗴., 𝗦𝗘𝗟𝗘𝗖𝗧, 𝗜𝗡𝗦𝗘𝗥𝗧, 𝗨𝗣𝗗𝗔𝗧𝗘, 𝗗𝗘𝗟𝗘𝗧𝗘, 𝗷𝗼𝗶𝗻𝘀, 𝘀𝘂𝗯𝗾𝘂𝗲𝗿𝗶𝗲𝘀, 𝗖𝗧𝗘𝘀, 𝗲𝘁𝗰.)
+- 𝗦𝘂𝗽𝗽𝗼𝗿𝘁𝘀 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿𝘀 (𝗶𝗻𝗽𝘂𝘁, 𝗼𝘂𝘁𝗽𝘂𝘁, 𝗼𝗿 𝗯𝗼𝘁𝗵) 𝗳𝗼𝗿 𝗱𝘆𝗻𝗮𝗺𝗶𝗰 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻
+- 𝗦𝘁𝗼𝗿𝗲𝗱 𝗶𝗻 𝘁𝗵𝗲 𝗱𝗮𝘁𝗮𝗯𝗮𝘀𝗲 𝗮𝗻𝗱 𝗲𝘅𝗲𝗰𝘂𝘁𝗲𝗱 𝘄𝗶𝘁𝗵 𝘁𝗵𝗲 𝗖𝗔𝗟𝗟 𝘀𝘁𝗮𝘁𝗲𝗺𝗲𝗻𝘁
+- 𝗖𝗮𝗻 𝗶𝗻𝗰𝗹𝘂𝗱𝗲 𝗰𝗼𝗻𝘁𝗿𝗼𝗹 𝘀𝘁𝗿𝘂𝗰𝘁𝘂𝗿𝗲𝘀 (𝗲.𝗴., 𝗜𝗙, 𝗪𝗛𝗜𝗟𝗘, 𝗟𝗢𝗢𝗣) 𝗮𝗻𝗱 𝗲𝗿𝗿𝗼𝗿 𝗵𝗮𝗻𝗱𝗹𝗶𝗻𝗴
+- 𝗜𝗺𝗽𝗿𝗼𝘃𝗲𝘀 𝗽𝗲𝗿𝗳𝗼𝗿𝗺𝗮𝗻𝗰𝗲 𝗯𝘆 𝗿𝗲𝗱𝘂𝗰𝗶𝗻𝗴 𝗻𝗲𝘁𝘄𝗼𝗿𝗸 𝘁𝗿𝗮𝗳𝗳𝗶𝗰 (𝗲𝘅𝗲𝗰𝘂𝘁𝗲𝗱 𝘀𝗲𝗿𝘃𝗲𝗿-𝘀𝗶𝗱𝗲) 𝗮𝗻𝗱 𝗰𝗮𝗰𝗵𝗶𝗻𝗴 𝗾𝘂𝗲𝗿𝘆 𝗽𝗹𝗮𝗻𝘀
 
-Think of it like a function in a Database:
-def func(a,b):
-          a+b
-          c=b%2
-          d = a*2
-          return c,a,b,d
-a= 10
-b=100
-func(a,b)
+𝑻𝒉𝒊𝒏𝒌 𝒐𝒇 𝒊𝒕 𝒍𝒊𝒌𝒆 𝒂 𝒇𝒖𝒏𝒄𝒕𝒊𝒐𝒏 𝒊𝒏 𝒂 𝑫𝒂𝒕𝒂𝒃𝒂𝒔𝒆:
+                                                        def func(a,b):
+                                                                  a+b
+                                                                  c=b%2
+                                                                  d = a*2
+                                                                  return c,a,b,d
+                                                        a= 10
+                                                        b=100
+                                                        func(a,b)
 
-DELIMITER *
-CREATE PROCEDURE procedure_name([parameters])
-BEGIN
-    -- SQL statements
-END;
+𝐃𝐄𝐋𝐈𝐌𝐈𝐓𝐄𝐑 *
+𝐂𝐑𝐄𝐀𝐓𝐄 𝐏𝐑𝐎𝐂𝐄𝐃𝐔𝐑𝐄 𝐩𝐫𝐨𝐜𝐞𝐝𝐮𝐫𝐞_𝐧𝐚𝐦𝐞([𝐩𝐚𝐫𝐚𝐦𝐞𝐭𝐞𝐫𝐬])
+𝐁𝐄𝐆𝐈𝐍
+-- 𝐒𝐐𝐋 𝐬𝐭𝐚𝐭𝐞𝐦𝐞𝐧𝐭𝐬
+𝐄𝐍𝐃;
 *
-DELIMITER ;
+𝐃𝐄𝐋𝐈𝐌𝐈𝐓𝐄𝐑 ;
 -- Parameters are optional
 
 CALL procedure_name([parameters]
  Keyword                  Purpose  chudu                   
- DELIMITER        | changes statement separator 
- CREATE PROCEDURE | defines stored procedure    
- BEGIN            | start of procedure          
- END              | end of procedure            
+ 𝗗𝗘𝗟𝗜𝗠𝗜𝗧𝗘𝗥 | 𝗰𝗵𝗮𝗻𝗴𝗲𝘀 𝘀𝘁𝗮𝘁𝗲𝗺𝗲𝗻𝘁 𝘀𝗲𝗽𝗮𝗿𝗮𝘁𝗼𝗿
+𝗖𝗥𝗘𝗔𝗧𝗘 𝗣𝗥𝗢𝗖𝗘𝗗𝗨𝗥𝗘 | 𝗱𝗲𝗳𝗶𝗻𝗲𝘀 𝘀𝘁𝗼𝗿𝗲𝗱 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲
+𝗕𝗘𝗚𝗜𝗡 | 𝘀𝘁𝗮𝗿𝘁 𝗼𝗳 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲
+𝗘𝗡𝗗 | 𝗲𝗻𝗱 𝗼𝗳 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲       
 
 
 Procedure - calculate average rent
@@ -47,19 +47,19 @@ Call - CALL avg_rent();
 
 ALGONEX use stored procedures for business logic and automation
  Benefit               Explanation                               
- Reusability     | Write logic once and reuse                
- Performance     | Query execution is faster                 
- Security        | Users access procedures instead of tables 
- Automation      | Multiple SQL statements in one execution  
- Maintainability | Easier to manage complex logic            
+𝗥𝗲𝘂𝘀𝗮𝗯𝗶𝗹𝗶𝘁𝘆 | 𝗪𝗿𝗶𝘁𝗲 𝗹𝗼𝗴𝗶𝗰 𝗼𝗻𝗰𝗲 𝗮𝗻𝗱 𝗿𝗲𝘂𝘀𝗲
+𝗣𝗲𝗿𝗳𝗼𝗿𝗺𝗮𝗻𝗰𝗲 | 𝗤𝘂𝗲𝗿𝘆 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻 𝗶𝘀 𝗳𝗮𝘀𝘁𝗲𝗿
+𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆 | 𝗨𝘀𝗲𝗿𝘀 𝗮𝗰𝗰𝗲𝘀𝘀 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲𝘀 𝗶𝗻𝘀𝘁𝗲𝗮𝗱 𝗼𝗳 𝘁𝗮𝗯𝗹𝗲𝘀
+𝗔𝘂𝘁𝗼𝗺𝗮𝘁𝗶𝗼𝗻 | 𝗠𝘂𝗹𝘁𝗶𝗽𝗹𝗲 𝗦𝗤𝗟 𝘀𝘁𝗮𝘁𝗲𝗺𝗲𝗻𝘁𝘀 𝗶𝗻 𝗼𝗻𝗲 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻
+𝗠𝗮𝗶𝗻𝘁𝗮𝗶𝗻𝗮𝗯𝗶𝗹𝗶𝘁𝘆 | 𝗘𝗮𝘀𝗶𝗲𝗿 𝘁𝗼 𝗺𝗮𝗻𝗮𝗴𝗲 𝗰𝗼𝗺𝗽𝗹𝗲𝘅 𝗹𝗼𝗴𝗶𝗰        
 
-Example in a real estate syste CHUDANDI:
+𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝐢𝐧 𝐚 𝐫𝐞𝐚𝐥 𝐞𝐬𝐭𝐚𝐭𝐞 𝐬𝐲𝐬𝐭𝐞 𝐂𝐇𝐔𝐃𝐀𝐍𝐃𝐈:
 - Get expensive properties
 - Calculate rent analytics
 - Update rent automatically
 
 => Simple Stored Procedure
-Example 1: Get all the properties chudhama:
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟭: 𝗚𝗲𝘁 𝗮𝗹𝗹 𝘁𝗵𝗲 𝗽𝗿𝗼𝗽𝗲𝗿𝘁𝗶𝗲𝘀 𝗰𝗵𝘂𝗱𝗵𝗮𝗺𝗮:
 
 DELIMITER //
 CREATE PROCEDURE get_all_properties()
@@ -70,7 +70,7 @@ DELIMITER ;
 
 CALL get_all_properties();
 
-Example 2 - Filtering Data
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟮 - 𝗙𝗶𝗹𝘁𝗲𝗿𝗶𝗻𝗴 𝗗𝗮𝘁𝗮
 -- Find expensive properties
 DELIMITER //
 CREATE PROCEDURE expensive_properties()
@@ -79,18 +79,17 @@ SELECT property_id, locality, rent
 FROM properties
 WHERE rent > 50000;
 END //
-
 DELIMITER ;
 
 CALL expensive_properties(); -- expensive_properties
 
-A dashboard showing high-value properties
+Mee Project dashboard showing high-value properties
 -- Parameters allow procedures to accept input values
  Type          Meaning               
- IN    | input parameter       
- OUT   | output value          
- INOUT | both input and output
-CALL   | To call the procedure
+𝗜𝗡 | 𝗶𝗻𝗽𝘂𝘁 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿
+𝗢𝗨𝗧 | 𝗼𝘂𝘁𝗽𝘂𝘁 𝘃𝗮𝗹𝘂𝗲
+𝗜𝗡𝗢𝗨𝗧 | 𝗯𝗼𝘁𝗵 𝗶𝗻𝗽𝘂𝘁 𝗮𝗻𝗱 𝗼𝘂𝘁𝗽𝘂𝘁
+𝗖𝗔𝗟𝗟 | 𝗧𝗼 𝗰𝗮𝗹𝗹 𝘁𝗵𝗲 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲
 
 Example 3tho nerchukoo – IN Parameter
 -- Find properties above given rent (Mee projectloo use cheskondi)
@@ -103,12 +102,11 @@ SELECT property_id, locality, rent
 FROM properties
 WHERE rent > min_rent;
 END //
-
 DELIMITER ;
 
 CALL properties_by_rent(40000); -- This makes the procedure dynamic(Later result ni change cheyochu with inputs)
 
-Example 4 – OUT Parameter
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟰 – 𝗢𝗨𝗧 𝗣𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿
 -- Return average rent
 DELIMITER //
 CREATE PROCEDURE get_avg_rent(OUT avg_value DECIMAL(10,2))
@@ -121,37 +119,36 @@ DELIMITER ;
 CALL get_avg_rent(@avg);
 SELECT @avg;
 
-INOUT Parameter: INOUT in a Stored Procedure (SP) means the parameter works as both input and output
-- receive a value(Input) when the procedure starts
-- return a modified value(Output) after the procedure ends
+ＩＮＯＵＴ Ｐａｒａｍｅｔｅｒ: 𝗜𝗡𝗢𝗨𝗧 𝗶𝗻 𝗮 𝗦𝘁𝗼𝗿𝗲𝗱 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲 (𝗦𝗣) 𝗺𝗲𝗮𝗻𝘀 𝘁𝗵𝗲 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿 𝘄𝗼𝗿𝗸𝘀 𝗮𝘀 𝗯𝗼𝘁𝗵 𝗶𝗻𝗽𝘂𝘁 𝗮𝗻𝗱 𝗼𝘂𝘁𝗽𝘂𝘁
+- 𝑟𝑒𝑐𝑒𝑖𝑣𝑒 𝑎 𝑣𝑎𝑙𝑢𝑒(𝐼𝑛𝑝𝑢𝑡) 𝑤ℎ𝑒𝑛 𝑡ℎ𝑒 𝑝𝑟𝑜𝑐𝑒𝑑𝑢𝑟𝑒 𝑠𝑡𝑎𝑟𝑡𝑠
+- 𝑟𝑒𝑡𝑢𝑟𝑛 𝑎 𝑚𝑜𝑑𝑖𝑓𝑖𝑒𝑑 𝑣𝑎𝑙𝑢𝑒(𝑂𝑢𝑡𝑝𝑢𝑡) 𝑎𝑓𝑡𝑒𝑟 𝑡ℎ𝑒 𝑝𝑟𝑜𝑐𝑒𝑑𝑢𝑟𝑒 𝑒𝑛𝑑𝑠
 So INOUT is used when you want to pass a value into the procedure, change it inside and get the updated value back ardaminda
 
-CREATE PROCEDURE procedure_name(INOUT variable_name datatype)
-BEGIN
-    -- logic
-END;
+𝗖𝗥𝗘𝗔𝗧𝗘 𝗣𝗥𝗢𝗖𝗘𝗗𝗨𝗥𝗘 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲_𝗻𝗮𝗺𝗲(𝗜𝗡𝗢𝗨𝗧 𝘃𝗮𝗿𝗶𝗮𝗯𝗹𝗲_𝗻𝗮𝗺𝗲 𝗱𝗮𝘁𝗮𝘁𝘆𝗽𝗲)
+𝗕𝗘𝗚𝗜𝗡
+-- 𝗹𝗼𝗴𝗶𝗰
+𝗘𝗡𝗗;
 
-Ex 6: Suppose you pass a rent value and the procedure increases it by 10%
+𝗘𝘅 𝟲: 𝗦𝘂𝗽𝗽𝗼𝘀𝗲 𝘆𝗼𝘂 𝗽𝗮𝘀𝘀 𝗮 𝗿𝗲𝗻𝘁 𝘃𝗮𝗹𝘂𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲 𝗶𝗻𝗰𝗿𝗲𝗮𝘀𝗲𝘀 𝗶𝘁 𝗯𝘆 𝟭𝟬%
 DELIMITER //
 
 CREATE PROCEDURE increase_rent(INOUT rent_value DECIMAL(10,2))
 BEGIN
     SET rent_value = rent_value + (rent_value * 0.10);
 END //
-
 DELIMITER ;
 
 SET @rent = 50000;
 CALL increase_rent(@rent);
 SELECT @rent;
 
-INOUT Real-time Use Cases:
+INOUT 𝗥𝗲𝗮𝗹-𝘁𝗶𝗺𝗲 𝗨𝘀𝗲 𝗖𝗮𝘀𝗲𝘀:
 1.Pass employee salary, increase it and return new salary
 2. Pass product price, apply discount, return final price
 3. Pass amount, add tax, return updated amount
 4. Pass current rent, apply percentage increase, return new rent
 
-Example 6 chudu konchem diffga – Control Flow in Procedures
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟲 𝗰𝗵𝘂𝗱𝘂 𝗸𝗼𝗻𝗰𝗵𝗲𝗺 𝗱𝗶𝗳𝗳𝗴𝗮 – 𝗖𝗼𝗻𝘁𝗿𝗼𝗹 𝗙𝗹𝗼𝘄 𝗶𝗻 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲𝘀
 -- Stored procedures can include logic like IF statements
 Example: classify diff. rent
 DELIMITER //
@@ -170,7 +167,7 @@ END //
 DELIMITER ;
 CALL classify_rent(60000);
 
-Example 6 – Procedure on agg. Analytics
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟲 – 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲 𝗼𝗻 𝗮𝗴𝗴. 𝗔𝗻𝗮𝗹𝘆𝘁𝗶𝗰𝘀
 -- Generate locality rent report
 DELIMITER //
 CREATE PROCEDURE locality_rent_report()
@@ -185,7 +182,7 @@ END //
 
 DELIMITER ; -- Used in real estate analytics dashboards gamaninchaara eppudina
 
-Example 7 – Updating Data
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟳 – 𝗨𝗽𝗱𝗮𝘁𝗶𝗻𝗴 𝗗𝗮𝘁𝗮
 -- Increase rent for a locality
 DELIMITER //
 CREATE PROCEDURE increase_rent_by_locality(
@@ -201,13 +198,13 @@ DELIMITER ;
 
 CALL increase_rent_by_locality('Whitefield',10);
 
-Viewing Stored Procedures (SP)
+𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗦𝘁𝗼𝗿𝗲𝗱 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲𝘀 (𝗦𝗣)
 SHOW PROCEDURE STATUS; -- List all procedures
 SHOW CREATE PROCEDURE procedure_name; -- See definition
 
-DROP PROCEDURE procedure_name; -- Dropping an SP
+DROP PROCEDURE procedure_name; -- 𝗗𝗿𝗼𝗽𝗽𝗶𝗻𝗴 𝗮𝗻 𝗦𝗣
 
-When to Use Stored Procedures
+𝗪𝗵𝗲𝗻 𝘁𝗼 𝗨𝘀𝗲 𝗦𝘁𝗼𝗿𝗲𝗱 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲𝘀
 - the same query runs frequently
 - multiple SQL steps are required
 - business rules/result must stay in the database
