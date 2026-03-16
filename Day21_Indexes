@@ -1,0 +1,120 @@
+                                                          𝗜𝗻𝗱𝗲𝘅es 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟
+𝑊ℎ𝑎𝑡 𝑎𝑛 𝑖𝑛𝑑𝑒𝑥 𝑖𝑠
+𝑊ℎ𝑦 𝑖𝑛𝑑𝑒𝑥𝑒𝑠 𝑚𝑎𝑡𝑡𝑒𝑟 𝑖𝑛 𝑟𝑒𝑎𝑙 𝑝𝑟𝑜𝑗𝑒𝑐𝑡𝑠
+𝐻𝑜𝑤 𝑀𝑦𝑆𝑄𝐿 𝑢𝑠𝑒𝑠 𝑖𝑛𝑑𝑒𝑥𝑒𝑠
+𝑇𝑦𝑝𝑒𝑠 𝑜𝑓 𝑖𝑛𝑑𝑒𝑥𝑒𝑠
+𝑆𝑦𝑛𝑡𝑎𝑥 𝑤𝑖𝑡ℎ 𝑒𝑥𝑎𝑚𝑝𝑙𝑒𝑠
+𝑅𝑒𝑎𝑙 𝑖𝑛𝑑𝑢𝑠𝑡𝑟𝑦 𝑢𝑠𝑒 𝑐𝑎𝑠𝑒𝑠
+𝐺𝑜𝑜𝑑 𝑣𝑠 𝑏𝑎𝑑 𝑖𝑛𝑑𝑒𝑥𝑖𝑛𝑔
+𝐼𝑛𝑡𝑒𝑟𝑣𝑖𝑒𝑤 𝑎𝑛𝑑 𝑝𝑟𝑎𝑐𝑡𝑖𝑐𝑎𝑙 𝑢𝑛𝑑𝑒𝑟𝑠𝑡𝑎𝑛𝑑𝑖𝑛𝑔
+
+An index is a database object that helps MySQL find rows faster
+-> Without an index, MySQL may have to scan the entire table row by row
+-> With an index, MySQL can locate matching rows much faster
+
+=> An index is a special lookup structure that improves the speed of data retrieval
+
+CREATE INDEX index_name
+ON table_name(column_name); -- Create Index
+
+CREATE INDEX idx_rent
+ON properties(rent);
+
+Think about a book:
+- Without an index, to find 'Window Functions' you may scan every page
+- With a book index, you directly jump to the page number
+MySQL indexes work the same way
+
+𝗜𝗻 𝗿𝗲𝗮𝗹 𝘀𝘆𝘀𝘁𝗲𝗺𝘀, 𝘁𝗮𝗯𝗹𝗲𝘀 𝗰𝗮𝗻 𝗰𝗼𝗻𝘁𝗮𝗶𝗻:
+- thousands of rows
+- lakhs of rows
+- millions of rows
+- If queries run on large tables without indexes, they become slow
+
+𝗖𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀 𝘂𝘀𝗲 𝗶𝗻𝗱𝗲𝘅𝗲𝘀 𝗳𝗼𝗿:
+- faster search
+- faster joins
+- faster filtering
+- faster sorting
+- better dashboard/report performance
+
+𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝗪𝗶𝘁𝗵𝗼𝘂𝘁 𝗜𝗻𝗱𝗲𝘅:
+Suppose you have a properties table:
+SELECT *
+FROM properties
+WHERE locality = 'Whitefield';
+
+If locality is not indexed, MySQL may check every row
+This is called a full table scan
+
+Example With Index
+CREATE INDEX idx_locality
+ON properties(locality);
+- Now MySQL can find Whitefield rows much faster
+
+𝗧𝘆𝗽𝗲𝘀 𝗼𝗳 𝗜𝗻𝗱𝗲𝘅𝗲𝘀 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟
+1. Primary 𝗜𝗻𝗱𝗲𝘅 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟
+2. 𝗨𝗻𝗶𝗾𝘂𝗲 𝗜𝗻𝗱𝗲𝘅
+3. Single-Column Index
+4. Composite Index
+5.Composite Index
+6. Foreign Key Related Indexing
+
+Example 1: Index on locality
+CREATE INDEX idx_locality
+ON properties(locality);
+
+SELECT * FROM properties
+WHERE locality = 'Whitefield'; -- Fast filtering by area in a real estate app
+
+Example 2: Index on rent
+CREATE INDEX idx_rent
+ON properties(rent);
+
+SELECT * FROM properties
+WHERE rent BETWEEN 30000 AND 50000; -- Fast filtering for pricing dashboards
+
+Example 3: Composite index
+CREATE INDEX idx_locality_rent
+ON properties(locality, rent);
+
+SELECT *
+FROM properties
+WHERE locality = 'Marathahalli'
+  AND rent > 40000; -- Search expensive properties in a locality
+
+Example 4: Sorting support
+SELECT *
+FROM properties
+ORDER BY activation_date DESC;
+
+CREATE INDEX idx_activation_date
+ON properties(activation_date); -- Adding index
+
+SHOW INDEX FROM properties; -- [ index name, column name, uniqueness, sequence in index]
+DROP INDEX idx_locality
+ON properties;  -- To Drop the Index
+
+Create indexes on columns that are frequently used in:
+- WHERE
+- JOIN
+- ORDER BY
+- GROUP BY
+
+Avoid indexing columns that:
+- change very frequently
+- have very few unique values in some cases
+- are rarely queried 
+- belong to very small tables
+
+Example:
+If a table has only 20 rows, index benefit may be very small
+
+SELECT property_id, locality, rent
+FROM properties
+WHERE locality = 'Whitefield'
+  AND furnishing = 'Semi-Furnished'
+  AND rent < 50000;
+
+CREATE INDEX idx_search_properties
+ON properties(locality, furnishing, rent);
