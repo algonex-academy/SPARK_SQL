@@ -58,25 +58,23 @@ Example in a real estate syste CHUDANDI:
 - Calculate rent analytics
 - Update rent automatically
 
-Example 1 – Simple Stored Procedure
-Get all the properties chudhma:
-DELIMITER //
+=> Simple Stored Procedure
+Example 1: Get all the properties chudhama:
 
+DELIMITER //
 CREATE PROCEDURE get_all_properties()
 BEGIN
 SELECT * FROM properties;
 END //
-
 DELIMITER ;
+
 CALL get_all_properties();
 
-Example 2 – Filtering Data
+Example 2 - Filtering Data
 -- Find expensive properties
 DELIMITER //
-
 CREATE PROCEDURE expensive_properties()
 BEGIN
-
 SELECT property_id, locality, rent
 FROM properties
 WHERE rent > 50000;
@@ -91,7 +89,8 @@ A dashboard showing high-value properties
  Type          Meaning               
  IN    | input parameter       
  OUT   | output value          
- INOUT | both input and output 
+ INOUT | both input and output
+CALL   | To call the procedure
 
 Example 3tho nerchukoo – IN Parameter
 -- Find properties above given rent (Mee projectloo use cheskondi)
@@ -103,7 +102,6 @@ BEGIN
 SELECT property_id, locality, rent
 FROM properties
 WHERE rent > min_rent;
-
 END //
 
 DELIMITER ;
@@ -113,29 +111,27 @@ CALL properties_by_rent(40000); -- This makes the procedure dynamic(Later result
 Example 4 – OUT Parameter
 -- Return average rent
 DELIMITER //
-
 CREATE PROCEDURE get_avg_rent(OUT avg_value DECIMAL(10,2))
 BEGIN
-
 SELECT AVG(rent) INTO avg_value
 FROM properties;
 END //
-
 DELIMITER ;
 
 CALL get_avg_rent(@avg);
 SELECT @avg;
 
-INOUT: INOUT in a Stored Procedure (SP) means the parameter works as both input and output
-- receive a value when the procedure starts
-- return a modified value after the procedure ends
+INOUT Parameter: INOUT in a Stored Procedure (SP) means the parameter works as both input and output
+- receive a value(Input) when the procedure starts
+- return a modified value(Output) after the procedure ends
 So INOUT is used when you want to pass a value into the procedure, change it inside and get the updated value back ardaminda
 
 CREATE PROCEDURE procedure_name(INOUT variable_name datatype)
 BEGIN
     -- logic
 END;
-Ex 5: Suppose you pass a rent value and the procedure increases it by 10%
+
+Ex 6: Suppose you pass a rent value and the procedure increases it by 10%
 DELIMITER //
 
 CREATE PROCEDURE increase_rent(INOUT rent_value DECIMAL(10,2))
@@ -149,38 +145,36 @@ SET @rent = 50000;
 CALL increase_rent(@rent);
 SELECT @rent;
 
-Real-time Use Cases:
-- 1.Pass employee salary, increase it, and return new salary
+INOUT Real-time Use Cases:
+1.Pass employee salary, increase it and return new salary
 2. Pass product price, apply discount, return final price
 3. Pass amount, add tax, return updated amount
 4. Pass current rent, apply percentage increase, return new rent
 
 Example 6 chudu konchem diffga – Control Flow in Procedures
 -- Stored procedures can include logic like IF statements
-Example: classify duff. rent
+Example: classify diff. rent
 DELIMITER //
-
 CREATE PROCEDURE classify_rent(IN rent_value INT)
 BEGIN
-
 IF rent_value > 70000 THEN
     SELECT 'Luxury Property';
 ELSEIF rent_value > 40000 THEN
     SELECT 'Mid Range Property';
+ELSEIF rent_value = 20000 THEN
+    SELECT 'Exactly 20k Rent';
 ELSE
     SELECT 'Budget Property';
 END IF;
 END //
-
+DELIMITER ;
 CALL classify_rent(60000);
 
-Example 6 – Procedure for Analytics
+Example 6 – Procedure on agg. Analytics
 -- Generate locality rent report
 DELIMITER //
-
 CREATE PROCEDURE locality_rent_report()
 BEGIN
-
 SELECT locality,
        COUNT(*) AS total_properties,
        AVG(rent) AS avg_rent
@@ -194,24 +188,21 @@ DELIMITER ; -- Used in real estate analytics dashboards gamaninchaara eppudina
 Example 7 – Updating Data
 -- Increase rent for a locality
 DELIMITER //
-
 CREATE PROCEDURE increase_rent_by_locality(
     IN loc VARCHAR(100),
     IN percent_increase INT
 )
 BEGIN
-
 UPDATE properties
 SET rent = rent + (rent * percent_increase / 100)
 WHERE locality = loc;
 END //
-
 DELIMITER ;
 
 CALL increase_rent_by_locality('Whitefield',10);
 
-Viewing Stored Procedures (SP
-SHOW PROCEDURE STATUS; -- List alll procedures
+Viewing Stored Procedures (SP)
+SHOW PROCEDURE STATUS; -- List all procedures
 SHOW CREATE PROCEDURE procedure_name; -- See definition
 
 DROP PROCEDURE procedure_name; -- Dropping an SP
@@ -219,10 +210,10 @@ DROP PROCEDURE procedure_name; -- Dropping an SP
 When to Use Stored Procedures
 - the same query runs frequently
 - multiple SQL steps are required
-- business rules must stay in the database
+- business rules/result must stay in the database
 - automation is needed
 
 --> Finalga Stored procedures help convert SQL queries into reusable programs inside the database
-IN - You give a notebook to someone
-OUT - They give you a new notebook
-INOUT - You give your notebook, they write in itand return the same notebook
+IN - You give a notebook to someone to give input
+OUT - They give you a new notebook to write
+INOUT - You give your notebook, they write in it and return the same notebook
