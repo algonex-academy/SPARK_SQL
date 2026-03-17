@@ -1,12 +1,4 @@
                                                           𝗜𝗻𝗱𝗲𝘅es 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟
-𝑊ℎ𝑎𝑡 𝑎𝑛 𝑖𝑛𝑑𝑒𝑥 𝑖𝑠
-𝑊ℎ𝑦 𝑖𝑛𝑑𝑒𝑥𝑒𝑠 𝑚𝑎𝑡𝑡𝑒𝑟 𝑖𝑛 𝑟𝑒𝑎𝑙 𝑝𝑟𝑜𝑗𝑒𝑐𝑡𝑠
-𝐻𝑜𝑤 𝑀𝑦𝑆𝑄𝐿 𝑢𝑠𝑒𝑠 𝑖𝑛𝑑𝑒𝑥𝑒𝑠
-𝑇𝑦𝑝𝑒𝑠 𝑜𝑓 𝑖𝑛𝑑𝑒𝑥𝑒𝑠
-𝑆𝑦𝑛𝑡𝑎𝑥 𝑤𝑖𝑡ℎ 𝑒𝑥𝑎𝑚𝑝𝑙𝑒𝑠
-𝑅𝑒𝑎𝑙 𝑖𝑛𝑑𝑢𝑠𝑡𝑟𝑦 𝑢𝑠𝑒 𝑐𝑎𝑠𝑒𝑠
-𝐺𝑜𝑜𝑑 𝑣𝑠 𝑏𝑎𝑑 𝑖𝑛𝑑𝑒𝑥𝑖𝑛𝑔
-𝐼𝑛𝑡𝑒𝑟𝑣𝑖𝑒𝑤 𝑎𝑛𝑑 𝑝𝑟𝑎𝑐𝑡𝑖𝑐𝑎𝑙 𝑢𝑛𝑑𝑒𝑟𝑠𝑡𝑎𝑛𝑑𝑖𝑛𝑔
 
 An index is a database object that helps MySQL find rows faster
 -> Without an index, MySQL may have to scan the entire table row by row
@@ -60,12 +52,94 @@ ON properties(locality);
 5.Composite Index
 6. Foreign Key Related Indexing
 
+1. Primary Index (PRIMARY KEY)
+- Automatically created when you define a PRIMARY KEY
+Ensures:
+- uniqueness
+- no NULL values
+CREATE TABLE properties (
+    property_id INT PRIMARY KEY,
+    locality VARCHAR(100),
+    rent INT
+); -- MySQL creates an index on property_id
+SELECT * FROM properties WHERE property_id = 101; -- Fetch a property quickly
+
+2. Unique Index
+- Ensures no duplicate values
+- But allows one NULL (in MySQL)
+CREATE UNIQUE INDEX idx_unique_property
+ON properties(property_id); -- Prevent duplicate property listings
+
+3. Single Column Index: Single Column Index
+Ex: CREATE INDEX idx_locality
+ON properties(locality);
+
+SELECT * FROM properties
+WHERE locality = 'Whitefield'; -- MySQL can directly jump to rows instead of scanning full table
+-- Filtering by: city, category, statusetc., kosam
+
+4. Composite Index (Multi-Column Index)
+=> Index on multiple columns
+
+CREATE INDEX idx_locality_rent
+ON properties(locality, rent);
+
+SELECT *
+FROM properties
+WHERE locality = 'Whitefield'
+AND rent > 40000;
+
+Leftmost Prefix Rule Ikkada
+This index works best for:
+ WHERE locality = ...
+ WHERE locality = ... AND rent = ...
+
+ Not efficient for: WHERE rent > 40000;
+Eppudu ante: Search filterslo
+city + price
+category + rating
+date + status
+
 Example 1: Index on locality
 CREATE INDEX idx_locality
 ON properties(locality);
 
 SELECT * FROM properties
 WHERE locality = 'Whitefield'; -- Fast filtering by area in a real estate app
+
+5. Full-Text Index: Used for searching text data
+CREATE FULLTEXT INDEX idx_description
+ON properties(description);
+
+SELECT *
+FROM properties
+WHERE MATCH(description)
+AGAINST('luxury apartment');
+Search like: Google search, product search, job search
+
+ Index Type       Purpose enti                   Example                 
+Primary      | Unique row identification | property_id             
+ Unique      | No duplicate values       | email                   
+ Single      | Fast filtering            | locality                
+ Composite   | Multi-condition queries   | locality + rent         
+ Full-text   | Text search               | description             
+ Foreign Key | Fast joins                | property_id in bookings 
+
+Index is speed booster for SELECT queries
+ Too many indexes is slow INSERT/UPDATE
+
+Which index should SPARK use?
+It depends on query patterns, data size, and filtering conditions
+Composite indexes are useful for multi-column filters, and indexes should be created on frequently used WHERE, JOIN, and ORDER BY columns
+
+CREATE INDEX idx_column_name ON table_name (column_name);
+CREATE INDEX idx_composite ON table_name (column1, column2); -- where several columns are involved
+CREATE UNIQUE INDEX idx_unique_column_name ON table_name (column_name); -- Unique index
+CREATE FULLTEXT INDEX idx_fulltext_column_name ON table_name (text_column_name); --  support of a full-text search
+DROP INDEX idx_column_name ON table_name;
+SHOW INDEX FROM table_name;
+EXPLAIN SELECT * FROM table_name WHERE column_name = 'value';
+OPTIMIZE TABLE table_name;
 
 Example 2: Index on rent
 CREATE INDEX idx_rent
