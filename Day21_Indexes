@@ -6,21 +6,18 @@ An index is a database object that helps MySQL find rows faster
 
 => An index is a special lookup structure that improves the speed of data retrieval
 
-CREATE INDEX index_name
+Ex: CREATE INDEX index_name
 ON table_name(column_name); -- Create Index
 
 CREATE INDEX idx_rent
 ON properties(rent);
 
 Think about a book:
-- Without an index, to find 'Window Functions' you may scan every page
-- With a book index, you directly jump to the page number
-MySQL indexes work the same way
+- Without an index, to find particular chapter page you may scan every page
+- With a book index, you directly jump to the page number, MySQL indexes work the same way
 
 𝗜𝗻 𝗿𝗲𝗮𝗹 𝘀𝘆𝘀𝘁𝗲𝗺𝘀, 𝘁𝗮𝗯𝗹𝗲𝘀 𝗰𝗮𝗻 𝗰𝗼𝗻𝘁𝗮𝗶𝗻:
-- thousands of rows
-- lakhs of rows
-- millions of rows
+- thousands/lakhs/millions of rows
 - If queries run on large tables without indexes, they become slow
 
 𝗖𝗼𝗺𝗽𝗮𝗻𝗶𝗲𝘀 𝘂𝘀𝗲 𝗶𝗻𝗱𝗲𝘅𝗲𝘀 𝗳𝗼𝗿:
@@ -36,8 +33,8 @@ SELECT *
 FROM properties
 WHERE locality = 'Whitefield';
 
-If locality is not indexed, MySQL may check every row
-This is called a full table scan
+If locality is not indexed, MySQL may check every row for Whitefield locality
+-> This is called a full table scan
 
 Example With Index
 CREATE INDEX idx_locality
@@ -49,8 +46,7 @@ ON properties(locality);
 2. 𝗨𝗻𝗶𝗾𝘂𝗲 𝗜𝗻𝗱𝗲𝘅
 3. Single-Column Index
 4. Composite Index
-5.Composite Index
-6. Foreign Key Related Indexing
+5. Foreign Key Related Indexing
 
 1. Primary Index (PRIMARY KEY)
 - Automatically created when you define a PRIMARY KEY
@@ -70,13 +66,13 @@ SELECT * FROM properties WHERE property_id = 101; -- Fetch a property quickly
 CREATE UNIQUE INDEX idx_unique_property
 ON properties(property_id); -- Prevent duplicate property listings
 
-3. Single Column Index: Single Column Index
+3. Single Column Index(Quick filtering)
 Ex: CREATE INDEX idx_locality
 ON properties(locality);
 
 SELECT * FROM properties
 WHERE locality = 'Whitefield'; -- MySQL can directly jump to rows instead of scanning full table
--- Filtering by: city, category, statusetc., kosam
+-- Filtering by: city, category, status etc., kosam
 
 4. Composite Index (Multi-Column Index)
 => Index on multiple columns
@@ -95,7 +91,7 @@ This index works best for:
  WHERE locality = ... AND rent = ...
 
  Not efficient for: WHERE rent > 40000;
-Eppudu ante: Search filterslo
+Eppudu use ante: Search filterslo
 city + price
 category + rating
 date + status
@@ -130,15 +126,16 @@ Index is speed booster for SELECT queries
 
 Which index should SPARK use?
 It depends on query patterns, data size, and filtering conditions
-Composite indexes are useful for multi-column filters, and indexes should be created on frequently used WHERE, JOIN, and ORDER BY columns
+Composite indexes are useful for multi-column filters and indexes should be created on 
+frequently used WHERE, JOIN, and ORDER BY columns
 
 CREATE INDEX idx_column_name ON table_name (column_name);
 CREATE INDEX idx_composite ON table_name (column1, column2); -- where several columns are involved
 CREATE UNIQUE INDEX idx_unique_column_name ON table_name (column_name); -- Unique index
 CREATE FULLTEXT INDEX idx_fulltext_column_name ON table_name (text_column_name); --  support of a full-text search
 DROP INDEX idx_column_name ON table_name;
-SHOW INDEX FROM table_name;
-EXPLAIN SELECT * FROM table_name WHERE column_name = 'value';
+SHOW INDEX FROM table_name; -- List all the indexes
+EXPLAIN SELECT * FROM table_name WHERE column_name = 'value'; -- definition about index
 OPTIMIZE TABLE table_name;
 
 Example 2: Index on rent
