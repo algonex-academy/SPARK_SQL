@@ -120,7 +120,7 @@ CALL get_avg_rent(@avg);
 SELECT @avg;
 
 ＩＮＯＵＴ Ｐａｒａｍｅｔｅｒ: 𝗜𝗡𝗢𝗨𝗧 𝗶𝗻 𝗮 𝗦𝘁𝗼𝗿𝗲𝗱 𝗣𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲 (𝗦𝗣) 𝗺𝗲𝗮𝗻𝘀 𝘁𝗵𝗲 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿 𝘄𝗼𝗿𝗸𝘀 𝗮𝘀 𝗯𝗼𝘁𝗵 𝗶𝗻𝗽𝘂𝘁 𝗮𝗻𝗱 𝗼𝘂𝘁𝗽𝘂𝘁
-- 𝑟𝑒𝑐𝑒𝑖𝑣𝑒 𝑎 𝑣𝑎𝑙𝑢𝑒(𝐼𝑛𝑝𝑢𝑡) 𝑤ℎ𝑒𝑛 𝑡ℎ𝑒 𝑝𝑟𝑜𝑐𝑒𝑑𝑢𝑟𝑒 𝑠𝑡𝑎𝑟𝑡𝑠
+- 𝑟𝑒𝑐𝑒𝑖𝑣𝑒 𝑎 𝑣𝑎𝑙𝑢𝑒(𝐼𝑛𝑝𝑢𝑡) 𝑤ℎ𝑒𝑛 𝑡ℎ𝑒 𝑝𝑟𝑜𝑐𝑒𝑑𝑢𝑟𝑒 𝑠𝑡𝑎𝑟𝑡𝑠/Calls
 - 𝑟𝑒𝑡𝑢𝑟𝑛 𝑎 𝑚𝑜𝑑𝑖𝑓𝑖𝑒𝑑 𝑣𝑎𝑙𝑢𝑒(𝑂𝑢𝑡𝑝𝑢𝑡) 𝑎𝑓𝑡𝑒𝑟 𝑡ℎ𝑒 𝑝𝑟𝑜𝑐𝑒𝑑𝑢𝑟𝑒 𝑒𝑛𝑑𝑠
 So INOUT is used when you want to pass a value into the procedure, change it inside and get the updated value back ardaminda
 
@@ -131,7 +131,6 @@ So INOUT is used when you want to pass a value into the procedure, change it ins
 
 𝗘𝘅 𝟲: 𝗦𝘂𝗽𝗽𝗼𝘀𝗲 𝘆𝗼𝘂 𝗽𝗮𝘀𝘀 𝗮 𝗿𝗲𝗻𝘁 𝘃𝗮𝗹𝘂𝗲 𝗮𝗻𝗱 𝘁𝗵𝗲 𝗽𝗿𝗼𝗰𝗲𝗱𝘂𝗿𝗲 𝗶𝗻𝗰𝗿𝗲𝗮𝘀𝗲𝘀 𝗶𝘁 𝗯𝘆 𝟭𝟬%
 DELIMITER //
-
 CREATE PROCEDURE increase_rent(INOUT rent_value DECIMAL(10,2))
 BEGIN
     SET rent_value = rent_value + (rent_value * 0.10);
@@ -181,6 +180,7 @@ ORDER BY avg_rent DESC;
 END //
 
 DELIMITER ; -- Used in real estate analytics dashboards gamaninchaara eppudina
+CALL locality_rent_report()
 
 𝗘𝘅𝗮𝗺𝗽𝗹𝗲 𝟳 – 𝗨𝗽𝗱𝗮𝘁𝗶𝗻𝗴 𝗗𝗮𝘁𝗮
 -- Increase rent for a locality
