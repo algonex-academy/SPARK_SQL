@@ -2,15 +2,13 @@
 A Trigger is a set of SQL statements that automatically executes when a specific event happens on a table
 -> A trigger is an automatic action performed by the database when data is inserted, updated, or deleted
 
-Think of a bank transaction system:
+Ex: Think of a bank transaction system:
 When money is deposited -> update balance automatically
 When money is withdrawn -> log transaction(Antee store anii)
-
-You don't manually run queries — it happens automatically
-That's a trigger understood?
+You don't manually run queries — it happens automatically, that's a trigger understood?
 
 Triggers are based on events:
- Event     When it happens      
+ Events     When it happens      
  INSERT | New row added        
  UPDATE | Existing row changed 
  DELETE | Row removed          
@@ -28,7 +26,7 @@ Types of Triggers (Important for SPARK):
  BEFORE DELETE | Prevent deletion            
  AFTER DELETE  | Log deletion                
 
-Basci Syntax: 
+Basic Syntax: 
 DELIMITER //
 
 CREATE TRIGGER trigger_name
@@ -43,11 +41,11 @@ END //
 
 DELIMITER ;
 
+Types of Triggers:
 1. BEFORE INSERT Trigger
 Example 1: Ensure rent is not negative
 
 DELIMITER //
-
 CREATE TRIGGER before_insert_rent
 BEFORE INSERT
 ON properties
@@ -59,7 +57,6 @@ BEGIN
     END IF;
 
 END //
-
 DELIMITER ; /* NEW.rent - incoming value
 If rent is invalid -> correct it */
 
@@ -74,9 +71,8 @@ CREATE TABLE property_log (
     log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-Ippudu Trigger raayi:
+Ippudu Trigger create cheyandi:
 DELIMITER //
-
 CREATE TRIGGER after_insert_property
 AFTER INSERT
 ON properties
@@ -89,7 +85,6 @@ VALUES (NEW.property_id, 'INSERT');
 END //
 
 DELIMITER ;
-
 Usecases: Audit logs, Tracking changes, Debugging kosam
 
 3. AFTER UPDATE Trigger
