@@ -1,0 +1,163 @@
+    Trigger in MySQL
+A Trigger is a set of SQL statements that automatically executes when a specific event happens on a table
+-> A trigger is an automatic action performed by the database when data is inserted, updated, or deleted
+
+Think of a bank transaction system:
+When money is deposited -> update balance automatically
+When money is withdrawn -> log transaction(Antee store anii)
+
+You don't manually run queries — it happens automatically
+That's a trigger understood?
+
+Triggers are based on events:
+ Event     When it happens      
+ INSERT | New row added        
+ UPDATE | Existing row changed 
+ DELETE | Row removed          
+
+Types:
+ BEFORE | Runs before operation 
+ AFTER  | Runs after operation  
+
+Types of Triggers (Important for SPARK):
+ Type                Example  chudandi                   
+ BEFORE INSERT | Validate data before insert 
+ AFTER INSERT  | Log new entry               
+ BEFORE UPDATE | Check conditions            
+ AFTER UPDATE  | Audit changes               
+ BEFORE DELETE | Prevent deletion            
+ AFTER DELETE  | Log deletion                
+
+Basci Syntax: 
+DELIMITER //
+
+CREATE TRIGGER trigger_name
+BEFORE/AFTER INSERT/UPDATE/DELETE
+ON table_name
+FOR EACH ROW
+BEGIN
+
+    Write SQL logic;
+
+END //
+
+DELIMITER ;
+
+1. BEFORE INSERT Trigger
+Example 1: Ensure rent is not negative
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_rent
+BEFORE INSERT
+ON properties
+FOR EACH ROW
+BEGIN
+
+    IF NEW.rent < 0 THEN
+        SET NEW.rent = 0;
+    END IF;
+
+END //
+
+DELIMITER ; /* NEW.rent - incoming value
+If rent is invalid -> correct it */
+
+2. AFTER INSERT Trigger
+Example2: Log every new property added
+
+Create log table:
+CREATE TABLE property_log (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    property_id INT,
+    action VARCHAR(50),
+    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Ippudu Trigger raayi:
+DELIMITER //
+
+CREATE TRIGGER after_insert_property
+AFTER INSERT
+ON properties
+FOR EACH ROW
+BEGIN
+
+INSERT INTO property_log(property_id, action)
+VALUES (NEW.property_id, 'INSERT');
+
+END //
+
+DELIMITER ;
+
+Usecases: Audit logs, Tracking changes, Debugging kosam
+
+3. AFTER UPDATE Trigger
+Example3: Track rent changes
+DELIMITER //
+
+CREATE TRIGGER after_update_rent
+AFTER UPDATE
+ON properties
+FOR EACH ROW
+BEGIN
+
+IF OLD.rent <> NEW.rent THEN
+    INSERT INTO property_log(property_id, action)
+    VALUES (NEW.property_id, 'RENT UPDATED');
+END IF;
+
+END //
+
+DELIMITER ;
+
+4. BEFORE DELETE Trigger
+Prevent deletion of expensive properties
+DELIMITER //
+
+CREATE TRIGGER before_delete_property
+BEFORE DELETE
+ON properties
+FOR EACH ROW
+BEGIN
+
+IF OLD.rent > 100000 THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Cannot delete premium property';
+END IF;
+
+END //
+
+DELIMITER ;
+
+5. AFTER DELETE Trigger
+Example5: Log deleted properties
+DELIMITER //
+
+CREATE TRIGGER after_delete_property
+AFTER DELETE
+ON properties
+FOR EACH ROW
+BEGIN
+
+INSERT INTO property_log(property_id, action)
+VALUES (OLD.property_id, 'DELETED');
+
+END //
+
+DELIMITER ;
+
+Triggers are used in: (Real Usecases chudandi)
+Banking
+- Update account balance
+- Log transactions
+E-commerce
+- Update stock after order
+- Track order status
+Real Estate
+- Track rent updates
+- Log property changes
+HR Systems
+- Log salary changes
+- Track promotions
+
