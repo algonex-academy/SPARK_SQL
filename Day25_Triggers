@@ -14,8 +14,8 @@ Triggers are based on events:
  DELETE | Row removed          
 
 Types:
- BEFORE | Runs before operation 
- AFTER  | Runs after operation  
+ BEFORE | Runs before operation | Validation
+ AFTER  | Runs after operation  | Action -> Response
 
 Types of Triggers (Important for SPARK):
  Type                Example  chudandi                   
@@ -28,7 +28,6 @@ Types of Triggers (Important for SPARK):
 
 Basic Syntax: 
 DELIMITER //
-
 CREATE TRIGGER trigger_name
 BEFORE/AFTER INSERT/UPDATE/DELETE
 ON table_name
@@ -38,8 +37,14 @@ BEGIN
     Write SQL logic;
 
 END //
-
 DELIMITER ;
+
+ Part                        Meaning chudandi      
+ CREATE TRIGGER           | defines trigger    
+ BEFORE /AFTER            | when to run        
+ INSERT / UPDATE / DELETE | event              
+ FOR EACH ROW             | runs for every row 
+ BEGIN...END              | logic block        
 
 Types of Triggers:
 1. BEFORE INSERT Trigger
@@ -59,6 +64,15 @@ BEGIN
 END //
 DELIMITER ; /* NEW.rent - incoming value
 If rent is invalid -> correct it */
+INSERT INTO properties VALUES (101, 'Bangalore', -5000); -- run this
+
+Step-by-step:
+1. INSERT starts
+2. Trigger fires BEFORE insert
+It checks:
+3. NEW.rent = -5000
+4. Condition true -> set to 0
+5. Final inserted value = 0
 
 2. AFTER INSERT Trigger
 Example2: Log every new property added
@@ -83,7 +97,6 @@ INSERT INTO property_log(property_id, action)
 VALUES (NEW.property_id, 'INSERT');
 
 END //
-
 DELIMITER ;
 Usecases: Audit logs, Tracking changes, Debugging kosam
 
@@ -98,16 +111,15 @@ FOR EACH ROW
 BEGIN
 
 IF OLD.rent <> NEW.rent THEN
-    INSERT INTO property_log(property_id, action)
+INSERT INTO property_log(property_id, action)
     VALUES (NEW.property_id, 'RENT UPDATED');
 END IF;
 
 END //
-
 DELIMITER ;
 
 4. BEFORE DELETE Trigger
-Prevent deletion of expensive properties
+- Prevent deletion of expensive properties
 DELIMITER //
 
 CREATE TRIGGER before_delete_property
@@ -122,8 +134,9 @@ IF OLD.rent > 100000 THEN
 END IF;
 
 END //
-
 DELIMITER ;
+
+Delete from properties where rent = 150000; -- Query will display "Cannot delete premium property"
 
 5. AFTER DELETE Trigger
 Example5: Log deleted properties
@@ -139,12 +152,13 @@ INSERT INTO property_log(property_id, action)
 VALUES (OLD.property_id, 'DELETED');
 
 END //
-
 DELIMITER ;
+
+delete from properties where property_id = 101;
 
 Triggers are used in: (Real Usecases chudandi)
 Banking
-- Update account balance
+- Automatic Update account balance
 - Log transactions
 E-commerce
 - Update stock after order
@@ -155,4 +169,3 @@ Real Estate
 HR Systems
 - Log salary changes
 - Track promotions
-
