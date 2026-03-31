@@ -1,0 +1,117 @@
+NORMALIZATION CHUDHAMA
+-> Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity
+
+Normalization is the process of organizing data in a database to:
+- Remove redundancy (duplicate data)
+= Ensure data consistency
+- Improve data integrity
+=> Store data efficiently without repetition
+
+Why Normalization is Important FOR spark STUDENTS?
+Without normalization :
+- Duplicate data on rental properties
+- Data inconsistency untundi
+- Difficult updates
+- storage is wasted
+- errors occur
+
+With normalization:
+- Clean structure
+- Easy updates
+- Better performance
+
+Oka Real Problem chudhama (Without Normalization)
+-  Unnormalized Table
+property_id | locality | owner_name | owner_phone | property_type | rent
+
+Now imagine:
+- Same owner has 5 properties
+- Owner details repeated 5 times
+Problems:
+- Data duplication
+- If phone changes -> update everywhere
+- Risk of inconsistent data
+
+ Normalized Design
+Split into tables:
+
+Properties Table
+property_id | locality | property_type | rent | owner_id
+
+Owners Table
+owner_id | owner_name | owner_phone
+
+Benefits:
+- No duplication
+- Easy updates
+- Better structure
+
+2. Types of Normal Forms (These are enough for freshers + most industry cases)
+You must know:
+1️ 1NF (First Normal Form)
+2️ 2NF (Second Normal Form)
+3️. 3NF (Third Normal Form)
+
+1NF (First Normal Form)
+Rule
+- No repeating groups
+- No multi-valued columns
+- Atomic values only
+
+ Not in 1NF
+property_id | amenities
+1           | gym, pool
+
+In 1NF
+property_id | amenity
+1           | gym
+1           | pool
+Ikkada Meaning
+Each cell should contain only one value.
+
+2NF (Second Normal Form)
+Rule
+Must be in 1NF
+No partial dependency
+
+Problem Example
+(property_id, owner_id) -> owner_name
+Owner name depends only on owner_id, not full key
+
+Solution entantee
+Split table:
+
+Property Table
+property_id | owner_id
+
+Owner Table
+owner_id | owner_name
+
+Meaning: Every column must depend on the entire primary key.
+
+3NF (Third Normal Form)
+Rule
+Must be in 2NF
+No transitive dependency
+
+Problem Example
+property_id -> locality -> city
+City depends on locality, not directly on property.
+
+Solution chudandi:
+Properties
+property_id | locality_id
+Locality Table
+locality_id | locality | city
+Meaning: Non-key columns should not depend on other non-key columns
+
+ Normalization    | Denormalization 
+ Less redundancy  | More redundancy 
+ More joins       | Fewer joins     
+ Better integrity | Faster reads    
+ Complex queries  | Simple queries  
+
+ Normal Form      Rule                     
+ 1NF         | Atomic values            
+ 2NF         | No partial dependency    
+ 3NF         | No transitive dependency 
