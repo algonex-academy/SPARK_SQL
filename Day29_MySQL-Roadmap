@@ -1,0 +1,117 @@
+MYSQL REVISION ROADMAP (SPARK PLACEMENT READY)
+
+Phase-1: CORE FOUNDATIONS (Very imp must be perfect)
+
+- Basic SQL 
+Focus:
+- SELECT
+- WHERE
+- ORDER BY
+- LIMIT
+
+SELECT * FROM properties WHERE rent > 30000;
+SELECT locality FROM properties ORDER BY rent DESC;
+
+2️. Operators & Conditions
+- AND, OR, NOT
+- BETWEEN
+- IN
+- LIKE
+- IS NULL
+
+3️. Functions (Important)
+- Aggregate: AVG, SUM, COUNT, MAX, MIN
+- String: LENGTH, UPPER, LOWER
+- Date: NOW(), CURDATE()
+
+PHASE 2 — INTERMEDIATE SQL chudandi
+4️. GROUP BY & HAVING
+SELECT locality, AVG(rent)
+FROM properties
+GROUP BY locality
+HAVING AVG(rent) > 40000;
+
+5️. JOINS (VERY IMPORTANT)
+You must master:
+- INNER JOIN
+- LEFT JOIN
+- RIGHT JOIN
+- SELF JOIN
+
+Real Thinking
+- Combine tables
+- Fetch related data
+
+6️. Subqueries
+Types:
+- Single row
+- Multi-row
+- Correlated
+7️. Set Operations
+- UNION
+- UNION ALL
+(Simulate INTERSECT / EXCEPT)
+
+PHASE 3 — ADVANCED SQL inka
+8️. Window Functions (HIGH PRIORITY ivvandi veetiki theory+practical )
+Must know:
+- ROW_NUMBER()
+- RANK()
+- DENSE_RANK()
+- LAG(), LEAD()
+- PARTITION BY
+
+9️. CTE (WITH Clause)
+- Replace complex subqueries
+- Use with window functions
+
+10. Views
+- Virtual tables
+- Simplify queries
+- Security use cases
+
+PHASE 4 — DATABASE DESIGN gurinchi practise cheyandi
+1️. Keys
+- Primary key
+- Foreign key
+- Candidate key
+- Composite key
+- Surrogate key
+
+2️. Constraints
+- NOT NULL
+- UNIQUE
+- CHECK
+- DEFAULT
+3️. Referential Integrity
+- ON DELETE CASCADE
+- SET NULL
+- RESTRICT
+4️. Normalization (VERY IMPORTANT)
+- 1NF
+- 2NF
+- 3NF
+
+PHASE 5 — PERFORMANCE & OPTIMIZATION meedha practise cheyandi
+1. Indexes (CRITICAL)
+- Single index
+- Composite index
+- Unique index
+Learn:
+- CREATE INDEX idx_locality ON properties(locality);
+
+2. EXPLAIN (VERY IMPORTANT)
+EXPLAIN SELECT * FROM properties WHERE locality = 'BTM';
+
+Learn:
+- rows scanned
+- index usage
+
+PHASE 6 <-> AUTOMATION & BACKEND LOGIC
+1. Stored Procedures
+- IN, OUT, INOUT
+- control flow
+
+2. Triggers
+- BEFORE / AFTER
+- INSERT / UPDATE / DELETE
