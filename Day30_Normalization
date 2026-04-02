@@ -1,14 +1,14 @@
-NORMALIZATION CHUDHAMA
--> Normalization is the process of organizing data in a database to reduce redundancy and improve data integrity
+𝗡𝗢𝗥𝗠𝗔𝗟𝗜𝗭𝗔𝗧𝗜𝗢𝗡 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟 CHUDHAMA
+-> 𝖭𝗈𝗋𝗆𝖺𝗅𝗂𝗓𝖺𝗍𝗂𝗈𝗇 𝗂𝗌 𝗍𝗁𝖾 𝗉𝗋𝗈𝖼𝖾𝗌𝗌 𝗈𝖿 𝗈𝗋𝗀𝖺𝗇𝗂𝗓𝗂𝗇𝗀 𝖽𝖺𝗍𝖺 𝗂𝗇 𝖺 𝖽𝖺𝗍𝖺𝖻𝖺𝗌𝖾 into multiple tables 𝗍𝗈 𝗋𝖾𝖽𝗎𝖼𝖾 𝗋𝖾𝖽𝗎𝗇𝖽𝖺𝗇𝖼𝗒 𝖺𝗇𝖽 𝗂𝗆𝗉𝗋𝗈𝗏𝖾 𝖽𝖺𝗍𝖺 𝗂𝗇𝗍𝖾𝗀𝗋𝗂𝗍𝗒
 
-Normalization is the process of organizing data in a database to:
-- Remove redundancy (duplicate data)
-= Ensure data consistency
-- Improve data integrity
-=> Store data efficiently without repetition
+𝙽𝚘𝚛𝚖𝚊𝚕𝚒𝚣𝚊𝚝𝚒𝚘𝚗 𝚒𝚜 𝚝𝚑𝚎 𝚙𝚛𝚘𝚌𝚎𝚜𝚜 𝚘𝚏 𝚘𝚛𝚐𝚊𝚗𝚒𝚣𝚒𝚗𝚐 𝚍𝚊𝚝𝚊 𝚒𝚗 𝚊 𝚍𝚊𝚝𝚊𝚋𝚊𝚜𝚎 𝚝𝚘:
+-> Remove redundancy (duplicate data)
+-> Ensure data consistency
+-> Improve data integrity
+-> Store data efficiently without repetition
 
 Why Normalization is Important FOR spark STUDENTS?
-Without normalization :
+Without normalization emavuthundii:
 - Duplicate data on rental properties
 - Data inconsistency untundi
 - Difficult updates
@@ -24,13 +24,19 @@ Oka Real Problem chudhama (Without Normalization)
 -  Unnormalized Table
 property_id | locality | owner_name | owner_phone | property_type | rent
 
+ property_id | owner_name | owner_phone 
+ 1           | Ravi       | 9999        
+ 2           | Ravi       | 9999        
+ 3           | Ravi       | 9999        
+
 Now imagine:
-- Same owner has 5 properties
-- Owner details repeated 5 times
-Problems:
-- Data duplication
+- Same owner has 3 properties
 - If phone changes -> update everywhere
-- Risk of inconsistent data
+- Risk of mismatch
+Problems:                                                   Goal of Normalization:
+- Data duplication                                         - Remove duplication
+- If phone changes -> update everywhere                    - Remove duplication
+- Risk of inconsistent data                                - Maintain consistency
 
  Normalized Design
 Split into tables:
@@ -52,27 +58,26 @@ You must know:
 2️ 2NF (Second Normal Form)
 3️. 3NF (Third Normal Form)
 
-1NF (First Normal Form)
-Rule
+𝟭𝗡𝗙 (𝗙𝗶𝗿𝘀𝘁 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)Rule
 - No repeating groups
-- No multi-valued columns
-- Atomic values only
-
- Not in 1NF
+- No multiple values in one column
+- Each column must be atomic (single value)
+ 
+𝐍𝐨𝐭 𝐢𝐧 𝟏𝐍𝐅
 property_id | amenities
 1           | gym, pool
 
-In 1NF
+𝐈𝐧 𝟏𝐍𝐅
 property_id | amenity
 1           | gym
 1           | pool
 Ikkada Meaning
-Each cell should contain only one value.
+Each cell should contain only one value
 
-2NF (Second Normal Form)
-Rule
-Must be in 1NF
-No partial dependency
+𝟮𝗡𝗙 (𝗦𝗲𝗰𝗼𝗻𝗱 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)
+Rule chudu:
+- Must be in 1NF
+- No partial dependency(When a column depends on only part of a composite key, not the full key)
 
 Problem Example
 (property_id, owner_id) -> owner_name
@@ -86,21 +91,26 @@ property_id | owner_id
 
 Owner Table
 owner_id | owner_name
+Ikkada Every column must depend on the entire primary key
 
-Meaning: Every column must depend on the entire primary key.
+Inkoo example: (order_id, product_id) → product_name
+Fix:
+- Orders table
+- Products table
 
-3NF (Third Normal Form)
+𝟯𝗡𝗙 (𝗧𝗵𝗶𝗿𝗱 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)
 Rule
-Must be in 2NF
-No transitive dependency
+- Must be in 2NF
+- No transitive dependency (A -> B -> C So A indirectly determines C)
 
 Problem Example
 property_id -> locality -> city
-City depends on locality, not directly on property.
+City depends on locality, not directly on property
 
 Solution chudandi:
 Properties
 property_id | locality_id
+
 Locality Table
 locality_id | locality | city
 Meaning: Non-key columns should not depend on other non-key columns
@@ -115,3 +125,56 @@ Meaning: Non-key columns should not depend on other non-key columns
  1NF         | Atomic values            
  2NF         | No partial dependency    
  3NF         | No transitive dependency 
+
+Finalga Step-by-Step Example chudu: (Like you need to solve in real Interviews)
+Always follow this approach:
+1️. Identify redundancy
+2️. Check 1NF → atomic values
+3️. Check 2NF → partial dependency
+4️. Check 3NF → transitive dependency
+5️. Split tables properly
+
+Original Table
+property_id | locality | city | owner_name | owner_phone | rent
+Step 1 - 1NF: Ensure atomic values (already fine)
+
+Step 2 - 2NF: Remove partial dependency:
+Properties
+property_id | owner_id | locality | rent
+Owners
+owner_id | owner_name | owner_phone
+
+Step 3 - 3NF: Remove transitive dependency:
+Properties
+property_id | owner_id | locality_id | rent
+Owners
+owner_id | owner_name | owner_phone
+Locality
+locality_id | locality | city
+
+𝗔𝗻𝗼𝘁𝗵𝗲𝗿 𝗲𝘅𝗮𝗺𝗽𝗹𝗲: 𝗦𝘁𝘂𝗱𝗲𝗻𝘁 𝗖𝗼𝘂𝗿𝘀𝗲𝘀
+student_id | student_name | course_id | course_name | instructor
+
+Problem:
+ student_id   course_id  course_name 
+ 1          | C1        | SQL         
+ 2          | C1        | SQL         
+Ikkada: Course name repeated
+Instructor repeated
+
+Step 1 - 1NF: Already atomic
+Step 2 - 2NF: Primary key = (student_id, course_id)
+course_name -> depends only on course_id
+Step 3 - 3NF: Instructor depends on course → transitive dependency
+
+Final Solution entante:
+Students
+student_id | student_name
+Courses
+course_id | course_name | instructor
+Enrollments
+student_id | course_id
+
+1NF -> Atomic values
+2NF -> No partial dependency
+3NF -> No transitive dependency
