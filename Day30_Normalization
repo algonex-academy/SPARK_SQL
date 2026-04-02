@@ -1,5 +1,5 @@
 𝗡𝗢𝗥𝗠𝗔𝗟𝗜𝗭𝗔𝗧𝗜𝗢𝗡 𝗶𝗻 𝗠𝘆𝗦𝗤𝗟 CHUDHAMA
--> 𝖭𝗈𝗋𝗆𝖺𝗅𝗂𝗓𝖺𝗍𝗂𝗈𝗇 𝗂𝗌 𝗍𝗁𝖾 𝗉𝗋𝗈𝖼𝖾𝗌𝗌 𝗈𝖿 𝗈𝗋𝗀𝖺𝗇𝗂𝗓𝗂𝗇𝗀 𝖽𝖺𝗍𝖺 𝗂𝗇 𝖺 𝖽𝖺𝗍𝖺𝖻𝖺𝗌𝖾 into multiple tables 𝗍𝗈 𝗋𝖾𝖽𝗎𝖼𝖾 𝗋𝖾𝖽𝗎𝗇𝖽𝖺𝗇𝖼𝗒 𝖺𝗇𝖽 𝗂𝗆𝗉𝗋𝗈𝗏𝖾 𝖽𝖺𝗍𝖺 𝗂𝗇𝗍𝖾𝗀𝗋𝗂𝗍𝗒
+-> 𝖭𝗈𝗋𝗆𝖺𝗅𝗂𝗓𝖺𝗍𝗂𝗈𝗇 𝗂𝗌 𝗍𝗁𝖾 𝗉𝗋𝗈𝖼𝖾𝗌𝗌 𝗈𝖿 𝗈𝗋𝗀𝖺𝗇𝗂𝗓𝗂𝗇𝗀 𝖽𝖺𝗍𝖺 𝗂𝗇 𝖺 𝖽𝖺𝗍𝖺𝖻𝖺𝗌𝖾 into multiple tables 𝗍𝗈 𝗋𝖾𝖽𝗎𝖼𝖾 𝗋𝖾𝖽𝗎𝗇𝖽𝖺𝗇𝖼𝗒(duplicates) 𝖺𝗇𝖽 𝗂𝗆𝗉𝗋𝗈𝗏𝖾 𝖽𝖺𝗍𝖺 𝗂𝗇𝗍𝖾𝗀𝗋𝗂𝗍𝗒
 
 𝙽𝚘𝚛𝚖𝚊𝚕𝚒𝚣𝚊𝚝𝚒𝚘𝚗 𝚒𝚜 𝚝𝚑𝚎 𝚙𝚛𝚘𝚌𝚎𝚜𝚜 𝚘𝚏 𝚘𝚛𝚐𝚊𝚗𝚒𝚣𝚒𝚗𝚐 𝚍𝚊𝚝𝚊 𝚒𝚗 𝚊 𝚍𝚊𝚝𝚊𝚋𝚊𝚜𝚎 𝚝𝚘:
 -> Remove redundancy (duplicate data)
@@ -24,7 +24,7 @@ Oka Real Problem chudhama (Without Normalization)
 -  Unnormalized Table
 property_id | locality | owner_name | owner_phone | property_type | rent
 
- property_id | owner_name | owner_phone 
+ property_id   owner_name   owner_phone 
  1           | Ravi       | 9999        
  2           | Ravi       | 9999        
  3           | Ravi       | 9999        
@@ -35,8 +35,8 @@ Now imagine:
 - Risk of mismatch
 Problems:                                                   Goal of Normalization:
 - Data duplication                                         - Remove duplication
-- If phone changes -> update everywhere                    - Remove duplication
-- Risk of inconsistent data                                - Maintain consistency
+- If phone changes -> update everywhere                    - Maintain consistency
+- Risk of inconsistent data                               
 
  Normalized Design
 Split into tables:
@@ -54,11 +54,12 @@ Benefits:
 
 2. Types of Normal Forms (These are enough for freshers + most industry cases)
 You must know:
-1️ 1NF (First Normal Form)
-2️ 2NF (Second Normal Form)
+1️. 1NF (First Normal Form)
+2️. 2NF (Second Normal Form)
 3️. 3NF (Third Normal Form)
 
-𝟭𝗡𝗙 (𝗙𝗶𝗿𝘀𝘁 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)Rule
+𝟭𝗡𝗙 (𝗙𝗶𝗿𝘀𝘁 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺) - AtomIC Values
+Rules:
 - No repeating groups
 - No multiple values in one column
 - Each column must be atomic (single value)
@@ -72,7 +73,7 @@ property_id | amenity
 1           | gym
 1           | pool
 Ikkada Meaning
-Each cell should contain only one value
+=> Each cell should contain only one value/atomic/unique value
 
 𝟮𝗡𝗙 (𝗦𝗲𝗰𝗼𝗻𝗱 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)
 Rule chudu:
@@ -93,9 +94,9 @@ Owner Table
 owner_id | owner_name
 Ikkada Every column must depend on the entire primary key
 
-Inkoo example: (order_id, product_id) → product_name
+Inkoo example: (order_id, product_id) -> product_name
 Fix:
-- Orders table
+- Orders table 
 - Products table
 
 𝟯𝗡𝗙 (𝗧𝗵𝗶𝗿𝗱 𝗡𝗼𝗿𝗺𝗮𝗹 𝗙𝗼𝗿𝗺)
@@ -121,15 +122,15 @@ Meaning: Non-key columns should not depend on other non-key columns
  Better integrity | Faster reads    
  Complex queries  | Simple queries  
 
- Normal Form      Rule                     
+ Normal Form         Rule                     
  1NF         | Atomic values            
  2NF         | No partial dependency    
  3NF         | No transitive dependency 
 
 Finalga Step-by-Step Example chudu: (Like you need to solve in real Interviews)
 Always follow this approach:
-1️. Identify redundancy
-2️. Check 1NF - atomic values
+1️. Identify redundancy/Duplicates and remove it
+2️. Check 1NF -> atomic values
 3️. Check 2NF -> partial dependency
 4️. Check 3NF -> transitive dependency
 5️. Split tables properly
@@ -145,6 +146,7 @@ Owners
 owner_id | owner_name | owner_phone
 
 Step 3 - 3NF: Remove transitive dependency:
+property_id -> locality_id -> city
 Properties
 property_id | owner_id | locality_id | rent
 Owners
