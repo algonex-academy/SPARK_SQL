@@ -129,9 +129,9 @@ Meaning: Non-key columns should not depend on other non-key columns
 Finalga Step-by-Step Example chudu: (Like you need to solve in real Interviews)
 Always follow this approach:
 1️. Identify redundancy
-2️. Check 1NF → atomic values
-3️. Check 2NF → partial dependency
-4️. Check 3NF → transitive dependency
+2️. Check 1NF - atomic values
+3️. Check 2NF -> partial dependency
+4️. Check 3NF -> transitive dependency
 5️. Split tables properly
 
 Original Table
