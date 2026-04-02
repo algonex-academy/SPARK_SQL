@@ -2,8 +2,7 @@ MYSQL REVISION ROADMAP (SPARK PLACEMENT READY)
 
 Phase-1: CORE FOUNDATIONS (Very imp must be perfect)
 
-- Basic SQL 
-Focus:
+Basic SQL Focus:
 - SELECT
 - WHERE
 - ORDER BY
@@ -37,6 +36,7 @@ You must master:
 - LEFT JOIN
 - RIGHT JOIN
 - SELF JOIN
+- Outer Join
 
 Real Thinking
 - Combine tables
