@@ -1,0 +1,104 @@
+                                          SPARK - DATA PIPELINES
+
+=> A data pipeline is a system that collects, processes, transforms, and delivers data from source to destination
+
+Maa Projectsloo ela chesthaamu:
+Industry Flow: Source -> Ingestion(collecting, importing, and loading data) -> Processing -> Storage -> Analysis
+Example: App → Database → ETL → Data Warehouse → Dashboard
+
+Think of a Real Estate Platform of SQLAI Fellowship:
+- Data Sources
+- user inputs property
+- app logs activity
+- external APIs
+
+Piepline Flow: 
+MySQL (raw data)
+   |
+ETL (clean + transform)
+   |
+Data Warehouse
+   |
+Dashboard / Reports
+
+Companies don't hire for: "Can you write SELECT/uPDATE?"
+They hire for:
+- Can you move data?
+- Can you clean data?
+- Can you design systems?
+- Can you scale?
+
+1️. ETL vs ELT (VERY IMPORTANT)
+ETL:
+Extract -> Transform -> Load
+ELT:
+Extract -> Load -> Transform => Modern companies prefer ELT
+
+2️. Pipeline Architecture
+-> Batch pipelines
+- Runs every few hours
+Example: daily reports
+
+-> Real-time pipelines
+- Runs continuously
+Example:
+- stock prices
+- Uber tracking
+
+3️. Data Storage Layers
+You might learnt in MJR, MBU, KMM, NBKR, Presidency, SVCET:
+1. OLTP (Transactional)
+- MySQL
+- fast inserts/updates
+
+2. OLAP (Analytics)
+- Data warehouse
+- optimized for queries
+
+4️. Data Warehousing Concepts Chudnadi
+- fact tables
+- dimension tables
+- star schema
+
+5️. Tools You MUST Know when you want to become a DA SPARK: 
+Beginner
+- SQL (you already know)
+- Python (next step)
+
+Intermediate
+- Apache Airflow (pipeline orchestration)
+- Pandas (data processing)
+
+Advanced
+- Spark
+- Kafka
+- Snowflake / BigQuery
+
+Konchem Practical Example Pipeline chudhama
+
+Step 1 - Source
+properties table (MySQL)
+Step 2 - Extract
+SELECT * FROM properties;
+Step 3 -> Transform
+remove nulls
+normalize values
+create derived columns
+
+Step 4 -> Load
+Load into: analytics table / warehouse
+
+Step 5 -> Use
+- dashboard
+- reports
+- ML models
+
+Mee FELLOWSHIP Project: Property Analytics Pipeline
+Steps:
+1️. Extract data from MySQL
+2️. Clean data using Python
+3️. Store in analytics table
+4️. Run SQL insights
+5️. Schedule pipeline
+
+Raw Data -> Clean Data -> Useful Data -> Business Decision
