@@ -1,0 +1,190 @@
+Complete Pipeline Chedhaama:
+MySQL (Raw Data)
+   |
+Python ETL (Cleaning + Transformation)
+   |
+MySQL (Analytics Layer)
+   |
+SQL Insights
+   |
+(Optionally: Dashboard /Automation cheyaali)
+
+1. Project Architecture
+Data Source -> ETL Script -> Processed Data -> Analytics -> Reporting
+More detailed:
+properties (raw table)
+   |
+Python (ETL)
+   |
+properties_cleaned
+   |
+properties_analytics
+   |
+SQL queries / dashboard
+
+2. Project Folder Structure
+real-estate-data-pipeline/
+│
+├── data/
+│   └── sample_data.csv
+│
+├── sql/
+│   ├── create_tables.sql
+│   └── analytics_queries.sql
+│
+├── etl/
+│   ├── extract.py
+│   ├── transform.py
+│   ├── load.py
+│   └── pipeline.py
+│
+├── logs/
+│   └── pipeline.log
+│
+├── config/
+│   └── db_config.py
+│
+├── README.md
+└── requirements.txt
+
+3. Step-by-step Implementation
+Step 1 -> Database Setup
+CREATE DATABASE real_estate_project;
+USE real_estate_project;
+
+CREATE TABLE properties (
+    property_id INT PRIMARY KEY,
+    locality VARCHAR(100),
+    rent INT,
+    property_size INT,
+    furnishing VARCHAR(50),
+    property_age INT
+);
+
+Step 2 — Extract Layer (extract.py)
+import pandas as pd
+import mysql.connector
+from config.db_config import db_config
+
+def extract_data():
+    conn = mysql.connector.connect(**db_config)
+    query = "SELECT * FROM properties"
+    df = pd.read_sql(query, conn)
+    conn.close()
+    return df
+
+Step 3 — Transform Layer (transform.py)
+def transform_data(df):
+    df = df.dropna()
+
+    df['price_per_sqft'] = df['rent'] / df['property_size']
+
+    def rent_category(rent):
+        if rent > 70000:
+            return 'High'
+        elif rent > 40000:
+            return 'Medium'
+        else:
+            return 'Low'
+
+    df['rent_category'] = df['rent'].apply(rent_category)
+
+    return df
+
+Step 4 - Load Layer (load.py)
+import mysql.connector
+from config.db_config import db_config
+
+def load_data(df):
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS properties_analytics (
+        property_id INT,
+        locality VARCHAR(100),
+        rent INT,
+        property_size INT,
+        price_per_sqft FLOAT,
+        rent_category VARCHAR(20)
+    )
+    """)
+
+    insert_query = """
+    INSERT INTO properties_analytics
+    VALUES (%s, %s, %s, %s, %s, %s)
+    """
+
+    for _, row in df.iterrows():
+        cursor.execute(insert_query, tuple(row))
+
+    conn.commit()
+    conn.close()
+
+Step 5 — Pipeline Orchestrator (pipeline.py)
+from extract import extract_data
+from transform import transform_data
+from load import load_data
+
+def run_pipeline():
+    df = extract_data()
+    df = transform_data(df)
+    load_data(df)
+    print("Pipeline executed successfully")
+
+if __name__ == "__main__":
+    run_pipeline()
+
+Step 6 - Config File (db_config.py)
+db_config = {
+    "host": "localhost",
+    "user": "root",
+    "password": "your_password",
+    "database": "real_estate_project"
+}
+
+Step 7 — Requirements File
+- pandas
+ mysql-connector-python
+
+Step 8 — Analytics Queries chwyandii (analytics_queries.sql)
+-- Avg rent by locality
+SELECT locality, AVG(rent)
+FROM properties_analytics
+GROUP BY locality;
+
+-- High value properties
+SELECT *
+FROM properties_analytics
+WHERE rent_category = 'High';
+
+-- Top 5 properties
+SELECT *
+FROM properties_analytics
+ORDER BY rent DESC
+LIMIT 5;
+
+# Real Estate Data Pipeline
+
+## Overview
+This project builds an end-to-end data pipeline using MySQL and Python.
+
+## Features
+- Extract data from MySQL
+- Clean and transform data using Pandas
+- Load processed data into analytics table
+- Generate insights using SQL
+
+## Tech Stack
+- MySQL
+- Python (Pandas)
+- SQL
+
+## How to Run
+1. Setup database
+2. Install requirements
+3. Run pipeline.py
+
+I designed an end-to-end ETL pipeline where data is extracted from a MySQL database, 
+transformed using Python (Pandas) for cleaning and feature engineering, and loaded into an analytics table 
+This enables efficient querying and reporting for business insights.
