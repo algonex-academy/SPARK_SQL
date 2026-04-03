@@ -1,0 +1,93 @@
+Numpy - NumPy (Numerical Python) is a library used for fast numerical computations and array operations
+NumPy works with arrays, not lists
+1. Create Numpy Array SPARK
+import numpy as np
+arr = np.array([10, 20, 30, 40])
+print(arr)
+
+Difference from List
+list_data = [10, 20, 30]
+array_data = np.array([10, 20, 30])
+
+2. Basic Operations
+list_data = [10, 20, 30]
+array_data = np.array([10, 20, 30])
+-- Operation applies to all elements automatically
+
+3️. Arithmetic Operations
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+
+print(arr1 + arr2) # [5 7 9]
+print(arr1 * arr2) # [4 10 18]
+
+4. Imp Functions
+arr = np.array([10, 20, 30, 40])
+
+print(np.mean(arr))
+print(np.sum(arr))
+print(np.max(arr))
+print(np.min(arr))
+Used in: data aggregation, analytics calculations, preprocessing
+
+5️. Array Creation Functions
+np.zeros(5)
+np.ones(5)
+np.arange(0, 10)
+np.linspace(0, 1, 5)
+
+print(np.arange(1, 6)) # [1 2 3 4 5]
+
+6️. Indexing & Slicing
+arr = np.array([10, 20, 30, 40, 50])
+print(arr[1])      # 20
+print(arr[1:4])    # [20 30 40]
+
+7️. Multi-Dimensional Arrays
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+print(arr)
+print(arr[0][1])  # 2
+
+8️. Reshaping Arrays
+arr = np.arange(1, 7)
+
+reshaped = arr.reshape(2, 3)
+print(reshaped) # [[1 2 3]
+                  [4 5 6]]
+
+9️. Boolean Filtering
+arr = np.array([10, 20, 30, 40])
+
+print(arr[arr > 20]) # [30 40]
+
+10. Performance Advantage
+import time
+
+# Python list
+start = time.time()
+l = list(range(1000000))
+[l[i] * 2 for i in range(len(l))]
+print("List time:", time.time() - start)
+
+# NumPy
+start = time.time()
+arr = np.arange(1000000)
+arr * 2
+print("NumPy time:", time.time() - start) # Numpy is much faster
+
+1️1. Random Data Generation
+np.random.rand(5)
+np.random.randint(1, 10, 5) # Testingloo, Simulations, ML
+
+1️2. Real Use Case (Pipeline)
+import numpy as np
+
+rents = np.array([20000, 50000, 80000])
+
+avg_rent = np.mean(rents)
+high_rent = rents[rents > 40000]
+
+print(avg_rent)
+print(high_rent)
+
