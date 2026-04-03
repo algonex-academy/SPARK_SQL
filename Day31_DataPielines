@@ -3,11 +3,11 @@
 => A data pipeline is a system that collects, processes, transforms, and delivers data from source to destination
 
 Maa Projectsloo ela chesthaamu:
-Industry Flow: Source -> Ingestion(collecting, importing, and loading data) -> Processing -> Storage -> Analysis
-Example: App → Database → ETL → Data Warehouse → Dashboard
+Industry Projects Flow: Source(User input, Internet content) -> Ingestion(collecting, importing, and loading data) -> Processing -> Storage -> Analysis
+Example: App -> Database → ETL → Data Warehouse -> Dashboard
 
 Think of a Real Estate Platform of SQLAI Fellowship:
-- Data Sources
+Data Sources for Real estate Project:
 - user inputs property
 - app logs activity
 - external APIs
@@ -29,17 +29,15 @@ They hire for:
 - Can you scale?
 
 1️. ETL vs ELT (VERY IMPORTANT)
-ETL:
-Extract -> Transform -> Load
-ELT:
-Extract -> Load -> Transform => Modern companies prefer ELT
+ETL: Extract -> Transform -> Load
+ELT: Extract -> Load -> Transform => Modern companies prefer ELT
 
 2️. Pipeline Architecture
--> Batch pipelines
+1. Batch pipelines
 - Runs every few hours
 Example: daily reports
 
--> Real-time pipelines
+2. Real-time pipelines
 - Runs continuously
 Example:
 - stock prices
@@ -47,20 +45,20 @@ Example:
 
 3️. Data Storage Layers
 You might learnt in MJR, MBU, KMM, NBKR, Presidency, SVCET:
-1. OLTP (Transactional)
+1. OLTP (Transactional) - Online Layer Transaction Processing 
 - MySQL
 - fast inserts/updates
 
-2. OLAP (Analytics)
+2. OLAP (Analytics) - Online Layer Analytics Processing
 - Data warehouse
 - optimized for queries
 
-4️. Data Warehousing Concepts Chudnadi
+4️. Data Warehousing Concepts Chudandi
 - fact tables
 - dimension tables
 - star schema
 
-5️. Tools You MUST Know when you want to become a DA SPARK: 
+5️. Tools You MUST Know when you want to become a DE SPARK: 
 Beginner
 - SQL (you already know)
 - Python (next step)
@@ -78,16 +76,14 @@ Konchem Practical Example Pipeline chudhama
 
 Step 1 - Source
 properties table (MySQL)
-Step 2 - Extract
+Step 2 - Extract (Load/Collect/Import into Workbench)
 SELECT * FROM properties;
 Step 3 -> Transform
-remove nulls
-normalize values
-create derived columns
-
+- remove nulls
+- normalize values
+- create derived columns
 Step 4 -> Load
 Load into: analytics table / warehouse
-
 Step 5 -> Use
 - dashboard
 - reports
@@ -96,7 +92,7 @@ Step 5 -> Use
 Mee FELLOWSHIP Project: Property Analytics Pipeline
 Steps:
 1️. Extract data from MySQL
-2️. Clean data using Python
+2️. Clean/Transform data using Python Pandas
 3️. Store in analytics table
 4️. Run SQL insights
 5️. Schedule pipeline
