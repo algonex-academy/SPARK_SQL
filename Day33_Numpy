@@ -6,16 +6,24 @@ Ikanundi in every topic will follow:
 5. Industry insight processloo
 
 
-Numpy - NumPy (Numerical Python) is a library used for fast numerical computations and array operations
-NumPy works with arrays, not lists
+Numpy - NumPy (Numerical Python) is a Python library used for fast numerical computations and all array operations
+=> NumPy works with arrays, not lists
+
+O = [20000, 40000, 60000]
+O[1]
+O[1:]
 
 rents = np.array([20000, 40000, 60000])
-
-print(rents + 5000)
+print(rents + 5000) # [25000, 45000, 65000]
+print(rents) 
 print(rents * 2)
-print(rents / 2)
+rents = rents-10000 
+print(rents) [10000, 30000, 50000]
+print(rents / 2) # [5000.0, 15000.0, 25000.0] -- / gives decimal values
+print(rents // 2) # [5000, 15000, 25000] -- //gives numeric values
 
 1. Create Numpy Array SPARK
+!pip install numpy
 import numpy as np
 arr = np.array([10, 20, 30, 40])
 print(arr)
@@ -32,7 +40,9 @@ array_data = np.array([10, 20, 30])
 3️. Arithmetic Operations
 arr1 = np.array([1, 2, 3])
 arr2 = np.array([4, 5, 6])
-
+K = [1, 2, 3]
+L = [4, 5, 6]
+print(K+L) # [1,2,3,4,5,6]
 print(arr1 + arr2) # [5 7 9]
 print(arr1 * arr2) # [4 10 18]
 
@@ -43,7 +53,7 @@ print(np.mean(arr))
 print(np.sum(arr))
 print(np.max(arr))
 print(np.min(arr))
-Used in: data aggregation, analytics calculations, preprocessing
+Used in: Data aggregation, analytics calculations, preprocessing
 
 5️. Array Creation Functions
 np.zeros(5)
@@ -54,15 +64,42 @@ np.linspace(0, 1, 5)
 print(np.arange(1, 6)) # [1 2 3 4 5]
 
 6️. Indexing & Slicing
+v=10 
+2v =10 
+v2 =10
+Vr = 10
+_v = 10 
+v_ =10
+v_2 =5
+v& = 10
+%v = 10
+def = 10
+v e = 10
+
+variable[start:end] # here end is actually end-1 
+
 arr = np.array([10, 20, 30, 40, 50])
 print(arr[1])      # 20
+print(arr[-2])     # 40
 print(arr[1:4])    # [20 30 40]
+print(arr[:4])     # [10,20,30,40]
+print(arr[:3+1])     # [10,20,30,40]
+print(arr[2:])       # [30,40,50]
+print(arr[-2:])      # [40,50]
+print(arr[:-2])      # [10, 20, 30]
+
+arr = [10,20,30]
 
 7️. Multi-Dimensional Arrays
+=> 2-D Numpy array:
 arr = np.array([[1, 2, 3],
                 [4, 5, 6]])
 print(arr)
 print(arr[0][1])  # 2
+print(arr[0])
+print(arr[1][0])  # 4
+print(arr[1][4])  # 
+print(arr[0][-2])  
 
 8️. Reshaping Arrays
 arr = np.arange(1, 7)
@@ -76,35 +113,40 @@ arr = np.array([10, 20, 30, 40])
 
 print(arr[arr > 20]) # [30 40]
 
-10. Performance Advantage
+range(20) # 0-> 19
+range(2, 20) # 2-> 19
+
+10. Simple Feature with Numpy 
 import time
 
 # Python list
 start = time.time()
-l = list(range(1000000))
+l = list(range(1000000)) # [0,1,2,3,4,.....99999]
 [l[i] * 2 for i in range(len(l))]
-print("List time:", time.time() - start)
+print("List running time:", time.time() - start)
 
 # NumPy
 start = time.time()
-arr = np.arange(1000000)
+arr = np.arange(1000000) # [0,1,2,3,4,.....99999]
 arr * 2
 print("NumPy time:", time.time() - start) # Numpy is much faster
 
 1️1. Random Data Generation
+import random
+import random.randint
+import numpy
 np.random.rand(5)
 np.random.randint(1, 10, 5) # Testingloo, Simulations, ML
 
 1️2. Real Use Case (Pipeline)
 import numpy as np
-
 rents = np.array([20000, 50000, 80000])
 
 avg_rent = np.mean(rents)
 high_rent = rents[rents > 40000]
 
-print(avg_rent)
-print(high_rent)
+print(avg_rent) # 50000
+print(high_rent) # [50000, 80000]
 
 Oka Flow chudandi elaa deal cheyaalo::
 TASK 1 - CLEAN DIRTY DATA first
@@ -125,7 +167,6 @@ rents = np.array([20000, -5000, 30000, None, 45000, -1000], dtype='float')
 rents = rents[~np.isnan(rents)]
 # remove negatives
 rents = rents[rents > 0]
-
 print(rents)
 
 TASK 2 - FEATURE ENGINEERING Collegeloo MLloo cheppuntaaru
@@ -138,8 +179,7 @@ Calculate:
 rent = np.array(rent)
 size = np.array(size)
 
-price_per_sqft = rent / size
-
+price_per_sqft = rent / size 
 category = np.where(rent > 70000, "High",
            np.where(rent > 40000, "Medium", "Low"))
 
@@ -156,7 +196,7 @@ rents = np.array([20000, 40000, 60000])
 filtered = rents[rents > 30000]
 print(filtered)
 
-SELECT * WHERE rent > 30000 -- SQL<-> Python map chesjkoni nerchukondii
+SELECT * WHERE rent > 30000 -- SQL<-> Python map cheskoni nerchukondii
 
 Ee TASK cheyandi SPARK: 
 rents = [20000, 50000, -1000, None, 80000, 30000]
