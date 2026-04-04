@@ -1,5 +1,20 @@
+Ikanundi in every topic will follow:
+1. Real Problem
+2. Your thinking
+3. Code implementation
+4. Optimization
+5. Industry insight processloo
+
+
 Numpy - NumPy (Numerical Python) is a library used for fast numerical computations and array operations
 NumPy works with arrays, not lists
+
+rents = np.array([20000, 40000, 60000])
+
+print(rents + 5000)
+print(rents * 2)
+print(rents / 2)
+
 1. Create Numpy Array SPARK
 import numpy as np
 arr = np.array([10, 20, 30, 40])
@@ -90,4 +105,69 @@ high_rent = rents[rents > 40000]
 
 print(avg_rent)
 print(high_rent)
+
+Oka Flow chudandi elaa deal cheyaalo::
+TASK 1 - CLEAN DIRTY DATA first
+Problem: SPARK received raw rent data:
+rents = [20000, -5000, 30000, None, 45000, -1000]
+
+Clean this data:
+- remove negative values
+- remove None
+- convert to NumPy array
+
+Solutions enti ikkada:
+import numpy as np
+
+rents = np.array([20000, -5000, 30000, None, 45000, -1000], dtype='float')
+
+# remove NaN
+rents = rents[~np.isnan(rents)]
+# remove negatives
+rents = rents[rents > 0]
+
+print(rents)
+
+TASK 2 - FEATURE ENGINEERING Collegeloo MLloo cheppuntaaru
+rent = [20000, 40000, 60000]
+size = [1000, 1200, 1500]
+
+Calculate:
+- price per sqft
+- categorize rent (Low, Medium, High) like your case statements laaga
+rent = np.array(rent)
+size = np.array(size)
+
+price_per_sqft = rent / size
+
+category = np.where(rent > 70000, "High",
+           np.where(rent > 40000, "Medium", "Low"))
+
+print(price_per_sqft)
+print(category)
+
+Ikkada /* np.where() = SQL CASE
+Remember this is used in pipelines */
+
+TASK 3 — FILTER LIKE SQL
+Problem: Find all rents above 30K
+rents = np.array([20000, 40000, 60000])
+
+filtered = rents[rents > 30000]
+print(filtered)
+
+SELECT * WHERE rent > 30000 -- SQL<-> Python map chesjkoni nerchukondii
+
+Ee TASK cheyandi SPARK: 
+rents = [20000, 50000, -1000, None, 80000, 30000]
+sizes = [1000, 1200, 900, 1100, 1500, 1000]
+
+Do this:
+- Clean data
+- Calculate price per sqft
+- Categorize rent
+then ici find cheyandi:
+- average rent
+- highest rent
+- Filter properties with rent > 40000
 
