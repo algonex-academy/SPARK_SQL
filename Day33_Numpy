@@ -108,6 +108,20 @@ reshaped = arr.reshape(2, 3)
 print(reshaped) # [[1 2 3]
                   [4 5 6]]
 
+D = [234,32,4,4,45,234,234,32,1]
+F = np.array(D)
+print(np.resize(F, (3,3))) # [[[234 32 4]
+                              [4 45 234]
+                              [234 32 1]]]
+
+Example-2: 
+G= np.arange(1,7)
+H = np.resize(G, (2,4))
+print(H)
+# [[1 2 3 4 ]
+  [5 6 1 2 ]]
+                            
+
 9️. Boolean Filtering
 arr = np.array([10, 20, 30, 40])
 
