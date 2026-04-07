@@ -22,6 +22,15 @@ print(rents) [10000, 30000, 50000]
 print(rents / 2) # [5000.0, 15000.0, 25000.0] -- / gives decimal values
 print(rents // 2) # [5000, 15000, 25000] -- //gives numeric values
 
+Beginners ilaa rasthaaru:
+result = []
+for i in [1,2,3]:
+    result.append(i * 2)
+Numpy through elaa chesthamantee:
+arr = np.array([1,2,3])
+result = arr * 2 # [2,4,6]
+
+
 1. Create Numpy Array SPARK
 !pip install numpy
 import numpy as np
@@ -36,6 +45,8 @@ array_data = np.array([10, 20, 30])
 list_data = [10, 20, 30]
 array_data = np.array([10, 20, 30])
 -- Operation applies to all elements automatically
+-- Everything in NumPy = array
+=> even tables = arrays
 
 3️. Arithmetic Operations
 arr1 = np.array([1, 2, 3])
