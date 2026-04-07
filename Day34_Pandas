@@ -1,61 +1,62 @@
-                      PANDAS
+                      PANDAS - Panel Data Analysis
 Pandas is for Table/Data handling in Python
-Pandas is a tool to work with tables (like Excel orSQL tables) in Python
+Pandas is a tool to work with tables/DataFrames (like Excel orSQL tables) in Python
 
 DataFrame antee Table
-Series antee Single Column very simple
+Series antee Single Column(1-D array) very simple
 
 Step-1: INSTALL & IMPORT
 pip install pandas
 import pandas as pd
 
-Step-2: Write ane example
+Step-2: Write an example
 import pandas as pd
-
 data = {
     "locality": ['Whitefield", "BTM", "Indiranagar'],
-  "rent": [50000, 30000, 60000]
+  "rent": [50000, 30000, 60000],
        "size": [1000, 1200, 1500]
 }
-
 df = pd.DataFrame(data)
 print(df) # This is your SQL table in Python
 
       locality   rent   size
-0          BTM  20000   1000
-1   Whitefield  50000   1200
+0   Whitefield    50000   1000
+1   BTM          30000   1200
 2  Indiranagar  60000   1500
 # Ikkada
 Rows = records
 Columns = fields
-Dictionary ->> converted into table
+Dictionary(keys, values) ->> converted into table
 Keys -> columns
 Values -> rows
  And ikkada Raw data comes from:
-- CSV
+- CSV(Kaggle, internet, etc.,)
 - APIs
 - Mana Databases nundi-> You convert everything into DataFrame first
 
-Step-3: BASIC OPERATIONS
+Step-3: BASIC OPERATIONs to understand the data
 1. View Data
 df.head()      # first 5 rows
 df.tail()      # last 5 rows
 df.shape       # (rows, columns)
 df.columns     # column names
 df.info()      # data types + nulls
+df.describe()  # Statistics(mean, min, max..)
+df.size()      # number of rows * number of columns
 # Understand the dataset SPARK before touching it 
+
 2. Select Columns
 df['rent']
 df[['locality', 'rent']]   #Just like SELECT locality, rent
-#Single - Series
-# Multiple - DataFrame
+#Single Column - Series
+# Multiple Columns- DataFrame
 
-3. Filtering (VERYimp apoply all 9 like SQL)
-df[df['rent'] > 40000]              -- in SQL SELECT * WHERE rent > 40000
+3. Filtering (VERY imp apply all 9 like SQL)
+df[df['rent'] > 40000]              -- in SQL SELECT *... WHERE rent > 40000
 df[(df['rent'] > 30000) & (df['size'] > 1000)] -- Conditions eppudu [] lopala raayali  # WHERE rent > 30000 AND size > 1000
-# Always try using & and |
+# Always try using & and | instead of and, or
 
-PHASE 3 — DATA CLEANING chudhama
+Step-4: DATA CLEANING chudhama
 4. Handle missing ValueS
 df.isnull()
 df.dropna()
@@ -64,28 +65,27 @@ df.fillna(0) # df['rent'] = df['rent'].fillna(0)
 df.drop_duplicates()
 
 
-Step 4 — FEATURE ENGINEERIng - SPARK real eng students should do this
+Step 5 — FEATURE ENGINEERIng - SPARK real eng students should do this
 6. Create New Column
 df['price_per_sqft'] = df['rent'] / 1000
-df['price_per_sqft'] = df['deposit'] / df['size']
+df['column'] = df['deposit'] / df['size']
 
-Step 5 — GROUPING -- same like SQL but syntactically differs
+Step 6: GROUPING -- same like SQL but syntactically differs
 7. Group By
 df.groupby('locality')['rent'].mean()  -- GROUP BY locality
 df.groupby('locality').agg({
     'rent': ['mean', 'max', 'min'],
     'size': 'mean'
 })
-
 df.groupby('locality')['rent'].agg(['mean', 'max', 'count'])
-/* Group rows by locality
-Calculate average rent*/ 
+""" Group rows by locality
+Calculate average rent """
 df['avg_rent'] = df.groupby('locality')['rent'].transform('mean') # Add average rent of locality to each row (Add average rent of locality to each row)
 
 Step 6 - SORTING
 df.sort_values(by='rent', ascending=False)   -- ORDER BY rent DESC
 
-Step 7 : APPLY cinditions anthee
+Step 7 : APPLY conditions anthee
 def category(rent):
     if rent > 50000:
         return "High"
