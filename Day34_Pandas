@@ -1,0 +1,143 @@
+                      PANDAS
+Pandas is for Table/Data handling in Python
+Pandas is a tool to work with tables (like Excel orSQL tables) in Python
+
+DataFrame antee Table
+Series antee Single Column very simple
+
+Step-1: INSTALL & IMPORT
+pip install pandas
+import pandas as pd
+
+Step-2: Write ane example
+import pandas as pd
+
+data = {
+    "locality": ['Whitefield", "BTM", "Indiranagar'],
+  "rent": [50000, 30000, 60000]
+       "size": [1000, 1200, 1500]
+}
+
+df = pd.DataFrame(data)
+print(df) # This is your SQL table in Python
+
+      locality   rent   size
+0          BTM  20000   1000
+1   Whitefield  50000   1200
+2  Indiranagar  60000   1500
+# Ikkada
+Rows = records
+Columns = fields
+Dictionary ->> converted into table
+Keys -> columns
+Values -> rows
+ And ikkada Raw data comes from:
+- CSV
+- APIs
+- Mana Databases nundi-> You convert everything into DataFrame first
+
+Step-3: BASIC OPERATIONS
+1. View Data
+df.head()      # first 5 rows
+df.tail()      # last 5 rows
+df.shape       # (rows, columns)
+df.columns     # column names
+df.info()      # data types + nulls
+# Understand the dataset SPARK before touching it 
+2. Select Columns
+df['rent']
+df[['locality', 'rent']]   #Just like SELECT locality, rent
+#Single - Series
+# Multiple - DataFrame
+
+3. Filtering (VERYimp apoply all 9 like SQL)
+df[df['rent'] > 40000]              -- in SQL SELECT * WHERE rent > 40000
+df[(df['rent'] > 30000) & (df['size'] > 1000)] -- Conditions eppudu [] lopala raayali  # WHERE rent > 30000 AND size > 1000
+# Always try using & and |
+
+PHASE 3 — DATA CLEANING chudhama
+4. Handle missing ValueS
+df.isnull()
+df.dropna()
+df.fillna(0) # df['rent'] = df['rent'].fillna(0)
+5. Remove Duplicates
+df.drop_duplicates()
+
+
+Step 4 — FEATURE ENGINEERIng - SPARK real eng students should do this
+6. Create New Column
+df['price_per_sqft'] = df['rent'] / 1000
+df['price_per_sqft'] = df['deposit'] / df['size']
+
+Step 5 — GROUPING -- same like SQL but syntactically differs
+7. Group By
+df.groupby('locality')['rent'].mean()  -- GROUP BY locality
+/* Group rows by locality
+Calculate average rent*/ 
+
+Step 6 - SORTING
+df.sort_values(by='rent', ascending=False)   -- ORDER BY rent DESC
+
+Step 7 : APPLY cinditions anthee
+def category(rent):
+    if rent > 50000:
+        return "High"
+    else:
+        return "Low"
+
+df['category'] = df['rent'].apply(category)
+/* Apply function to each row
+Create new column */
+
+Saree oka chinna mini-project chedham: Clean -> Transform - Filter -> Analyze
+import pandas as pd
+
+data = {
+    "rent": [20000, 50000, None, 80000],
+    "size": [1000, 1200, 1500, 2000]
+}
+
+df = pd.DataFrame(data)
+
+# Clean
+df = df.dropna()
+
+# Feature
+df['price_per_sqft'] = df['rent'] / df['size']
+
+# Filter
+df = df[df['rent'] > 30000]
+
+print(df)
+
+Step -9: FILE HANDLING
+# Read CSV
+df = pd.read_csv("data.csv")
+
+# Save
+df.to_csv("output.csv", index=False)
+
+ SQL       Pandas differs           
+ SELECT   | df[['col']]       
+ WHERE    | df[df['col'] > x] 
+ GROUP BY | df.groupby()      
+ ORDER BY | sort_values()     
+
+Step-11: MERGING (JOINS) -- SQL Joinsanamaata
+# merge() is used to combine two DataFrames based on a common column anthee
+pd.merge(df1, df2, on='id', how='inner')  -- Inner Join
+
+YOUR FIRST TASk for Spark :
+data = {
+    "locality": ["BTM", "Whitefield", "BTM", None],
+    "rent": [20000, 50000, 30000, 40000],
+    "size": [1000, 1200, 900, 1100]
+}
+
+Do this now SPARK:
+- Create DataFrame
+- Remove missing values
+- Add price_per_sqft
+- Filter rent > 25000
+- find average rent per locality
+
