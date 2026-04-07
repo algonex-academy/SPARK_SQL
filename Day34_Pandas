@@ -72,8 +72,15 @@ df['price_per_sqft'] = df['deposit'] / df['size']
 Step 5 — GROUPING -- same like SQL but syntactically differs
 7. Group By
 df.groupby('locality')['rent'].mean()  -- GROUP BY locality
+df.groupby('locality').agg({
+    'rent': ['mean', 'max', 'min'],
+    'size': 'mean'
+})
+
+df.groupby('locality')['rent'].agg(['mean', 'max', 'count'])
 /* Group rows by locality
 Calculate average rent*/ 
+df['avg_rent'] = df.groupby('locality')['rent'].transform('mean') # Add average rent of locality to each row (Add average rent of locality to each row)
 
 Step 6 - SORTING
 df.sort_values(by='rent', ascending=False)   -- ORDER BY rent DESC
@@ -88,6 +95,9 @@ def category(rent):
 df['category'] = df['rent'].apply(category)
 /* Apply function to each row
 Create new column */
+import numpy as np
+
+df['category'] = np.where(df['rent'] > 40000, "High", "Low") # Prefer vectorization over apply SPARK
 
 Saree oka chinna mini-project chedham: Clean -> Transform - Filter -> Analyze
 import pandas as pd
@@ -127,6 +137,35 @@ Step-11: MERGING (JOINS) -- SQL Joinsanamaata
 # merge() is used to combine two DataFrames based on a common column anthee
 pd.merge(df1, df2, on='id', how='inner')  -- Inner Join
 
+ SQL                 Pandas                    
+ INNER JOIN | merge(..., how='inner') 
+ LEFT JOIN  | merge(..., how='left')  
+ RIGHT JOIN | merge(..., how='right') 
+ FULL JOIN  | merge(..., how='outer')
+
+Employees Table
+import pandas as pd
+
+employees = pd.DataFrame({
+    "emp_id": [1, 2, 3, 4],
+    "name": ["Alice", "Bob", "Charlie", "David"],
+    "dept_id": [101, 102, 101, 103]
+})
+
+Departments Table
+departments = pd.DataFrame({
+    "dept_id": [101, 102],
+    "dept_name": ["HR", "IT"]
+})
+
+pd.merge(employees, departments, on='dept_id', how='inner')
+pd.merge(employees, departments, on='dept_id', how='left')
+pd.merge(employees, departments, on='dept_id', how='right')
+pd.merge(employees, departments, on='dept_id', how='outer') 
+pd.merge(df1, df2, left_on='emp_id', right_on='id') # erge on different column Names
+pd.merge(df1, df2, on=['emp_id', 'dept_id']) # Merge on multiple columns
+pd.merge(df1, df2, on='id', suffixes=('_emp', '_dept')) # Handling Duplicate Columns
+
 YOUR FIRST TASk for Spark :
 data = {
     "locality": ["BTM", "Whitefield", "BTM", None],
@@ -141,3 +180,23 @@ Do this now SPARK:
 - Filter rent > 25000
 - find average rent per locality
 
+Find:
+- top property per locality
+- average rent
+- categorize properties
+
+import numpy as np
+
+# avg rent
+df['avg_rent'] = df.groupby('locality')['rent'].transform('mean')
+
+# rank
+df['rank'] = df.groupby('locality')['rent'].rank(ascending=False)
+
+# category
+df['category'] = np.where(df['rent'] > df['avg_rent'], "Above Avg", "Below Avg")
+
+# top properties
+top = df[df['rank'] == 1]
+
+print(top)
