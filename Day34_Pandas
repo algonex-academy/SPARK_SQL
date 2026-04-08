@@ -7,15 +7,18 @@ DataFrame antee Table
 Series antee Single Column(1-D array) very simple
 
 Step-1: INSTALL & IMPORT
-pip install pandas
+! pip install pandas
 import pandas as pd
 
 Step-2: Write an example
 1. Series
 import pandas as pd
 s = pd.Series([10, 20, 30]) # Single column
+0 10
+1 20
+2 30
 
-2. DataFrame - Full table (this is what you mostly use in PANDAS)
+2. DataFrame - Full table (this is what you mostly use in PANDAS) with index
 import pandas as pd
 data = {
     "locality": ['Whitefield", "BTM", "Indiranagar'],
@@ -41,7 +44,7 @@ Values -> rows
 - Mana Databases nundi-> You convert everything into DataFrame first
 
 pd.DataFrame({...}) # From Dictionary 
-pd.read_csv("file.csv") # From CSV
+pd.read_csv("file.csv") # From CSV/Excel/Json
 pd.read_sql(query, connection) # From SQL
 
 Step-3: BASIC OPERATIONs to understand the data - Denne Data Inspection antaam
@@ -77,7 +80,7 @@ df.drop_duplicates()
 df['rent'] = df['rent'].astype(int)
 
 Step 5 — FEATURE ENGINEERIng - SPARK real eng students should do this
-6. Create New Column
+7. Create New Column
 df['price_per_sqft'] = df['rent'] / 1000
 df['column'] = df['deposit'] / df['size']
 
@@ -97,7 +100,7 @@ df.groupby('locality')['rent'].agg(['mean', 'max', 'count'])
 Calculate average rent """
 df['avg_rent'] = df.groupby('locality')['rent'].transform('mean') # Add average rent of locality to each row (Add average rent of locality to each row)
 
-Step 6 - SORTING
+Step 7 - SORTING
 df.sort_values(by='rent', ascending=False)   -- ORDER BY rent DESC
 df['category'] = df['rent'].apply(lambda x: "High" if x > 50000 else "Low")
 
@@ -109,13 +112,12 @@ def category(rent):
         return "Low"
 
 df['category'] = df['rent'].apply(category)
-/* Apply function to each row
-Create new column */
+""" Apply function to each row
+Create new column """
 import numpy as np
-
 df['category'] = np.where(df['rent'] > 40000, "High", "Low") # Prefer vectorization over apply SPARK
 
-# Dropping rows with missing values
+# Dropping rows with missing/NULL values
 df.dropna(inplace=True)
 # Filling missing values with the mean
 df.fillna(df.mean(), inplace=True)
