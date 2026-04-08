@@ -1,6 +1,7 @@
                       PANDAS - Panel Data Analysis
 Pandas is for Table/Data handling in Python
 Pandas is a tool to work with tables/DataFrames (like Excel orSQL tables) in Python
+Raw Data -> Pandas -> Clean -> Transform -> Analyze - Insight
 
 DataFrame antee Table
 Series antee Single Column(1-D array) very simple
@@ -10,6 +11,11 @@ pip install pandas
 import pandas as pd
 
 Step-2: Write an example
+1. Series
+import pandas as pd
+s = pd.Series([10, 20, 30]) # Single column
+
+2. DataFrame - Full table (this is what you mostly use in PANDAS)
 import pandas as pd
 data = {
     "locality": ['Whitefield", "BTM", "Indiranagar'],
@@ -22,7 +28,7 @@ print(df) # This is your SQL table in Python
       locality   rent   size
 0   Whitefield    50000   1000
 1   BTM          30000   1200
-2  Indiranagar  60000   1500
+2  Indiranagar  60000   1500   
 # Ikkada
 Rows = records
 Columns = fields
@@ -34,8 +40,12 @@ Values -> rows
 - APIs
 - Mana Databases nundi-> You convert everything into DataFrame first
 
-Step-3: BASIC OPERATIONs to understand the data
-1. View Data
+pd.DataFrame({...}) # From Dictionary 
+pd.read_csv("file.csv") # From CSV
+pd.read_sql(query, connection) # From SQL
+
+Step-3: BASIC OPERATIONs to understand the data - Denne Data Inspection antaam
+1. View Data (Understand here size, null values, data types)
 df.head()      # first 5 rows
 df.tail()      # last 5 rows
 df.shape       # (rows, columns)
@@ -63,16 +73,21 @@ df.dropna()
 df.fillna(0) # df['rent'] = df['rent'].fillna(0)
 5. Remove Duplicates
 df.drop_duplicates()
-
+6. Data type Conversion
+df['rent'] = df['rent'].astype(int)
 
 Step 5 — FEATURE ENGINEERIng - SPARK real eng students should do this
 6. Create New Column
 df['price_per_sqft'] = df['rent'] / 1000
 df['column'] = df['deposit'] / df['size']
 
+import numpy as np
+df['category'] = np.where(df['rent'] > 50000, "High", "Low")
+
 Step 6: GROUPING -- same like SQL but syntactically differs
 7. Group By
 df.groupby('locality')['rent'].mean()  -- GROUP BY locality
+# Multiple Aggregations
 df.groupby('locality').agg({
     'rent': ['mean', 'max', 'min'],
     'size': 'mean'
@@ -84,6 +99,7 @@ df['avg_rent'] = df.groupby('locality')['rent'].transform('mean') # Add average 
 
 Step 6 - SORTING
 df.sort_values(by='rent', ascending=False)   -- ORDER BY rent DESC
+df['category'] = df['rent'].apply(lambda x: "High" if x > 50000 else "Low")
 
 Step 7 : APPLY conditions anthee
 def category(rent):
@@ -98,6 +114,15 @@ Create new column */
 import numpy as np
 
 df['category'] = np.where(df['rent'] > 40000, "High", "Low") # Prefer vectorization over apply SPARK
+
+# Dropping rows with missing values
+df.dropna(inplace=True)
+# Filling missing values with the mean
+df.fillna(df.mean(), inplace=True)
+# Removing duplicate rows
+df.drop_duplicates(inplace=True)
+# Renaming columns
+df.rename(columns={'old_name': 'new_name'}, inplace=True)
 
 Saree oka chinna mini-project chedham: Clean -> Transform - Filter -> Analyze
 import pandas as pd
@@ -166,6 +191,42 @@ pd.merge(df1, df2, left_on='emp_id', right_on='id') # erge on different column N
 pd.merge(df1, df2, on=['emp_id', 'dept_id']) # Merge on multiple columns
 pd.merge(df1, df2, on='id', suffixes=('_emp', '_dept')) # Handling Duplicate Columns
 
+STEP-12: pIVOT tABLES
+df.pivot_table(values='rent', index='locality', aggfunc='mean') # Excel-style summary
+
+Step-13: INDEXING (Imp for SPARK)
+# iloc - Position isthundi
+df.iloc[0]
+
+#loc - label cheyadam kosam
+df.loc[0]
+
+Srep-14: File Output
+df.to_csv("file.csv", index=False)
+df.to_excel("file.xlsx")
+
+step-15: Final steploo advance operrations chudu
+#  Ranking
+df['rank'] = df['rent'].rank()
+# Window like operation 
+df['rank'] = df.groupby('locality')['rent'].rank()
+
+ SQL          Pandasloo          
+ SELECT   | df[['col']]       
+ WHERE    | df[df['col'] > x] 
+ GROUP BY | groupby()         
+ JOIN     | merge()           
+ ORDER BY | sort_values()    
+
+Example:-1 df = pd.read_csv("data.csv")
+
+df = df.dropna()
+df['price_per_sqft'] = df['rent'] / df['size']
+df = df[df['rent'] > 30000]
+
+result = df.groupby('locality')['rent'].mean()
+print(result)
+
 YOUR FIRST TASk for Spark :
 data = {
     "locality": ["BTM", "Whitefield", "BTM", None],
@@ -186,7 +247,6 @@ Find:
 - categorize properties
 
 import numpy as np
-
 # avg rent
 df['avg_rent'] = df.groupby('locality')['rent'].transform('mean')
 
@@ -200,3 +260,39 @@ df['category'] = np.where(df['rent'] > df['avg_rent'], "Above Avg", "Below Avg")
 top = df[df['rank'] == 1]
 
 print(top)
+
+Example-3
+import pandas as pd
+data = {
+    "property_id": [1,2,3,4,5,6],
+    "locality": ["BTM", "Whitefield", "BTM", None, "Indiranagar", "BTM"],
+    "rent": [20000, 50000, None, 40000, 60000, 30000],
+    "size": [1000, 1200, 900, 1100, 1500, None],
+    "owner": ["Ravi", "Sita", "Ravi", "John", "Anu", "Ravi"]
+}
+df = pd.DataFrame(data)
+
+df.head()
+df.info()
+df.isnull().sum()
+df = df.dropna()
+df['rent'] = df['rent'].fillna(df['rent'].mean())
+df['size'] = df['size'].fillna(df['size'].mean())
+df['locality'] = df['locality'].fillna("Unknown")
+
+df['price_per_sqft'] = df['rent'] / df['size']
+import numpy as np
+df['category'] = np.where(df['rent'] > 40000, "High", "Low")
+
+df.groupby('locality')['rent'].mean()
+df['locality'].value_counts()
+df.sort_values(by='rent', ascending=False).head(3) 
+df.groupby('owner')['property_id'].count() # Owner wise total properties
+
+df['avg_rent'] = df.groupby('locality')['rent'].transform('mean') # Add avg rent column
+df['comparison'] = np.where(df['rent'] > df['avg_rent'], "Above Avg", "Below Avg") # Compare rent
+df['rank'] = df.groupby('locality')['rent'].rank(ascending=False) # Rank Properties per locality
+df[df['rank'] == 1] # Top Property per locality
+df[df['category'] == "High"] # High rent Properties
+
+df.to_csv("cleaned_properties.csv", index=False) # Save Output
