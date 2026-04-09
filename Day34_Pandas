@@ -150,17 +150,20 @@ print(df)
 Step -9: FILE HANDLING
 # Read CSV
 df = pd.read_csv("data.csv")
+df = pd.read_excel("data.xlsx")
+df = pd.read_json("data.json")
 
 # Save
 df.to_csv("output.csv", index=False)
+df.to_excel("output.xls", index=False)
 
- SQL       Pandas differs           
- SELECT   | df[['col']]       
+ SQL        Pandas differs           
+ SELECT   | df['col']      
  WHERE    | df[df['col'] > x] 
  GROUP BY | df.groupby()      
  ORDER BY | sort_values()     
 
-Step-11: MERGING (JOINS) -- SQL Joinsanamaata
+Step-10: MERGING (JOINS) -- SQL Joins anamaata
 # merge() is used to combine two DataFrames based on a common column anthee
 pd.merge(df1, df2, on='id', how='inner')  -- Inner Join
 
@@ -170,16 +173,17 @@ pd.merge(df1, df2, on='id', how='inner')  -- Inner Join
  RIGHT JOIN | merge(..., how='right') 
  FULL JOIN  | merge(..., how='outer')
 
-Employees Table
-import pandas as pd
+Example on Pandas merge:
+# Employees Table:
 
+import pandas as pd
 employees = pd.DataFrame({
     "emp_id": [1, 2, 3, 4],
-    "name": ["Alice", "Bob", "Charlie", "David"],
+    "name": ["Jeevan", "Indu", "Shaistha", "Venu"],
     "dept_id": [101, 102, 101, 103]
 })
 
-Departments Table
+# Departments Table:
 departments = pd.DataFrame({
     "dept_id": [101, 102],
     "dept_name": ["HR", "IT"]
@@ -189,25 +193,26 @@ pd.merge(employees, departments, on='dept_id', how='inner')
 pd.merge(employees, departments, on='dept_id', how='left')
 pd.merge(employees, departments, on='dept_id', how='right')
 pd.merge(employees, departments, on='dept_id', how='outer') 
-pd.merge(df1, df2, left_on='emp_id', right_on='id') # erge on different column Names
+
+pd.merge(df1, df2, left_on='emp_id', right_on='id') # merge on different column Names
 pd.merge(df1, df2, on=['emp_id', 'dept_id']) # Merge on multiple columns
 pd.merge(df1, df2, on='id', suffixes=('_emp', '_dept')) # Handling Duplicate Columns
 
-STEP-12: pIVOT tABLES
+STEP-11: pIVOT tABLES
 df.pivot_table(values='rent', index='locality', aggfunc='mean') # Excel-style summary
 
-Step-13: INDEXING (Imp for SPARK)
-# iloc - Position isthundi
+Step-12: INDEXING (Imp for SPARK)
+# iloc - Defines Position
 df.iloc[0]
 
-#loc - label cheyadam kosam
+#loc - To label the data
 df.loc[0]
 
-Srep-14: File Output
+Srep-13: File Output
 df.to_csv("file.csv", index=False)
 df.to_excel("file.xlsx")
 
-step-15: Final steploo advance operrations chudu
+step-14: Final steploo advance operrations chudu
 #  Ranking
 df['rank'] = df['rent'].rank()
 # Window like operation 
@@ -273,8 +278,9 @@ data = {
     "owner": ["Ravi", "Sita", "Ravi", "John", "Anu", "Ravi"]
 }
 df = pd.DataFrame(data)
+print(df)
 
-df.head()
+df.head(4)
 df.info()
 df.isnull().sum()
 df = df.dropna()
@@ -298,3 +304,76 @@ df[df['rank'] == 1] # Top Property per locality
 df[df['category'] == "High"] # High rent Properties
 
 df.to_csv("cleaned_properties.csv", index=False) # Save Output
+
+Using These Datasets:
+LEVEL 1 -> Read and Understand Data
+LEVEL 2 -> Clean Data
+LEVEL 3 -> Filter and Select Data
+LEVEL 4 -> Transform Data
+LEVEL 5 -> GroupBy and Aggregation
+LEVEL 6 -> Merge / Combine Data
+LEVEL 7 -> Advanced Analysis
+LEVEL 8 -> Real Business Insights
+LEVEL 9 -? Mini Dashboard Reporting
+
+LEVEL 1 — READING DATA FROM SCRATCH
+Step 1: Import Pandas
+import pandas as pd
+Step 2: Load Dataset 1
+df = pd.read_excel("Algonex-QVI_transaction_data.xlsx")
+Step 3: First Look at Data
+df.head()
+
+df.shape
+df.columns
+df.info()
+df.describe()
+
+df.shape
+df.colums
+df.info()
+df.describe()
+
+Select One Column
+df["TOT_SALES"]
+Select Multiple Columns
+df[["PROD_NAME", "TOT_SALES"]]
+
+LEVEL 4 — FILTERING DATA
+
+Example 1: Sales above 10
+
+df[df["TOT_SALES"] > 10]
+Example 2: Quantity > 3
+df[df["PROD_QTY"] > 3]
+Example 3: Store 1 only
+df[df["STORE_NBR"] == 1]
+
+LEVEL 5 — DATA CLEANING
+
+Now check null values:
+df.isnull().sum()
+If Null Exists:
+df.dropna()
+OR
+df.fillna(0)
+
+df["PRICE_PER_UNIT"] = df["TOT_SALES"] / df["PROD_QTY"]
+
+LEVEL 7 — GROUPBY (MOST IMPORTANT)
+
+Total Sales Per Store
+df.groupby("STORE_NBR")["TOT_SALES"].sum()
+Avg Sales Per Product
+df.groupby("PROD_NAME")["TOT_SALES"].mean()
+
+LEVEL 8 — SORTING
+
+Top highest sales:
+df.sort_values(by="TOT_SALES", ascending=False)
+
+df.groupby("PROD_NAME")["PROD_QTY"].sum().sort_values(ascending=False).head(10) # Top 10 best selling products
+
+df.groupby("STORE_NBR")["TOT_SALES"].sum().sort_values(ascending=False) # Highest revenue store
+df.groupby("LYLTY_CARD_NBR")["TOT_SALES"].sum().sort_values(ascending=False) # Most loyal customers
+
