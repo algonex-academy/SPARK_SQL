@@ -68,6 +68,7 @@ df[['locality', 'rent']]   #Just like SELECT locality, rent
 df[df['rent'] > 40000]              -- in SQL SELECT *... WHERE rent > 40000
 df[(df['rent'] > 30000) & (df['size'] > 1000)] -- Conditions eppudu [] lopala raayali  # WHERE rent > 30000 AND size > 1000
 # Always try using & and | instead of and, or
+df['category'] = np.where(df['rent'] > 50000, "High", "Low")
 
 Step-4: DATA CLEANING chudhama
 4. Handle missing ValueS
@@ -314,7 +315,7 @@ LEVEL 5 -> GroupBy and Aggregation
 LEVEL 6 -> Merge / Combine Data
 LEVEL 7 -> Advanced Analysis
 LEVEL 8 -> Real Business Insights
-LEVEL 9 -? Mini Dashboard Reporting
+LEVEL 9 -> Mini Dashboard Reporting
 
 LEVEL 1 — READING DATA FROM SCRATCH
 Step 1: Import Pandas
