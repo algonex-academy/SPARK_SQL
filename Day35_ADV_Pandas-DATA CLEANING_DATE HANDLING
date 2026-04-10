@@ -1,0 +1,58 @@
+Ee advance Pythonloo ivanni cover chedham::
+
+1. Fixing Data Types
+2. Date Conversion
+3. Extracting Date Features
+4. Cleaning Product Names
+5. String Analysis
+6. Detecting Outliers
+7. Removing Bad Records
+8. Real Business Text Insights
+
+# FIXING DATA TYPES
+df.dtypes # Dates become text, Numbers become strings
+
+#DATE CONVERSION
+df["DATE"] = pd.to_datetime(df["DATE"], origin="1899-12-30", unit="D") # Convert DATE into real datetime
+''' Ikkada Excel stores dates as serial numbers
+-> Pandas converts them into readable dates'''
+
+df["DATE"].head()
+
+# EXTRACT DATE FEATURES
+
+df["YEAR"] = df["DATE"].dt.year # Year
+df["MONTH"] = df["DATE"].dt.month # Month
+df["DAY"] = df["DATE"].dt.day # Day
+
+# MONTHLY SALES ANALYSIS
+df.groupby("MONTH")["TOT_SALES"].sum()
+df.groupby("WEEKDAY")["TOT_SALES"].sum() # Weekly Sales
+df["PROD_NAME"].head(10)
+
+# EXTRACT BRAND NAME
+Take first word as brand:
+df["BRAND"] = df["PROD_NAME"].str.split().str[0]
+df[["PROD_NAME", "BRAND"]].head()
+
+df.groupby("BRAND")["TOT_SALES"].sum().sort_values(ascending=False) # Top brands by sales
+
+# DUPLICATE CHECK Imp kadaa
+df.duplicated().sum()
+df.drop_duplicates(inplace=True) # Remove duplicates
+
+# REAL BUSINESS QUESTIONS chudandi SPARK
+df.groupby("BRAND")["PROD_QTY"].sum().sort_values(ascending=False).head(10) # Best Selling Brand
+df.groupby("MONTH")["TOT_SALES"].sum().sort_values(ascending=False) # Best Sales Month
+df.groupby("WEEKDAY")["TOT_SALES"].sum().sort_values(ascending=False) # Highest Sales Weekday
+df.groupby("PACK_SIZE")["TOT_SALES"].sum().sort_values(ascending=False) # Best Selling Pack Size
+
+# Sales by month and Brand
+pivot = pd.pivot_table(
+    df,
+    values="TOT_SALES",
+    index="MONTH",
+    columns="BRAND",
+    aggfunc="sum"
+)
+
