@@ -358,22 +358,39 @@ df.dropna()
 OR
 df.fillna(0)
 
-df["PRICE_PER_UNIT"] = df["TOT_SALES"] / df["PROD_QTY"]
+df["PRICE_PER_UNIT"] = df["TOT_SALES"] / df["PROD_QTY"] # Companies LOVE this skill endukantee ikkada Raw data becomes business insights
 
 LEVEL 7 — GROUPBY (MOST IMPORTANT)
 
-Total Sales Per Store
+# Total Sales Per Store
 df.groupby("STORE_NBR")["TOT_SALES"].sum()
-Avg Sales Per Product
+# Avg Sales Per Product
 df.groupby("PROD_NAME")["TOT_SALES"].mean()
 
 LEVEL 8 — SORTING
 
-Top highest sales:
-df.sort_values(by="TOT_SALES", ascending=False)
+# Top highest sales:
+df.sort_values(by="TOT_SALES", ascending=False) # Top highest sales
 
 df.groupby("PROD_NAME")["PROD_QTY"].sum().sort_values(ascending=False).head(10) # Top 10 best selling products
 
 df.groupby("STORE_NBR")["TOT_SALES"].sum().sort_values(ascending=False) # Highest revenue store
 df.groupby("LYLTY_CARD_NBR")["TOT_SALES"].sum().sort_values(ascending=False) # Most loyal customers
 
+
+Do these today:
+# Task 1: Load dataset
+# Task 2:
+Show:
+head()
+shape
+columns
+
+# Task 3:
+Find:
+- total sales overall
+- max sales transaction
+- average quantity sold
+
+# Task 4: Find top 5 stores by revenue
+If you skip practice SPARK: Pandas will remain theory forever
