@@ -7,7 +7,7 @@ MYSQL with Pandas TEST - 1
  Write SQL query + expected output difference
 
  3. What is a PRIMARY KEY vs FOREIGN KEY?
- Explain with table example
+ Explain with table example query with small explanation
   
  4. What is normalization? Explain 1NF, 2NF, 3NF with example
   5. What is indexing? Why is it used?
@@ -22,4 +22,4 @@ Find total sales per store
 
   10. What is a window function?
 Example:
-Rank employees by salary.
+Rank employees by salary
