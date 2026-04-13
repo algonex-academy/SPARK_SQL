@@ -1,0 +1,41 @@
+STEP 1 — CREATE TWO DATASETS
+
+# Properties
+properties = pd.DataFrame({
+    "property_id": [1,2,3],
+    "owner_id": [101,102,103],
+    "rent": [20000,50000,40000]
+})
+
+# Owners
+owners = pd.DataFrame({
+    "owner_id": [101,102],
+    "owner_name": ["Ravi","Sita"]
+})
+
+pd.merge(properties, owners, on='owner_id", how="left") # Kaani Owner Miss aythee data issues vasthay
+
+ Join Type    meaning telsu kada    
+ INNER     | only matching 
+ LEFT      | keep left     
+ RIGHT     | keep right    
+ OUTER     | keep all      
+
+STEP 2 — DIFFERENT COLUMN NAMES
+# Columns don't match:
+SPARK = pd.DataFrame({
+    "Spark_id": [1,2],
+    "dept": [101,102]
+})
+
+Normal = pd.DataFrame({
+    "Spark_id": [101,102],
+    "dept_name": ["HR","IT"]
+})
+
+pd.merge(emp, dept, left_on="dept", right_on="dept_id")
+pd.merge(df1, df2, on=["emp_id", "dept_id"]) # Ekkuva columns unnappudu
+
+pd.merge(employees, departments, on="dept_id", how="outer", indicator=True)
+
+
