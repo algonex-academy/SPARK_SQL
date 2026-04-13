@@ -1,0 +1,25 @@
+MYSQL with Pandas TEST - 1
+ SECTION 1 — MySQL (Theory + Practical)
+ 1. What is the difference between WHERE and HAVING?
+ Explain with example
+
+ 2. What is the difference between INNER JOIN and LEFT JOIN?
+ Write SQL query + expected output difference
+
+ 3. What is a PRIMARY KEY vs FOREIGN KEY?
+ Explain with table example
+  
+ 4. What is normalization? Explain 1NF, 2NF, 3NF with example
+  5. What is indexing? Why is it used?
+ Give real performance example
+  
+  6. Write a query to find the second highest salary
+ 7. Difference between DELETE, TRUNCATE, DROP?
+ 8. What is a subquery? Types of subqueries?
+ 9. What is GROUP BY? Why is it used?
+Write query:
+Find total sales per store
+
+  10. What is a window function?
+Example:
+Rank employees by salary.
