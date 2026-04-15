@@ -2,7 +2,7 @@ STEP 1 — INSTALL & IMPORT
 pip install matplotlib
 import matplotlib.pyplot as plt
 
-STEP 2 — YOUR FIRST PLOT
+STEP 2 — Draw YOUR FIRST PLOT
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -10,7 +10,6 @@ data = {
     "STORE_NBR": [1,2,3],
     "TOT_SALES": [200,300,250]
 }
-
 df = pd.DataFrame(data)
 
 plt.plot(df["STORE_NBR"], df["TOT_SALES"])
@@ -20,8 +19,7 @@ plt.show()
 Y-axis -> TOTAL SALES '''
 
 STEP 3 — BAR CHART (MOST USED)
-Compare categories (stores, products)
-
+# Compare categories (stores, products)
 store_sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
 
 plt.bar(store_sales.index, store_sales.values)
