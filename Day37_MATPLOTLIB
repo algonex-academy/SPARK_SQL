@@ -1,0 +1,94 @@
+STEP 1 — INSTALL & IMPORT
+pip install matplotlib
+import matplotlib.pyplot as plt
+
+STEP 2 — YOUR FIRST PLOT
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = {
+    "STORE_NBR": [1,2,3],
+    "TOT_SALES": [200,300,250]
+}
+
+df = pd.DataFrame(data)
+
+plt.plot(df["STORE_NBR"], df["TOT_SALES"])
+plt.show()
+
+''' Ikkada X-axis -> STORE_NBR
+Y-axis -> TOTAL SALES '''
+
+STEP 3 — BAR CHART (MOST USED)
+Compare categories (stores, products)
+
+store_sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
+
+plt.bar(store_sales.index, store_sales.values)
+plt.show() # Which store performs best?
+
+STEP 4 — LINE CHART
+# Trends over time
+df["DATE"] = pd.to_datetime(df["DATE"])
+
+daily_sales = df.groupby("DATE")["TOT_SALES"].sum()
+
+plt.plot(daily_sales.index, daily_sales.values)
+plt.show() # Sales trend over time
+
+STEP 5 — PIE CHART
+# Contribution %
+sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
+
+plt.pie(sales.values, labels=sales.index, autopct="%1.1f%%")
+plt.show() # Which store contributes most?
+
+STEP 6 — HISTOGRAM
+# Distribution of data
+plt.hist(df["TOT_SALES"])
+plt.show() # Most common sales range
+
+STEP 7 — ADD LABELS (V IMPORTANT SPARK)
+plt.plot(daily_sales.index, daily_sales.values)
+
+plt.xlabel("Date")
+plt.ylabel("Sales")
+plt.title("Daily Sales Trend")
+
+plt.show() # Charts without labels -> bad practice
+
+ Chart        Use Case chudu           
+ Bar       | Compare categories 
+ Line      | Trends             
+ Pie       | Contribution       
+ Histogram | Distribution       
+
+STEP 8 — REAL DATA EXAMPLES cheyandi SPARK
+1. Top Products
+top_products = df.groupby("PROD_NAME")["TOT_SALES"].sum().sort_values(ascending=False)
+
+plt.bar(top_products.index, top_products.values)
+plt.xticks(rotation=45)
+plt.title("Top Products by Sales")
+plt.show()
+
+2. Customer Segment Sales
+segment_sales = merged.groupby("LIFESTAGE")["TOT_SALES"].sum()
+
+plt.bar(segment_sales.index, segment_sales.values)
+plt.title("Sales by Customer Segment")
+plt.show()
+
+3. Monthly Sales Trend
+df["MONTH"] = df["DATE"].dt.month
+
+monthly_sales = df.groupby("MONTH")["TOT_SALES"].sum()
+
+plt.plot(monthly_sales.index, monthly_sales.values)
+plt.title("Monthly Sales Trend")
+plt.show()
+
+
+
+
+
