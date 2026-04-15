@@ -1,0 +1,68 @@
+MySQL -> Pandas -> Analysis -> Matplotlib -> Dashboard Output
+
+SPARK PROJECT ARCHITECTURE:
+Database (MySQL)
+   |
+Python (Pandas)
+   |
+Data Cleaning + Transformation
+   |
+Business Analysis
+   |
+Visualization (Matplotlib)
+   |
+Dashboard Insights
+
+PROJECT STRUCTURE (manaki idi IMP for GITHUB)
+retail-dashboard/
+│
+├── data/
+│   └── sample_data.csv
+│
+├── sql/
+│   └── queries.sql
+│
+├── python/
+│   ├── data_extraction.py
+│   ├── data_cleaning.py
+│   ├── analysis.py
+│   └── visualization.py
+│
+├── output/
+│   └── charts/
+│
+└── main.py
+
+STEP 1 — MYSQL SETUP
+Create Tables
+CREATE TABLE transactions (
+    DATE DATE,
+    STORE_NBR INT,
+    LYLTY_CARD_NBR INT,
+    PROD_NAME VARCHAR(100),
+    PROD_QTY INT,
+    TOT_SALES INT
+);
+
+CREATE TABLE customers (
+    LYLTY_CARD_NBR INT,
+    LIFESTAGE VARCHAR(50),
+    PREMIUM_CUSTOMER VARCHAR(10)
+);
+
+STEP 2 — EXTRACT DATA (PYTHON)
+import pandas as pd
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="password",
+    database="retail_db"
+)
+
+query = "SELECT * FROM transactions"
+df = pd.read_sql(query, conn)
+
+cust_query = "SELECT * FROM customers"
+cust_df = pd.read_sql(cust_query, conn)
