@@ -66,3 +66,64 @@ df = pd.read_sql(query, conn)
 
 cust_query = "SELECT * FROM customers"
 cust_df = pd.read_sql(cust_query, conn)
+
+STEP 3 — DATA CLEANING
+df.dropna(inplace=True)
+
+df["DATE"] = pd.to_datetime(df["DATE"])
+
+df["PRICE_PER_UNIT"] = df["TOT_SALES"] / df["PROD_QTY"]
+
+STEP 4 — MERGE DATA
+merged = pd.merge(df, cust_df, on="LYLTY_CARD_NBR", how="left")
+
+STEP 5 — BUSINESS Analysis cheyandi SPARK
+# Sales by Store
+store_sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
+
+# Top Products
+top_products = df.groupby("PROD_NAME")["TOT_SALES"].sum().sort_values(ascending=False).head(10)
+
+# Customer Segment Sales
+segment_sales = merged.groupby("LIFESTAGE")["TOT_SALES"].sum()
+
+# Montly Trend
+df["MONTH"] = df["DATE"].dt.month
+monthly_sales = df.groupby("MONTH")["TOT_SALES"].sum()
+
+STEP 6 — VISUALIZATION (DASHBOARDSloo )
+1. Store Sales (Bar)
+import matplotlib.pyplot as plt
+
+plt.figure()
+plt.bar(store_sales.index, store_sales.values)
+plt.title("Sales by Store")
+plt.xlabel("Store")
+plt.ylabel("Sales")
+plt.savefig("output/store_sales.png")
+plt.show()
+
+2. Monthly Trend (Endukuu Line)
+plt.figure()
+plt.plot(monthly_sales.index, monthly_sales.values)
+plt.title("Monthly Sales Trend")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+plt.savefig("output/monthly_sales.png")
+plt.show()
+
+3. Customer Segment (Pie)
+plt.figure()
+plt.pie(segment_sales.values, labels=segment_sales.index, autopct="%1.1f%%")
+plt.title("Sales by Customer Segment")
+plt.savefig("output/segment_sales.png")
+plt.show()
+
+4. Top Products
+plt.figure()
+plt.bar(top_products.index, top_products.values)
+plt.xticks(rotation=45)
+plt.title("Top Products")
+plt.savefig("output/top_products.png")
+plt.show()
+
