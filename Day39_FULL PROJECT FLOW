@@ -1,0 +1,238 @@
+Step 1: Understand Problem
+Step 2: Load Data
+Step 3: Explore Data
+Step 4: Clean Data
+Step 5: Feature Engineering
+Step 6: Prepare Training Data
+Step 7: Train Model
+Step 8: Evaluate Model
+Step 9: Save Model
+Step 10: Build Streamlit App
+Step 11: Deploy
+
+STEP 1 — UNDERSTAND THE PROBLEM (MOST IMPORTANT)
+Goal entoo telsukoo: Predict house price
+Input (Use ayye Features teesko):
+- Square feet (sqft)
+- BHK
+- Bathrooms
+- Location
+
+Output (Target): Price (If you skip this clarity SPARK - your model will be useless)
+
+STEP 2 — LOAD DATA
+import pandas as pd
+
+df1 = pd.read_csv("Bellandur.csv")
+df2 = pd.read_csv("Bommanahalli.csv")
+df3 = pd.read_csv("Brookefield.csv")
+df4 = pd.read_csv("Electronic_City.csv")
+df5 = pd.read_csv("Krishnarajapura.csv")......miaghtavi kudaa include cheyandi
+
+df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True) # Ekkuva data untee better mofel combine all locations into one dataset
+
+STEP 3 — EXPLORE DATA
+df.head()
+df.shape
+df.info()
+df.isnull().sum()
+
+What to check ikkada?
+- Missing values
+- Data types
+- Column names [ cheppanu kadaa Real engineers spend time here - not on models ]
+
+STEP 4 — DATA CLEANING
+Handle missing values
+df.dropna(inplace=True) 
+OR better: df.fillna(df.mean(numeric_only=True), inplace=True) # Models cannot handle missing data kadaa
+# Blindly deleting rows chesthee - data loss avuthundi
+
+STEP 5 — FEATURE ENGINEERING
+# Example: Price per sqft
+df["price_per_sqft"] = df["price"] / df["sqft"]
+
+# Convert categorical -> numeric - Endukantee Machine learning models only understand numbers
+df = pd.get_dummies(df, drop_first=True)
+
+STEP 6 — PREPARE TRAINING DATA
+# Split features and target
+X = df.drop("price", axis=1)
+y = df["price"]
+
+# Convert to NumPy (optional but good practice)
+import numpy as np
+X = np.array(X)
+y = np.array(y)
+
+# STEP 7 - TRAIN TEST SPLIT
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Train - model learns
+Test - model is evaluated
+
+STEP 8 — TRAIN MODEL
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X_train, y_train) # Model learns relationships between inputs and price
+
+STEP 9 — EVALUATE MODEL
+from sklearn.metrics import r2_score
+
+predictions = model.predict(X_test)
+print(r2_score(y_test, predictions))
+Ikkada: R² close to 1 aythee good
+# R² close to 0 - bad
+
+# STEP 10 — SAVE MODEL
+import pickle
+
+pickle.dump(model, open("model.pkl", "wb")) # So you don’t retrain every time
+
+STEP 11 — BUILD STREAMLIT APP
+# Create file: app.py
+import streamlit as st
+import numpy as np
+import pickle
+
+model = pickle.load(open("model.pkl", "rb"))
+
+st.title("House Price Prediction")
+
+sqft = st.number_input("Enter Square Feet")
+bath = st.number_input("Enter Bathrooms")
+bhk = st.number_input("Enter BHK")
+
+if st.button("Predict Price"):
+    input_data = np.array([[sqft, bath, bhk]])
+    prediction = model.predict(input_data)
+
+    st.success(f"Estimated Price: ₹ {prediction[0]:,.2f}")
+
+streamlit run app.py # Run Application
+
+
+FULL PROJECT chdehamaa SPARK :: 
+
+
+app.py
+# IMPORT LIBRARIES
+import streamlit as st
+import pandas as pd
+import numpy as np
+import pickle
+import os OR pip install pandas numpy scikit-learn streamlit cheyochuu
+
+project/
+├── app.py
+├── Bellandur.csv
+├── Bommanahalli.csv
+├── Brookefield.csv
+├── Electronic_City.csv
+├── Krishnarajapura.csv
+
+# streamlit run app.py
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# LOAD & COMBINE DATA
+
+@st.cache_data
+def load_data():
+    df1 = pd.read_csv("Bellandur.csv")
+    df2 = pd.read_csv("Bommanahalli.csv")
+    df3 = pd.read_csv("Brookefield.csv")
+    df4 = pd.read_csv("Electronic_City.csv")
+    df5 = pd.read_csv("Krishnarajapura.csv")
+
+    df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
+    return df
+
+df = load_data()
+
+# DATA CLEANING
+
+df.dropna(inplace=True)
+df.drop_duplicates(inplace=True)
+
+# FEATURE ENGINEERING
+
+# Example: price per sqft (only if columns exist)
+if "price" in df.columns and "sqft" in df.columns:
+    df["price_per_sqft"] = df["price"] / df["sqft"]
+
+# Convert categorical to numeric
+df = pd.get_dummies(df, drop_first=True)
+
+# PREPARE DATA
+
+if "price" not in df.columns:
+    st.error("Dataset must contain 'price' column")
+    st.stop()
+
+X = df.drop("price", axis=1)
+y = df["price"]
+
+# TRAIN MODEL (only once)
+
+MODEL_FILE = "model.pkl"
+
+if not os.path.exists(MODEL_FILE):
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+
+    # Evaluate
+    predictions = model.predict(X_test)
+    score = r2_score(y_test, predictions)
+
+    # Save model
+    pickle.dump(model, open(MODEL_FILE, "wb"))
+
+    st.write(f"Model trained successfully! R² Score: {score:.2f}")
+
+else:
+    model = pickle.load(open(MODEL_FILE, "rb"))
+
+# STREAMLIT UI
+
+st.title(" Real Estate Price Prediction App")
+
+st.write("Enter property details below:")
+
+# Example input fields (adjust based on your dataset)
+sqft = st.number_input("Square Feet", min_value=300, max_value=10000, value=1000)
+bath = st.number_input("Bathrooms", min_value=1, max_value=10, value=2)
+bhk = st.number_input("BHK", min_value=1, max_value=10, value=2)
+
+# PREDICTION
+
+if st.button("Predict Price"):
+
+    try:
+        input_data = np.array([[sqft, bath, bhk]])
+
+        # Adjust input size to match training columns
+        if input_data.shape[1] != X.shape[1]:
+            st.warning(" Input features mismatch. Adjust feature columns properly.")
+        else:
+            prediction = model.predict(input_data)
+            st.success(f"Estimated Price: ₹ {prediction[0]:,.2f}")
+
+    except Exception as e:
+        st.error(f"Error: {e}")
+
+# DATA PREVIEW (OPTIONAL)
+
+if st.checkbox("Show Raw Data"):
+    st.write(df.head())
