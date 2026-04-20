@@ -76,6 +76,7 @@ plt.title("Daily Sales Trend")
 
 plt.show() # Charts without labels -> bad practice
 
+# Multiple plots
 plt.subplot(2,1,1)
 plt.plot(x, y1)
 
@@ -117,8 +118,3 @@ monthly_sales = df.groupby("MONTH")["TOT_SALES"].sum()
 plt.plot(monthly_sales.index, monthly_sales.values)
 plt.title("Monthly Sales Trend")
 plt.show()
-
-
-
-
-
