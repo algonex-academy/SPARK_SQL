@@ -25,6 +25,16 @@ store_sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
 plt.bar(store_sales.index, store_sales.values)
 plt.show() # Which store performs best?
 
+# plt.bar(x, y)
+stores = [1, 2, 3]
+sales = [200, 300, 250]
+
+plt.bar(stores, sales)
+plt.show()
+# Sales per store
+# Revenue per product
+
+
 STEP 4 — LINE CHART
 # Trends over time
 df["DATE"] = pd.to_datetime(df["DATE"])
@@ -34,15 +44,26 @@ daily_sales = df.groupby("DATE")["TOT_SALES"].sum()
 plt.plot(daily_sales.index, daily_sales.values)
 plt.show() # Sales trend over time
 
+# plt.plot(x, y)
+months = [1, 2, 3]
+sales = [200, 300, 250]
+
+plt.plot(months, sales)
+plt.show()
+# Monthly sales, growth trends
+
 STEP 5 — PIE CHART
+plt.pie(values, labels=labels, autopct="%1.1f%%")
+
 # Contribution %
 sales = df.groupby("STORE_NBR")["TOT_SALES"].sum()
 
 plt.pie(sales.values, labels=sales.index, autopct="%1.1f%%")
 plt.show() # Which store contributes most?
 
+
 STEP 6 — HISTOGRAM
-# Distribution of data
+# Distribution of data - plt.hist(data)
 plt.hist(df["TOT_SALES"])
 plt.show() # Most common sales range
 
@@ -54,6 +75,17 @@ plt.ylabel("Sales")
 plt.title("Daily Sales Trend")
 
 plt.show() # Charts without labels -> bad practice
+
+plt.subplot(2,1,1)
+plt.plot(x, y1)
+
+plt.subplot(2,1,2)
+plt.plot(x, y2)
+
+plt.figure(figsize=(8,5))
+plt.savefig("chart.png")
+plt.xticks(rotation=45)
+plt.grid()
 
  Chart        Use Case chudu           
  Bar       | Compare categories 
