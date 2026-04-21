@@ -1,3 +1,5 @@
+Oka Full SPARK fELLWOSHIP PROJECT FLOW elaa untundoo chudham:
+
 Step 1: Understand Problem
 Step 2: Load Data
 Step 3: Explore Data
@@ -94,7 +96,7 @@ import pickle
 
 pickle.dump(model, open("model.pkl", "wb")) # So you don’t retrain every time
 
-STEP 11 — BUILD STREAMLIT APP
+STEP 11- BUILD STREAMLIT app
 # Create file: app.py
 import streamlit as st
 import numpy as np
@@ -118,7 +120,7 @@ streamlit run app.py # Run Application
 
 
 FULL PROJECT chdehamaa SPARK :: 
-
+Takes inputs (sqft, bhk, bath) -Predicts house price -> Shows in UI
 
 app.py
 # IMPORT LIBRARIES
@@ -127,6 +129,13 @@ import pandas as pd
 import numpy as np
 import pickle
 import os OR pip install pandas numpy scikit-learn streamlit cheyochuu
+
+pandas - handle data
+numpy -> numerical arrays
+sklearn -> machine learning
+pickle -> save model
+streamlit -> build UI
+os -> check if model already exists # Without these, nothing works.
 
 project/
 ├── app.py
@@ -159,8 +168,9 @@ df = load_data()
 
 # DATA CLEANING
 
-df.dropna(inplace=True)
-df.drop_duplicates(inplace=True)
+df.dropna(inplace=True) # removes missing values
+df.drop_duplicates(inplace=True) # removes repeated rows as ML models hate dirty data kadaa
+# 70% of ML work is cleaning only cheppanu kadaa already
 
 # FEATURE ENGINEERING
 
@@ -168,17 +178,25 @@ df.drop_duplicates(inplace=True)
 if "price" in df.columns and "sqft" in df.columns:
     df["price_per_sqft"] = df["price"] / df["sqft"]
 
-# Convert categorical to numeric
-df = pd.get_dummies(df, drop_first=True)
+Ikkada You created a new meaningful column endukantee
+Example:
+Price = 50L
+Sqft = 1000
+Price/sqft = 5000 # this helps model understand property value better
 
+# Convert categorical to numeric
+df = pd.get_dummies(df, drop_first=True) # ML model understands only numbers- Location = "Bellandur" # wrong
+                                                                            - Location_Bellandur = 1 # Correct 
 # PREPARE DATA
 
 if "price" not in df.columns:
     st.error("Dataset must contain 'price' column")
     st.stop()
 
-X = df.drop("price", axis=1)
-y = df["price"]
+X = df.drop("price", axis=1) # features (inputs)
+y = df["price"] # target (output we predict)
+Example: X = sqft, bhk, bath
+         y = price
 
 # TRAIN MODEL (only once)
 
@@ -188,13 +206,18 @@ if not os.path.exists(MODEL_FILE):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
+# 80% -> training
+  20% -> testing
+# To check if model actually learned or just memorized
 
     model = LinearRegression()
     model.fit(X_train, y_train)
+# price = function(sqft, bhk, bath, etc.) - Ikkada model learns relationships anamaata
 
-    # Evaluate
+    # Evaluate cheyaali
     predictions = model.predict(X_test)
-    score = r2_score(y_test, predictions)
+    score = r2_score(y_test, predictions) # R² Score tells: 1 - perfect
+                                                            0 -> useless
 
     # Save model
     pickle.dump(model, open(MODEL_FILE, "wb"))
@@ -215,8 +238,7 @@ sqft = st.number_input("Square Feet", min_value=300, max_value=10000, value=1000
 bath = st.number_input("Bathrooms", min_value=1, max_value=10, value=2)
 bhk = st.number_input("BHK", min_value=1, max_value=10, value=2)
 
-# PREDICTION
-
+# PREDICTION steploo:
 if st.button("Predict Price"):
 
     try:
