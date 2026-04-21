@@ -1,20 +1,20 @@
-Oka Full SPARK fELLWOSHIP PROJECT FLOW elaa untundoo chudham:
+Oka Full SPARK fELLWOSHIP model PROJECT FLOW elaa untundoo chudham:
 
-Step 1: Understand Problem
-Step 2: Load Data
-Step 3: Explore Data
-Step 4: Clean Data
-Step 5: Feature Engineering
-Step 6: Prepare Training Data
-Step 7: Train Model
-Step 8: Evaluate Model
+Step 1: Understand Problem from customer point of view
+Step 2: Load Data (More data better model)
+Step 3: Explore Data (Understand columns, max, head, decribe...)
+Step 4: Clean Data (Drop/Fill based on values)
+Step 5: Feature Engineering (Fix/Create the columns)
+Step 6: Prepare Training Data (x,y metrics)
+Step 7: Train Model (x_train, x_test... with various algorithms)
+Step 8: Evaluate Model (x_test, y_test..find R^2 Score (0-worst, 1-best))
 Step 9: Save Model
 Step 10: Build Streamlit App
 Step 11: Deploy
 
-STEP 1 — UNDERSTAND THE PROBLEM (MOST IMPORTANT)
-Goal entoo telsukoo: Predict house price
-Input (Use ayye Features teesko):
+STEP 1 — UNDERSTAND THE customer real PROBLEM (MOST IMPORTANT)
+Goal entoo telsukoo: Predict house price with various inputs
+Inputs (Use ayye Features teesko):
 - Square feet (sqft)
 - BHK
 - Bathrooms
@@ -31,7 +31,7 @@ df3 = pd.read_csv("Brookefield.csv")
 df4 = pd.read_csv("Electronic_City.csv")
 df5 = pd.read_csv("Krishnarajapura.csv")......miaghtavi kudaa include cheyandi
 
-df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True) # Ekkuva data untee better mofel combine all locations into one dataset
+df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True) # Ekkuva data untee better model combine all locations into one dataset
 
 STEP 3 — EXPLORE DATA
 df.head()
@@ -45,7 +45,7 @@ What to check ikkada?
 - Column names [ cheppanu kadaa Real engineers spend time here - not on models ]
 
 STEP 4 — DATA CLEANING
-Handle missing values
+# Handle missing values
 df.dropna(inplace=True) 
 OR better: df.fillna(df.mean(numeric_only=True), inplace=True) # Models cannot handle missing data kadaa
 # Blindly deleting rows chesthee - data loss avuthundi
