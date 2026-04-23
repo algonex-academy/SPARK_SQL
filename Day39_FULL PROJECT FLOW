@@ -1,4 +1,5 @@
 Oka Full SPARK fELLWOSHIP model PROJECT FLOW elaa untundoo chudham:
+Data -> Clean -> Prepare -> Train -> Save -> App -> Predict
 
 Step 1: Understand Problem from customer point of view
 Step 2: Load Data (More data better model)
@@ -23,7 +24,11 @@ Inputs (Use ayye Features teesko):
 Output (Target): Price (If you skip this clarity SPARK - your model will be useless)
 
 STEP 2 — LOAD DATA
-import pandas as pd
+import pandas as pd or pip install pandas numpy scikit-learn streamlit in the terminal / command prompt
+pandas -> handle data
+numpy -> numbers
+sklearn -> ML model
+streamlit -> UI app
 
 df1 = pd.read_csv("Bellandur.csv")
 df2 = pd.read_csv("Bommanahalli.csv")
@@ -31,7 +36,7 @@ df3 = pd.read_csv("Brookefield.csv")
 df4 = pd.read_csv("Electronic_City.csv")
 df5 = pd.read_csv("Krishnarajapura.csv")......miaghtavi kudaa include cheyandi
 
-df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True) # Ekkuva data untee better model combine all locations into one dataset
+df = pd.concat([df1, df2, df3, df4, df5], ignore_index=True) # Combined all datasets into ONE table - Ekkuva data untee better model combine all locations into one dataset
 
 STEP 3 — EXPLORE DATA
 df.head()
@@ -45,9 +50,9 @@ What to check ikkada?
 - Column names [ cheppanu kadaa Real engineers spend time here - not on models ]
 
 STEP 4 — DATA CLEANING
-# Handle missing values
-df.dropna(inplace=True) 
+df.dropna(inplace=True) # Remove missing values
 OR better: df.fillna(df.mean(numeric_only=True), inplace=True) # Models cannot handle missing data kadaa
+df = df.drop_duplicates()  # Remove duplicates
 # Blindly deleting rows chesthee - data loss avuthundi
 
 STEP 5 — FEATURE ENGINEERING
@@ -58,7 +63,7 @@ df["price_per_sqft"] = df["price"] / df["sqft"]
 df = pd.get_dummies(df, drop_first=True)
 
 STEP 6 — PREPARE TRAINING DATA
-# Split features and target
+# Split features and target(means input(X) and output(y) ni define chesthunnam)
 X = df.drop("price", axis=1)
 y = df["price"]
 
@@ -74,8 +79,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Train - model learns
-Test - model is evaluated
+# Train - model learning kosam
+Test - model is evaluated/testing kosam
 
 STEP 8 — TRAIN MODEL
 from sklearn.linear_model import LinearRegression
@@ -94,17 +99,20 @@ Ikkada: R² close to 1 aythee good
 # STEP 10 — SAVE MODEL
 import pickle
 
-pickle.dump(model, open("model.pkl", "wb")) # So you don’t retrain every time
+pickle.dump(model, open("model.pkl", "wb")) # So you don't retrain every time
 
-STEP 11- BUILD STREAMLIT app
+STEP 11- BUILD STREAMLIT app here finalga
 # Create file: app.py
-import streamlit as st
-import numpy as np
-import pickle
-
+import streamlit as st # used to build the app UI (buttons, inputs, text)
+import numpy as np # used to handle numbers (arrays)
+import pickle # used to load the trained model
+ 
 model = pickle.load(open("model.pkl", "rb"))
+''' "model.pkl" -> file where your trained model is saved
+"rb" -> read binary mode
+pickle.load() -> loads the model into memory- > Soo now model is ready to predict '''
 
-st.title("House Price Prediction")
+st.title("Rental Price Producer")
 
 sqft = st.number_input("Enter Square Feet")
 bath = st.number_input("Enter Bathrooms")
@@ -112,11 +120,29 @@ bhk = st.number_input("Enter BHK")
 
 if st.button("Predict Price"):
     input_data = np.array([[sqft, bath, bhk]])
-    prediction = model.predict(input_data)
+''' Model expects input like: [[sqft, bath, bhk]]
+Example: [[1000, 2, 2]] -> So we convert inputs into NumPy array '''
 
-    st.success(f"Estimated Price: ₹ {prediction[0]:,.2f}")
+    prediction = model.predict(input_data) # Ikkada model uses learned patterns to predict price
+
+    st.success(f"Estimated Price: ₹ {prediction[0]:,.2f}") # or st.write("Price:", prediction[0])
+
+# User Input -> Convert to array -> Model Predict -> Show Output
 
 streamlit run app.py # Run Application
+
+'' Your model was likely trained on more columns
+But here you only give: sqft, bath, bhk -> this can break prediction '''
+import pandas as pd
+input_df = pd.DataFrame([{
+    "sqft": sqft,
+    "bath": bath,
+    "bhk": bhk
+}])
+
+input_df = input_df.reindex(columns=model.feature_names_in_, fill_value=0)
+
+prediction = model.predict(input_df)
 
 
 FULL PROJECT chdehamaa SPARK :: 
@@ -124,10 +150,10 @@ Takes inputs (sqft, bhk, bath) -Predicts house price -> Shows in UI
 
 app.py
 # IMPORT LIBRARIES
-import streamlit as st
+import streamlit as st # used to build the app UI (buttons, inputs, text)
 import pandas as pd
-import numpy as np
-import pickle
+import numpy as np # used to handle numbers (arrays)
+import pickle # used to load the trained model
 import os OR pip install pandas numpy scikit-learn streamlit cheyochuu
 
 pandas - handle data
