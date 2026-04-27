@@ -1,0 +1,73 @@
+SPARK Project LEVEL 3 -> BETTER MODEL (Random Forest)
+
+Because right now you are using: Linear Regression, Good for learning anthee
+But for real estate predictio? -> Usually not strong enough
+
+Linear Regression thinks: Straight-line relationship
+But house pricing is NOT straight
+
+Example:
+2BHK in Whitefield
+2BHK in Bellandur  , Huge price difference
+Random Forest handles this much better
+
+STEP 1 -> REMOVE OLD MODEL IMPORT
+from sklearn.linear_model import LinearRegression # Remove this
+
+STEP 2 -> ADD NEW IMPORT
+from sklearn.ensemble import RandomForestRegressor # Stronger model
+
+STEP 3 -> REMOVE OLD MODEL TRAINING
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Wrtie this instead SPARK
+model = RandomForestRegressor(
+    n_estimators=100,
+    random_state=42
+)
+model.fit(X_train, y_train)
+
+n_estimators=100
+# MeanING entantee: Build 100 decision trees-> More trees antee better learning
+
+random_state=42
+# Keeps results consistent-> Same output every run
+
+# Which features affect price most anedii kanukkondi interviewloo explain chesthee marks kotteyachu meeru
+importance = pd.DataFrame({
+    "Feature": X.columns,
+    "Importance": model.feature_importances_
+})
+
+print(
+    importance.sort_values(
+        by="Importance",
+        ascending=False
+    )
+)
+
+
+Step5 - This remains same
+predictions = model.predict(X_test)
+score = r2_score(y_test, predictions) # R² is model Accuracy Score for Regression
+
+print(score) # If you compare the values random Forest will give a better ouput
+
+''' R² = 1.0   → Perfect prediction
+R² = 0.9   - Very strong model
+R² = 0.7   - Good model
+R² = 0.5   - Average
+R² = 0.0   - Useless model
+R² < 0     - Very bad model '''
+
+Suppose SPARK: Actual price: 50 Lakhs
+         Predicted price: 49 Lakhs, Very close - high R²
+         Predicted: 15 Lakhs, Very wrong - low R²
+
+STEP 6 -> DELETE OLD model.pkl
+Because old file contains: Linear Regression model
+You now need: Random Forest model
+
+I compared Linear Regression and Random Forest, and selected Random Forest 
+because it performed better for nonlinear real estate pricing patterns
