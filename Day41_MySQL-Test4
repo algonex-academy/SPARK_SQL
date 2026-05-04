@@ -1,0 +1,93 @@
+Test -4 MYSQL - May 04 2026 
+
+Q1: 
+You are designing a table for an e-commerce system
+Choose appropriate datatypes for: - Order ID - Price (accurate to 2 decimal places) - Customer phone number - Order date
+
+ Field                     Datatype                                 Why                                         
+ Order ID     | INT (or BIGINT) + AUTO_INCREMENT | Unique numeric identifier, fast indexing          
+ Price        | DECIMAL(10,2)                      | Exact precision (no floating error)               
+ Phone number | VARCHAR(15)                        | Not used for math, may include country code (+91) 
+ Order date   | DATE` or DATETIME                 | Stores date (and optionally time)                 
+
+Q2:  Difference between CHAR and VARCHAR — give a real-world scenario where each is used 
+CHAR                  | VARCHAR         
+ Fixed length          | Variable length 
+ Faster for fixed data | Saves space     
+ Pads spaces           | No padding      
+CHAR(2) - Country code (IN, US)
+VARCHAR(100) - Customer name
+=> CHAR is used when length is fixed, while VARCHAR is used when length varies to optimize storage
+
+Q3: *Hey SPARK Assume:*
+employees(emp_id, name, dept_id)
+departments(dept_id, dept_name)
+
+- Write an INNER JOIN to get employee name and department name
+- INNER JOIN
+SELECT e.name, d.dept_name
+FROM employees e
+INNER JOIN departments d
+ON e.dept_id = d.dept_id;
+
+- Write a LEFT JOIN and explain output if a department is missing
+- LEFT JOIN
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d
+ON e.dept_id = d.dept_id;
+
+If department missing:
+name	     dept_name
+John	       NULL
+- Employee still appears
+- Department is NULL
+
+- What is SELF JOIN? Give a real example
+
+- SELF JOIN
+Join table with itself
+Example (Manager relationship): 
+SELECT e.name AS employee, m.name AS manager
+FROM employees e
+JOIN employees m
+ON e.manager_id = m.emp_id;
+
+Q4 -> FUNCTIONS
+*FUNCTIONS*
+Q4: Difference between:
+COUNT(*)
+COUNT(column_name)
+ COUNT(*)          COUNT(column) 
+ Counts all rows | Ignores NULL  
+ Includes NULL    | Excludes NULL 
+Ex: SELECT COUNT(*) FROM table;
+SELECT COUNT(salary) FROM table;
+
+What will this return?
+SELECT UPPER('data'); # DATA
+
+Write query: Extract YEAR and MONTH from a date column
+SELECT YEAR(order_date), MONTH(order_date)
+FROM orders;
+
+Difference between: NOW(), CURDATE()
+ NOW()       | CURDATE() 
+ Date + Time | Only Date 
+NOW() - 2026-05-04 10:30:00  
+CURDATE() - 2026-05-04
+
+What does CONCAT() do? with example
+SELECT CONCAT('Hello', ' ', 'SAPRK'); Hello SPARK
+
+In my Fellowship project, I worked on a retail dataset where I used SQL for structured data extraction and Pandas for data processing and analysis
+First, I queried transactional and customer data using SQL joins and aggregations
+Then, I imported the data into Pandas for cleaning, handling missing values, and feature engineering. I performed analysis such as customer segmentation, sales trends, and product performance 
+Finally, I used visualization tools and built a predictive model for business insights
+
+1. SQL - Extract data (JOIN, GROUP BY)
+2. Pandas - Clean data
+3. Feature Engineering - create new columns
+4. Analysis - trends, segments
+5. Visualization - charts
+6. ML - prediction (optional)
