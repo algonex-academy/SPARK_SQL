@@ -204,12 +204,12 @@ CREATE TABLE bookings (
   FOREIGN KEY (property_id) REFERENCES properties(property_id)
 );
 
-𝗞𝗲𝘆               𝗧𝘆𝗽𝗲          𝗣𝘂𝗿𝗽𝗼𝘀𝗲 𝗨𝗻𝗶𝗾𝘂𝗲?      𝗨𝘀𝗲𝗱 𝗶𝗻 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻/𝗣𝗿𝗼𝗷𝗲𝗰𝘁𝗹𝗼𝗼?     𝗘𝘅𝗮𝗺𝗽𝗹𝗲
- Primary Key   | Main identifier    | Yes       | Mostly                          user_id                
- Foreign Key   | Connect tables     | No        | Yes                             booking.user_id        
- Unique Key    | Prevent duplicates |  Yes      | Yes                              email                  
- Composite Key | Multi-column PK    | Yes       | Yes                              (user_id, property_id) 
- Candidate Key | PK& candidates      | Yes       |  Design                          email                  
- Alternate Key | Non-PK unique      | Yes       |  (via UNIQUE)                    email                  
- Natural Key   | Business ID        | Yes       |  As UNIQUE                       phone                  
- Surrogate Key | System ID          | Yes      |  Best practice                     AUTO_INCREMENT         
+𝗞𝗲𝘆               𝗧𝘆𝗽𝗲         𝗣𝘂𝗿𝗽𝗼𝘀𝗲 𝗨𝗻𝗶𝗾𝘂𝗲?   𝗨𝘀𝗲𝗱 𝗶𝗻 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻/𝗣𝗿𝗼𝗷𝗲𝗰𝘁𝗹𝗼𝗼?     𝗘𝘅𝗮𝗺𝗽𝗹𝗲
+ Primary Key   | Main identifier    | Yes        Mostly                          user_id                
+ Foreign Key   | Connect tables     | No         Yes                             booking.user_id        
+ Unique Key    | Prevent duplicates |  Yes       Yes                              email                  
+ Composite Key | Multi-column PK    | Yes        Yes                              (user_id, property_id) 
+ Candidate Key | PK& candidates      | Yes       Design                          email                  
+ Alternate Key | Non-PK unique      | Yes       (via UNIQUE)                    email                  
+ Natural Key   | Business ID        | Yes       As UNIQUE                       phone                  
+ Surrogate Key | System ID          | Yes        Best practice                  AUTO_INCREMENT         
